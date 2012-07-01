@@ -1,11 +1,49 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://jgornick.github.com/blog/archives/</loc>
-        <lastmod>2012-06-30T14:42:49-05:00</lastmod>
+        <loc>http://jgornick.github.com/2007/07/24/wheres-the-prototype-framework-community</loc>
+        <lastmod>2012-07-01T01:03:46-05:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://jgornick.github.com/2009/11/18/zend-framework-best-practices-part-1-getting-started
+        </loc>
+        <lastmod>2012-07-01T01:03:40-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jgornick.github.com/2009/12/02/zend-framework-best-practices-part-2-i18n</loc>
+        <lastmod>2012-07-01T01:03:35-05:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://jgornick.github.com/2009/12/29/introducing-gistdoit-run-your-gists-and-see-the-output
+        </loc>
+        <lastmod>2012-06-30T22:50:53-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jgornick.github.com/2009/12/30/mysql-created-and-modified-date-fields</loc>
+        <lastmod>2012-07-01T01:03:21-05:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://jgornick.github.com/2009/12/30/announcing-reserved-word-search-find-reserved-words-instantly-as-you-type
+        </loc>
+        <lastmod>2012-06-30T22:43:55-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jgornick.github.com/2010/01/14/setting-up-multiple-browsers-on-mac-os-x</loc>
+        <lastmod>2012-07-01T01:02:46-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jgornick.github.com/archives/</loc>
+        <lastmod>2012-07-01T01:03:46-05:00</lastmod>
     </url>
     <url>
         <loc>http://jgornick.github.com/</loc>
-        <lastmod>2012-06-30T14:42:49-05:00</lastmod>
+        <lastmod>2012-07-01T01:06:50-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jgornick.github.com/resume/</loc>
+        <lastmod>2012-07-01T00:44:40-05:00</lastmod>
     </url>
 </urlset>

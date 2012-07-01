@@ -1,0 +1,862 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Zend Framework Best Practices – Part 2: I18n - Joe Gornick</title>
+  <meta name="author" content="Joe Gornick">
+
+  
+  <meta name="description" content="For the second part of my Zend Framework Best Practices series, I&#8217;d like to show you what I&#8217;ve found to be a simple and solid &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jgornick.github.com/2009/12/02/zend-framework-best-practices-part-2-i18n">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="http://feeds.feedburner.com/jgornick" rel="alternate" title="Joe Gornick" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2943070-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Joe Gornick</a></h1>
+  
+    <h2>Web Geekology</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://feeds.feedburner.com/jgornick" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jgornick.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/resume">Resume</a></li>
+  <li><a href="/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Zend Framework Best Practices – Part 2: I18n</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-12-02T22:54:00-06:00" pubdate data-updated="true">Dec 2<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>For the second part of my Zend Framework Best Practices series, I&#8217;d like to show you what I&#8217;ve found to be a simple and solid implementation of internationalizing your website.</p>
+
+<p>Zend Framework already contains components like <a href="http://framework.zend.com/manual/en/zend.locale.html">Zend_Locale</a> and <a href="http://framework.zend.com/manual/en/zend.translate.html">Zend_Translate</a> to assist in internationalizing your website. You use the <code>Zend_Locale</code> instance in conjunction with the <code>Zend_Translate</code> to know what current locale is being used and how to translate the content. I&#8217;m going to show you how to implement these into your website.</p>
+
+<p>If you haven&#8217;t read the <a href="http://joegornick.com/2009/11/18/zend-framework-best-practices-part-1-getting-started/">first part of this series</a>, I would recommend it as all my examples here will be based on that structure.</p>
+
+<!-- more -->
+
+
+<p>To start off, let&#8217;s talk about how we are going to allow our website to know what locale to use. What I&#8217;ve found to be a common practice to switch locales is based off of the URL. For example, a sample format may look like <code>mysite.com/:locale/controller/action</code>. Locales are usually represented with a <code>language_REGION</code> combination. However, locales in our case are specified by only the <code>language</code> code. You can find a list of language codes <a href="http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/languages_and_territories.html">here</a>. If you wanted your site to be in Japanese, you would use the language code of <code>ja</code>. An example of the URL might look something like <code>mysite.com/ja/controller/action</code>. On top of specifying the locale in the path of the URL, I&#8217;ve also provided a way to determine the locale based off of the TLD in the URL. For example, let&#8217;s say our <code>mysite.com</code> also has a Japanese TLD like <code>mysite.jp</code>. When a request comes in and we find a supported TLD, we set the localed based on it.</p>
+
+<p>Enough talk, let&#8217;s look at some code.</p>
+
+<p>Let&#8217;s start by setting up our <code>Zend_Locale</code>. In the <code>application.ini</code>, we use the <code>Zend_Application_Resource_Locale</code> to setup the locale component and set our default locale. In our case here, I&#8217;m setting the default locale to <strong>English</strong>.</p>
+
+<p>application.ini:</p>
+
+<pre><code>...
+# Locale
+resources.locale.default = "en"
+...
+</code></pre>
+
+<p>Next, we need to tell our application which locales are supported and also specify our TLD mappings. We do this by specifying front controller parameters in the <code>application.ini</code>.</p>
+
+<p>application.ini:</p>
+
+<pre><code>...
+# Front Controller Params
+resources.frontController.params.locales&amp;#91;&amp;#93; = "en"
+resources.frontController.params.locales&amp;#91;&amp;#93; = "ja"
+resources.frontController.params.tldLocales.jp = "ja"
+...
+</code></pre>
+
+<p>If you notice from the configuration above, I&#8217;ve added English and Japanese as my supported locales and I also mapped the <code>jp</code> TLD to use the <code>ja</code> language code. More on how we use those later.</p>
+
+<p>Before I show the rest of the configuration needed, let me explain how the process works.</p>
+
+<p>In order for your application to recognize when a locale is specified in the URL, you need to create special routes to parse out the locale. The approach I took was to override the existing <code>Zend_Application_Resource_Router</code> and implement the ability to automatically add locale routes to the application when enabled.</p>
+
+<p>The process in which I added routes to my application was done previously in my <code>Bootstrap.php</code> with the <code>_initRoutes()</code> method. I&#8217;ve removed that code and moved the routes to be configured in the <code>application.ini</code>. Now that the routes are specified in the <code>application.ini</code>, it allows us to easily add/edit/remove routes from our application. There is also a benefit to doing this in regards to caching, which I will explain in a future article.</p>
+
+<p>First, let&#8217;s take a look at how we will load the custom router application resource and override the existing application resource.</p>
+
+<p>application.ini</p>
+
+<pre><code>...
+# Custom Resource Plugins
+pluginPaths.My_Application_Resource = APPLICATION_PATH "/../lib/My/Application/Resource/"
+...
+</code></pre>
+
+<p>Now the application is setup to load custom application resources for the namespace specified. Since I am overriding the <code>Zend_Application_Resource_Router</code>, let&#8217;s look at <code>My_Application_Resource_Router</code>:</p>
+
+<p>My/Application/Resource/Router.php:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">My_Application_Resource_Router</span> <span class="k">extends</span> <span class="nx">Zend_Application_Resource_Router</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="nv">$_explicitType</span> <span class="o">=</span> <span class="s1">&#39;router&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$_front</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$_locale</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     * Retrieve router object</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     * @return Zend_Controller_Router_Rewrite</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getRouter</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$options</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getOptions</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$options</span><span class="p">[</span><span class="s1">&#39;locale&#39;</span><span class="p">][</span><span class="s1">&#39;enabled&#39;</span><span class="p">])</span> <span class="o">||</span>
+</span><span class='line'>            <span class="o">!</span><span class="nv">$options</span><span class="p">[</span><span class="s1">&#39;locale&#39;</span><span class="p">][</span><span class="s1">&#39;enabled&#39;</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">getRouter</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$bootstrap</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getBootstrap</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_front</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$bootstrap</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="s1">&#39;FrontController&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_front</span> <span class="o">=</span> <span class="nv">$bootstrap</span><span class="o">-&gt;</span><span class="na">getContainer</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">frontcontroller</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_locale</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$bootstrap</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="s1">&#39;Locale&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_locale</span> <span class="o">=</span> <span class="nv">$bootstrap</span><span class="o">-&gt;</span><span class="na">getContainer</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">locale</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$defaultLocale</span> <span class="o">=</span> <span class="nb">array_keys</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_locale</span><span class="o">-&gt;</span><span class="na">getDefault</span><span class="p">());</span>
+</span><span class='line'>        <span class="nv">$defaultLocale</span> <span class="o">=</span> <span class="nv">$defaultLocale</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$locales</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_front</span><span class="o">-&gt;</span><span class="na">getParam</span><span class="p">(</span><span class="s1">&#39;locales&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="nv">$requiredLocalesRegex</span> <span class="o">=</span> <span class="s1">&#39;^(&#39;</span> <span class="o">.</span> <span class="nb">join</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="nv">$locales</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;)$&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$routes</span> <span class="o">=</span> <span class="nv">$options</span><span class="p">[</span><span class="s1">&#39;routes&#39;</span><span class="p">];</span>
+</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$routes</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// First let&#39;s add the default locale to this routes defaults.</span>
+</span><span class='line'>            <span class="nv">$defaults</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">])</span>
+</span><span class='line'>                <span class="o">?</span> <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span>
+</span><span class='line'>                <span class="o">:</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Always default all routes to the Zend_Locale default</span>
+</span><span class='line'>            <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span><span class="k">array</span><span class="p">(</span> <span class="s1">&#39;locale&#39;</span> <span class="o">=&gt;</span> <span class="nv">$defaultLocale</span> <span class="p">),</span> <span class="nv">$defaults</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="nv">$routes</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Get our route and make sure to remove the first forward slash</span>
+</span><span class='line'>            <span class="c1">// since it&#39;s not needed.</span>
+</span><span class='line'>            <span class="nv">$routeString</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;route&#39;</span><span class="p">];</span>
+</span><span class='line'>            <span class="nv">$routeString</span> <span class="o">=</span> <span class="nb">ltrim</span><span class="p">(</span><span class="nv">$routeString</span><span class="p">,</span> <span class="s1">&#39;/\\&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Modify our normal route to have the locale parameter.</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span> <span class="o">||</span>
+</span><span class='line'>                <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;Zend_Controller_Router_Route&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;route&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;:locale/&#39;</span> <span class="o">.</span> <span class="nv">$routeString</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;reqs&#39;</span><span class="p">][</span><span class="s1">&#39;locale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$requiredLocalesRegex</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="nv">$routes</span><span class="p">[</span><span class="s1">&#39;locale_&#39;</span> <span class="o">.</span> <span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;Zend_Controller_Router_Route_Regex&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;route&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;(&#39;</span> <span class="o">.</span> <span class="nb">join</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="nv">$locales</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;)\/&#39;</span> <span class="o">.</span> <span class="nv">$routeString</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="c1">// Since we added the local regex match, we need to bump the existing</span>
+</span><span class='line'>                <span class="c1">// match numbers plus one.</span>
+</span><span class='line'>                <span class="nv">$map</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">]</span> <span class="o">:</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'>                <span class="k">foreach</span> <span class="p">(</span><span class="nv">$map</span> <span class="k">as</span> <span class="nv">$index</span> <span class="o">=&gt;</span> <span class="nv">$word</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="nb">unset</span><span class="p">(</span><span class="nv">$map</span><span class="p">[</span><span class="nv">$index</span><span class="o">++</span><span class="p">]);</span>
+</span><span class='line'>                    <span class="nv">$map</span><span class="p">[</span><span class="nv">$index</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$word</span><span class="p">;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="c1">// Add our locale map</span>
+</span><span class='line'>                <span class="nv">$map</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;locale&#39;</span><span class="p">;</span>
+</span><span class='line'>                <span class="nb">ksort</span><span class="p">(</span><span class="nv">$map</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$map</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="nv">$routes</span><span class="p">[</span><span class="s1">&#39;locale_&#39;</span> <span class="o">.</span> <span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;Zend_Controller_Router_Route_Static&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">foreach</span> <span class="p">(</span><span class="nv">$locales</span> <span class="k">as</span> <span class="nv">$locale</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;route&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$locale</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$routeString</span><span class="p">;</span>
+</span><span class='line'>                    <span class="nv">$value</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">][</span><span class="s1">&#39;locale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$locale</span><span class="p">;</span>
+</span><span class='line'>                    <span class="nv">$routes</span><span class="p">[</span><span class="s1">&#39;locale_&#39;</span> <span class="o">.</span> <span class="nv">$locale</span> <span class="o">.</span> <span class="s1">&#39;_&#39;</span> <span class="o">.</span> <span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$options</span><span class="p">[</span><span class="s1">&#39;routes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$routes</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setOptions</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">getRouter</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In order for this custom application resource to override the existing one, the key is <code>public $_explicitType = 'router';</code>. Now when routes are setup in the <code>application.ini</code> for the router resource it won&#8217;t use the <code>Zend_Application_Resource_Router</code>, but rather <code>My_Application_Resource_Router</code>.</p>
+
+<p>This application resource sets up the <code>Zend_Controller_Router_Rewrite</code> by parsing the specified options parsed from the <code>application.ini</code>. Notice this custom application resource extends from the original <code>Zend_Application_Resource_Router</code> which allows us to have the application resource perform the default actions if the locale option is not enabled in the configuration. By default, the custom router application resource will perform the default actions to the routes. You need to explicitly specify in the <code>application.ini</code> that the router is locale aware.</p>
+
+<p><code>My_Application_Resource_Router</code> simply takes in the specified routes from the <code>application.ini</code> and adds locale routes automatically so you don&#8217;t have to chain/duplicate routes in the configuration.</p>
+
+<p>Let&#8217;s look at our <code>application.ini</code> to see how we are setting up the router to be locale aware and adding a route.</p>
+
+<p>application.ini:</p>
+
+<pre><code>...
+# Router/Routes
+resources.router.locale.enabled = true
+resources.router.routes.action_index.route = ":action/*"
+resources.router.routes.action_index.defaults.controller = "index"
+resources.router.routes.action_index.defaults.action = "index"
+...
+</code></pre>
+
+<p>In the previous configuration snippet, we enable our router application resource to be locale aware and add a basic <code>Zend_Controller_Router_Route</code> which is the same as specified previously in our <code>Bootstrap.php</code>. When the router application resource is finished adding the routes to the router, there will be two:</p>
+
+<ol>
+<li><code>:action/*</code></li>
+<li><code>:locale/:action/*</code></li>
+</ol>
+
+
+<p>Currently the <code>My_Application_Resource_Router</code> supports <code>Zend_Controller_Router_Route</code>, <code>Zend_Controller_Router_Route_Regex</code> and <code>Zend_Controller_Router_Static</code> routes. When these routes are specified and the router application resource is locale aware, it will automatically create routes for the supported locales.</p>
+
+<p>We&#8217;ve covered a lot already, but there are still a few more steps involved. We are almost finished, I promise!</p>
+
+<p>At this point, we have specified our default and supported locales and setup our routes using our custom router application resource. Now we need to do one more thing and that is to determine which locale to load and create our <code>Zend_Translate</code> instance.</p>
+
+<p>In order for us to determine which locale, if any, has been specified in the request, we use a controller plugin to parse the request and set the correct locale and setup our translation component.</p>
+
+<p>First, we need to enable the controller plugin in our <code>application.ini</code>.</p>
+
+<p>application.ini:</p>
+
+<pre><code>...
+# Front Controller Plugins
+resources.frontController.plugins.I18n = "My_Controller_Plugin_I18n"
+...
+</code></pre>
+
+<p>Next, let&#8217;s look at the controller plugin source:</p>
+
+<p>My/Controller/Plugin/I18n.php:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">My_Controller_Plugin_I18n</span> <span class="k">extends</span> <span class="nx">Zend_Controller_Plugin_Abstract</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">    * Sets the application locale and translation based on the locale param, if</span>
+</span><span class='line'><span class="sd">    * one is not provided it defaults to english</span>
+</span><span class='line'><span class="sd">    *</span>
+</span><span class='line'><span class="sd">    * @param Zend_Controller_Request_Abstract $request</span>
+</span><span class='line'><span class="sd">    */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">routeShutdown</span><span class="p">(</span><span class="nx">Zend_Controller_Request_Abstract</span> <span class="nv">$request</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$frontController</span> <span class="o">=</span> <span class="nx">Zend_Controller_Front</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$params</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getParams</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$registry</span> <span class="o">=</span> <span class="nx">Zend_Registry</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Steps setting the locale.</span>
+</span><span class='line'>        <span class="c1">// 1. Defaults to English (Done in config)</span>
+</span><span class='line'>        <span class="c1">// 2. TLD in host header</span>
+</span><span class='line'>        <span class="c1">// 3. Locale params specified in request</span>
+</span><span class='line'>        <span class="nv">$locale</span> <span class="o">=</span> <span class="nv">$registry</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;Zend_Locale&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Check host header TLD.</span>
+</span><span class='line'>        <span class="nv">$tld</span> <span class="o">=</span> <span class="nb">preg_replace</span><span class="p">(</span><span class="s1">&#39;/^.*\./&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getHeader</span><span class="p">(</span><span class="s1">&#39;Host&#39;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Provide a list of tld&#39;s and their corresponding default languages</span>
+</span><span class='line'>        <span class="nv">$tldLocales</span> <span class="o">=</span> <span class="nv">$frontController</span><span class="o">-&gt;</span><span class="na">getParam</span><span class="p">(</span><span class="s1">&#39;tldLocales&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">array_key_exists</span><span class="p">(</span><span class="nv">$tld</span><span class="p">,</span> <span class="nv">$tldLocales</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// The TLD in the request matches one of our specified TLD -&gt; Locales</span>
+</span><span class='line'>            <span class="nv">$locale</span><span class="o">-&gt;</span><span class="na">setLocale</span><span class="p">(</span><span class="nv">$tldLocales</span><span class="p">[</span><span class="nv">$tld</span><span class="p">]);</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;locale&#39;</span><span class="p">]))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// There is a locale specified in the request params.</span>
+</span><span class='line'>            <span class="nv">$locale</span><span class="o">-&gt;</span><span class="na">setLocale</span><span class="p">(</span><span class="nv">$params</span><span class="p">[</span><span class="s1">&#39;locale&#39;</span><span class="p">]);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Now that our locale is set, let&#39;s check which language has been selected</span>
+</span><span class='line'>        <span class="c1">// and try to load a translation file for it. If the language is the default,</span>
+</span><span class='line'>        <span class="c1">// then we do not need to load a translation.</span>
+</span><span class='line'>        <span class="nv">$language</span> <span class="o">=</span> <span class="nv">$locale</span><span class="o">-&gt;</span><span class="na">getLanguage</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$language</span> <span class="o">!==</span> <span class="nv">$locale</span><span class="o">-&gt;</span><span class="na">getDefault</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$i18nFile</span> <span class="o">=</span> <span class="nx">APPLICATION_PATH</span> <span class="o">.</span> <span class="s1">&#39;/data/i18n/source-&#39;</span> <span class="o">.</span> <span class="nv">$language</span> <span class="o">.</span> <span class="s1">&#39;.mo&#39;</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$translate</span> <span class="o">=</span>
+</span><span class='line'>                    <span class="k">new</span> <span class="nx">Zend_Translate</span><span class="p">(</span><span class="s1">&#39;gettext&#39;</span><span class="p">,</span> <span class="nv">$i18nFile</span><span class="p">,</span> <span class="nv">$locale</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;disableNotices&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="nx">Zend_Registry</span><span class="o">::</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;Zend_Translate&#39;</span><span class="p">,</span> <span class="nv">$translate</span><span class="p">);</span>
+</span><span class='line'>                <span class="nx">Zend_Form</span><span class="o">::</span><span class="na">setDefaultTranslator</span><span class="p">(</span><span class="nv">$translate</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Zend_Translate_Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="c1">// Since there was an error when trying to load the translation catalog,</span>
+</span><span class='line'>                <span class="c1">// let&#39;s not load a translation object which essentially defaults to</span>
+</span><span class='line'>                <span class="c1">// locale default.</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Now that we have our locale setup, let&#39;s check to see if we are loading</span>
+</span><span class='line'>        <span class="c1">// a language that is not the default, and update our base URL on the front</span>
+</span><span class='line'>        <span class="c1">// controller to the specified language.</span>
+</span><span class='line'>        <span class="nv">$defaultLanguage</span> <span class="o">=</span> <span class="nb">array_keys</span><span class="p">(</span><span class="nv">$locale</span><span class="o">-&gt;</span><span class="na">getDefault</span><span class="p">());</span>
+</span><span class='line'>        <span class="nv">$defaultLanguage</span> <span class="o">=</span> <span class="nv">$defaultLanguage</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$path</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nb">ltrim</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getPathInfo</span><span class="p">(),</span> <span class="s1">&#39;/\\&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// If the language is in the path, then we will want to set the baseUrl</span>
+</span><span class='line'>        <span class="c1">// to the specified language.</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="s1">&#39;/^\/&#39;</span> <span class="o">.</span> <span class="nv">$language</span> <span class="o">.</span> <span class="s1">&#39;\/?/&#39;</span><span class="p">,</span> <span class="nv">$path</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$frontController</span><span class="o">-&gt;</span><span class="na">setBaseUrl</span><span class="p">(</span><span class="nv">$frontController</span><span class="o">-&gt;</span><span class="na">getBaseUrl</span><span class="p">()</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$language</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">setcookie</span><span class="p">(</span><span class="s1">&#39;Zend_Locale&#39;</span><span class="p">,</span> <span class="nv">$language</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getHttpHost</span><span class="p">());</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To start, notice this plugin listens on the <code>routeShutdown()</code> method. We use this because our request has gone through our router and the request is now setup and ready to be processed. In the <code>routeShutdown()</code> method, we first load our <code>Zend_Locale</code> instance from the registry where it was set up in our <code>application.ini</code>. Next, we need to determine which locale, if any, needs to be set. By default, we&#8217;ve set our locale to use English (en) in our <code>application.ini</code>. We will parse out the TLD from the host and see if it maps to one of our specified TLD locales. If that doesn&#8217;t exist, then we will look in the request to see if the locale param was set. If both of the checks can&#8217;t find a specified locale, we then simply use the default.</p>
+
+<p>Since our locale is now setup, we need to load a translation file. In my example provided, I use <code>gettext</code> translation files. I place these files in the <code>app/data/i18n</code> folder. The file naming scheme looks like <code>source-{locale}.mo</code>. Another example would be if we had a Japanese translation file, it would look something like <code>source-ja.mo</code>. The plugin will try to load the translation file based on the locale language specified and add it to our <code>Zend_Registry</code> and tell our <code>Zend_Form</code> it&#8217;s default translator.</p>
+
+<p>Finally, our plugin uses the specified locale language to determine if we need to update our base URL in the front controller. We want to set the base URL to the specified locale which allows other components like <code>Zend_Navigation</code> to persist the locale in the links produced.</p>
+
+<p>There you have it! You&#8217;re site is now internationalized and ready for it&#8217;s content to be translated.</p>
+
+<p>But wait, that&#8217;s not all! I&#8217;ve also provided a view helper which produces a locale switcher. This view helper simply creates elements that contain images of the specified locale and shows the enabled/disabled locale while allowing you to click on the image and switch the current locale.</p>
+
+<p>app/views/helpers/LocaleSwitcher.php:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Default_View_Helper_LocaleSwitcher</span> <span class="k">extends</span> <span class="nx">Zend_View_Helper_Abstract</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">localeSwitcher</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$output</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$frontController</span> <span class="o">=</span> <span class="nx">Zend_Controller_Front</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$locales</span> <span class="o">=</span> <span class="nv">$frontController</span><span class="o">-&gt;</span><span class="na">getParam</span><span class="p">(</span><span class="s1">&#39;locales&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="nv">$request</span> <span class="o">=</span> <span class="nv">$frontController</span><span class="o">-&gt;</span><span class="na">getRequest</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$baseUrl</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getBaseUrl</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$path</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nx">trim</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getPathInfo</span><span class="p">(),</span> <span class="s1">&#39;/\\&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$locales</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$locale</span> <span class="o">=</span> <span class="nx">Zend_Registry</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;Zend_Locale&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$localeLanguage</span> <span class="o">=</span> <span class="nv">$locale</span><span class="o">-&gt;</span><span class="na">getLanguage</span><span class="p">();</span>
+</span><span class='line'>            <span class="nv">$defaultLocaleLanguage</span> <span class="o">=</span> <span class="nb">array_keys</span><span class="p">(</span><span class="nv">$locale</span><span class="o">-&gt;</span><span class="na">getDefault</span><span class="p">());</span>
+</span><span class='line'>            <span class="nv">$defaultLocaleLanguage</span> <span class="o">=</span> <span class="nv">$defaultLocaleLanguage</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="nb">array_push</span><span class="p">(</span><span class="nv">$output</span><span class="p">,</span> <span class="s1">&#39;&lt;ul id=&quot;locale_switcher&quot;&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">foreach</span> <span class="p">(</span><span class="nv">$locales</span> <span class="k">as</span> <span class="nv">$language</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$imageSrc</span>  <span class="o">=</span> <span class="s1">&#39;img/i18n_&#39;</span><span class="p">;</span>
+</span><span class='line'>                <span class="nv">$imageSrc</span> <span class="o">.=</span> <span class="nv">$language</span> <span class="o">.</span> <span class="s1">&#39;_&#39;</span> <span class="o">.</span> <span class="p">(</span><span class="nv">$localeLanguage</span> <span class="o">==</span> <span class="nv">$language</span> <span class="o">?</span> <span class="s1">&#39;on&#39;</span> <span class="o">:</span> <span class="s1">&#39;off&#39;</span><span class="p">);</span>
+</span><span class='line'>                <span class="nv">$imageSrc</span> <span class="o">.=</span> <span class="s1">&#39;.gif&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="nv">$urlLanguage</span> <span class="o">=</span> <span class="nv">$defaultLocaleLanguage</span> <span class="o">==</span> <span class="nv">$language</span>
+</span><span class='line'>                    <span class="o">?</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>                    <span class="o">:</span> <span class="s1">&#39;/&#39;</span> <span class="o">.</span> <span class="nv">$language</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="nb">strlen</span><span class="p">(</span><span class="nv">$baseUrl</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="nv">$localeUrl</span> <span class="o">=</span> <span class="nv">$urlLanguage</span> <span class="o">.</span> <span class="nv">$path</span><span class="p">;</span>
+</span><span class='line'>                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="nv">$localeUrl</span> <span class="o">=</span> <span class="nb">preg_replace</span><span class="p">(</span><span class="s1">&#39;/^&#39;</span> <span class="o">.</span> <span class="nb">preg_quote</span><span class="p">(</span><span class="nv">$baseUrl</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;\/?/&#39;</span><span class="p">,</span>
+</span><span class='line'>                        <span class="nv">$urlLanguage</span> <span class="o">.</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$path</span><span class="p">);</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="nb">array_push</span><span class="p">(</span><span class="nv">$output</span><span class="p">,</span> <span class="s1">&#39;&lt;li&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>                <span class="nb">array_push</span><span class="p">(</span><span class="nv">$output</span><span class="p">,</span> <span class="s1">&#39;&lt;a href=&quot;&#39;</span> <span class="o">.</span> <span class="nv">$localeUrl</span> <span class="o">.</span> <span class="s1">&#39;&quot;&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>                <span class="nb">array_push</span><span class="p">(</span><span class="nv">$output</span><span class="p">,</span> <span class="s1">&#39;&lt;img src=&quot;&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span><span class="o">-&gt;</span><span class="na">assetUrl</span><span class="p">(</span><span class="nv">$imageSrc</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;&quot; alt=&quot;&#39;</span> <span class="o">.</span> <span class="nv">$language</span> <span class="o">.</span> <span class="s1">&#39;&quot; /&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>                <span class="nb">array_push</span><span class="p">(</span><span class="nv">$output</span><span class="p">,</span> <span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>                <span class="nb">array_push</span><span class="p">(</span><span class="nv">$output</span><span class="p">,</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="nb">array_push</span><span class="p">(</span><span class="nv">$output</span><span class="p">,</span> <span class="s1">&#39;&lt;/ul&gt;&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$output</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I&#8217;ve included an updated <a href="http://joegornick.com/wp-content/uploads/2009/12/zfbp.zip">Zend Framework Best Practices</a> zip file which contains all of the files/directory structure we&#8217;ve discussed so far in the series.</p>
+
+<p>The original gist of this process can be found here: <a href="http://gist.github.com/189194">http://gist.github.com/189194</a>.</p>
+
+<p>That&#8217;s it for now. Until next time!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Joe Gornick</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-12-02T22:54:00-06:00" pubdate data-updated="true">Dec 2<span>nd</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jgornick.github.com/2009/12/02/zend-framework-best-practices-part-2-i18n" data-via="jgornick" data-counturl="http://jgornick.github.com/2009/12/02/zend-framework-best-practices-part-2-i18n" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2009/11/18/zend-framework-best-practices-part-1-getting-started" title="Previous Post: Zend Framework Best Practices – Part 1: Getting Started">&laquo; Zend Framework Best Practices – Part 1: Getting Started</a>
+      
+      
+        <a class="basic-alignment right" href="/2009/12/29/introducing-gistdoit-run-your-gists-and-see-the-output" title="Next Post: Introducing GistDoIt! Run your gists and see the output!">Introducing GistDoIt! Run your gists and see the output! &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2010/01/14/setting-up-multiple-browsers-on-mac-os-x">Setting up multiple browsers on Mac OS X</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/30/announcing-reserved-word-search-find-reserved-words-instantly-as-you-type">Announcing Reserved Word Search. Find reserved words instantly as you type!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/30/mysql-created-and-modified-date-fields">MySQL: Created &amp; Modified Date Fields</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/29/introducing-gistdoit-run-your-gists-and-see-the-output">Introducing GistDoIt! Run your gists and see the output!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/02/zend-framework-best-practices-part-2-i18n">Zend Framework Best Practices – Part 2: I18n</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/jgornick">@jgornick</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'jgornick',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("jgornick", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/jgornick" class="twitter-follow-button" data-show-count="false">Follow @jgornick</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Joe Gornick -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jgornick';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jgornick.github.com/2009/12/02/zend-framework-best-practices-part-2-i18n';
+        var disqus_url = 'http://jgornick.github.com/2009/12/02/zend-framework-best-practices-part-2-i18n';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

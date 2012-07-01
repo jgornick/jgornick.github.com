@@ -1,0 +1,994 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Zend Framework Best Practices – Part 1: Getting Started - Joe Gornick</title>
+  <meta name="author" content="Joe Gornick">
+
+  
+  <meta name="description" content="Welcome to part one of my Zend Framework Best Practices series. When I started using Zend Framework a little over two years ago, I found it very &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jgornick.github.com/2009/11/18/zend-framework-best-practices-part-1-getting-started">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="http://feeds.feedburner.com/jgornick" rel="alternate" title="Joe Gornick" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-2943070-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Joe Gornick</a></h1>
+  
+    <h2>Web Geekology</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://feeds.feedburner.com/jgornick" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jgornick.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/resume">Resume</a></li>
+  <li><a href="/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Zend Framework Best Practices – Part 1: Getting Started</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-18T23:19:00-06:00" pubdate data-updated="true">Nov 18<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Welcome to part one of my Zend Framework Best Practices series. When I started using Zend Framework a little over two years ago, I found it very difficult to find definitive methods to use when building your application. However, after the release of Zend Framework 1.8, books like <a href="http://www.zendframeworkinaction.com/">Zend Framework in Action</a>, more community involvement and of course my own experiences, I feel that I&#8217;ve found a simple, clean and efficient way to make your application.</p>
+
+<p>This series will cover many areas of a website including directory structure, bootstrapping, caching, navigation, ACL &amp; authorization and I18N.</p>
+
+<p>Disclaimer: I don&#8217;t want this series to be taken as the &#8220;only way&#8221; to use Zend Framework in your application. In fact, it would be greatly appreciated if others are able to point out areas where my approach is not the most efficient and provide ways to fix it.</p>
+
+<!-- more -->
+
+
+<p>Ok, let&#8217;s start&#8230;</p>
+
+<p>I would first like to discuss the directory structure of a Zend Framework application. This is always a hot topic in #zftalk. There are two documents out on the ZF wiki which discuss a directory structure to choose. First, there was <a href="http://framework.zend.com/wiki/display/ZFDEV/Choosing+Your+Application%27s+Directory+Layout" title="Choosing Your Application's Directory Layout">Choosing Your Application&#8217;s Directory Layout</a> which has now been deprecated by <a href="http://framework.zend.com/wiki/display/ZFPROP/Zend+Framework+Default+Project+Structure+-+Wil+Sinclair">Zend Framework Default Project Structure by Wil Sinclair.</a> The latter of the two is very close to what was adopted by <code>Zend_Tool</code>.</p>
+
+<p>This is really a personal preference, but I wanted to share my directory structure. It is very similar to latest proposed version, only I use the more &#8220;classical (unix/linux)&#8221; style.</p>
+
+<p>Here&#8217;s an example of my initial directory structure and basic files needed:</p>
+
+<pre><code>project/
+    app/
+        configs/
+            application.ini
+        controllers/
+            helpers/
+            ErrorController.php
+            IndexController.php
+        data/
+            cache/
+            i18n/
+            sessions/
+        forms/
+        layouts/
+            scripts/
+                layout.phtml
+        models/
+        views/
+            helpers/
+                AssetUrl.php
+            scripts/
+                error/
+                    error.phtml
+                index/
+                    index.phtml
+        Bootstrap.php
+    lib/
+        My/
+            Application.php
+        Zend/
+    www/
+        css/
+            reset.css
+        img/
+        js/
+        .htaccess
+        index.
+</code></pre>
+
+<p>Now that you can visually see the directory structure, let&#8217;s go through setting up our application.</p>
+
+<p>The <code>.htaccess</code> file is used with Apache and <code>mod_rewrite</code> to either load the file requested or pass the request to the <code>index.php</code> file.</p>
+
+<p>.htaccess:</p>
+
+<pre><code>SetEnv APPLICATION_ENV development
+&amp;nbsp;
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} \.(js|css|gif|jpg|png|swf)$ [OR]
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]
+</code></pre>
+
+<p>If you notice on the first line, we set an environment variable, <code>APPLICATION_ENV</code>, to the value of <code>development</code>. This is used in the <code>index.php</code> to tell our bootstrap what environment we should setup for. The value can be any environment name, however, you need to make sure you configuration recognizes it. Some standard names are <code>development</code>, <code>staging</code>, <code>beta</code> and <code>production</code>. Please note though, on shared hosting plans, the <code>SetEnv</code> directive will probably not work since <code>mod_env</code> won&#8217;t be installed. If this is the case, then you will need to set the environment in the <code>index.php</code> file.</p>
+
+<p>Our rewrite conditions simply say, if the request isn&#8217;t an asset and/or found on the file system, then redirect the request to our <code>index.php</code>.</p>
+
+<p>The <code>index.php</code> file is used to initialize our application and setup the environment.</p>
+
+<p>index.php:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>    <span class="c1">// Define path to application directory</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;APPLICATION_PATH&#39;</span><span class="p">))</span>
+</span><span class='line'>        <span class="nb">define</span><span class="p">(</span><span class="s1">&#39;APPLICATION_PATH&#39;</span><span class="p">,</span> <span class="nb">realpath</span><span class="p">(</span><span class="nb">dirname</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;/../app&#39;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Define application environment</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;APPLICATION_ENV&#39;</span><span class="p">))</span>
+</span><span class='line'>        <span class="nb">define</span><span class="p">(</span><span class="s1">&#39;APPLICATION_ENV&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="p">(</span><span class="nb">getenv</span><span class="p">(</span><span class="s1">&#39;APPLICATION_ENV&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">&#39;APPLICATION_ENV&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;production&#39;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Add our lib folder to the include paths</span>
+</span><span class='line'>    <span class="nb">set_include_path</span><span class="p">(</span><span class="nb">implode</span><span class="p">(</span><span class="nx">PATH_SEPARATOR</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="nb">realpath</span><span class="p">(</span><span class="nx">APPLICATION_PATH</span> <span class="o">.</span> <span class="s1">&#39;/../lib&#39;</span><span class="p">),</span>
+</span><span class='line'>            <span class="nb">get_include_path</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">)));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="sd">/** My_Application */</span>
+</span><span class='line'>    <span class="k">require_once</span> <span class="s1">&#39;My/Application.php&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Create application, bootstrap, and run</span>
+</span><span class='line'>    <span class="nv">$application</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">My_Application</span><span class="p">(</span>
+</span><span class='line'>        <span class="nx">APPLICATION_ENV</span><span class="p">,</span>
+</span><span class='line'>        <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="s1">&#39;configFile&#39;</span> <span class="o">=&gt;</span> <span class="nx">APPLICATION_PATH</span> <span class="o">.</span> <span class="s1">&#39;/configs/application.ini&#39;</span>
+</span><span class='line'>        <span class="p">)</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'>    <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our <code>index.php</code> does a few things before we bootstrap our application. First, you will notice it defines a constant for our application path. Then, it does the same thing for our application environment constant. Please note, that if the <code>SetEnv</code> does not work or the <code>APPLICATION_ENV</code> isn&#8217;t defined, then it will default to production. You can change that value to whatever environment you&#8217;d like to default to.</p>
+
+<p>Once our constants are setup, we then add our <code>lib</code> directory to the include path.</p>
+
+<p>Now it&#8217;s time to bootstrap our application. If you notice, we are using a custom class called <code>My_Application</code> which extends <code>Zend_Application</code>. This class is used to bootstrap our application while caching our <code>application.ini</code> configuration. We cache our configuration because parsing an INI file is very slow in PHP. This allows us to cache the already parsed INI as a <code>Zend_Config</code> object.</p>
+
+<p>My/Application.php</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>    <span class="k">require_once</span> <span class="s1">&#39;Zend/Application.php&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">My_Application</span> <span class="k">extends</span> <span class="nx">Zend_Application</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Flag used when determining if we should cache our configuration.</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="k">protected</span> <span class="nv">$_cacheConfig</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Our default options which will use File caching</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="k">protected</span> <span class="nv">$_cacheOptions</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="s1">&#39;frontendType&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;File&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s1">&#39;backendType&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;File&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s1">&#39;frontendOptions&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+</span><span class='line'>            <span class="s1">&#39;backendOptions&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Constructor</span>
+</span><span class='line'><span class="sd">         *</span>
+</span><span class='line'><span class="sd">         * Initialize application. Potentially initializes include_paths, PHP</span>
+</span><span class='line'><span class="sd">         * settings, and bootstrap class.</span>
+</span><span class='line'><span class="sd">         *</span>
+</span><span class='line'><span class="sd">         * When $options is an array with a key of configFile, this will tell the</span>
+</span><span class='line'><span class="sd">         * class to cache the configuration using the default options or cacheOptions</span>
+</span><span class='line'><span class="sd">         * passed in.</span>
+</span><span class='line'><span class="sd">         *</span>
+</span><span class='line'><span class="sd">         * @param  string                   $environment</span>
+</span><span class='line'><span class="sd">         * @param  string|array|Zend_Config $options String path to configuration file, or array/Zend_Config of configuration options</span>
+</span><span class='line'><span class="sd">         * @throws Zend_Application_Exception When invalid options are provided</span>
+</span><span class='line'><span class="sd">         * @return void</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$environment</span><span class="p">,</span> <span class="nv">$options</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$options</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$options</span><span class="p">[</span><span class="s1">&#39;configFile&#39;</span><span class="p">]))</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cacheConfig</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="c1">// First, let&#39;s check to see if there are any cache options</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$options</span><span class="p">[</span><span class="s1">&#39;cacheOptions&#39;</span><span class="p">]))</span>
+</span><span class='line'>                    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cacheOptions</span> <span class="o">=</span>
+</span><span class='line'>                        <span class="nb">array_merge</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cacheOptions</span><span class="p">,</span> <span class="nv">$options</span><span class="p">[</span><span class="s1">&#39;cacheOptions&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="nv">$options</span> <span class="o">=</span> <span class="nv">$options</span><span class="p">[</span><span class="s1">&#39;configFile&#39;</span><span class="p">];</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">(</span><span class="nv">$environment</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Load configuration file of options.</span>
+</span><span class='line'><span class="sd">         *</span>
+</span><span class='line'><span class="sd">         * Optionally will cache the configuration.</span>
+</span><span class='line'><span class="sd">         *</span>
+</span><span class='line'><span class="sd">         * @param  string $file</span>
+</span><span class='line'><span class="sd">         * @throws Zend_Application_Exception When invalid configuration file is provided</span>
+</span><span class='line'><span class="sd">         * @return array</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="k">protected</span> <span class="k">function</span> <span class="nf">_loadConfig</span><span class="p">(</span><span class="nv">$file</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cacheConfig</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">_loadConfig</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">require_once</span> <span class="s1">&#39;Zend/Cache.php&#39;</span><span class="p">;</span>
+</span><span class='line'>            <span class="nv">$cache</span> <span class="o">=</span> <span class="nx">Zend_Cache</span><span class="o">::</span><span class="na">factory</span><span class="p">(</span>
+</span><span class='line'>                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cacheOptions</span><span class="p">[</span><span class="s1">&#39;frontendType&#39;</span><span class="p">],</span>
+</span><span class='line'>                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cacheOptions</span><span class="p">[</span><span class="s1">&#39;backendType&#39;</span><span class="p">],</span>
+</span><span class='line'>                <span class="nb">array_merge</span><span class="p">(</span><span class="k">array</span><span class="p">(</span> <span class="c1">// Frontend Default Options</span>
+</span><span class='line'>                    <span class="s1">&#39;master_file&#39;</span> <span class="o">=&gt;</span> <span class="nv">$file</span><span class="p">,</span>
+</span><span class='line'>                    <span class="s1">&#39;automatic_serialization&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span>
+</span><span class='line'>                <span class="p">),</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cacheOptions</span><span class="p">[</span><span class="s1">&#39;frontendOptions&#39;</span><span class="p">]),</span>
+</span><span class='line'>                <span class="nb">array_merge</span><span class="p">(</span><span class="k">array</span><span class="p">(</span> <span class="c1">// Backend Default Options</span>
+</span><span class='line'>                    <span class="s1">&#39;cache_dir&#39;</span> <span class="o">=&gt;</span> <span class="nx">APPLICATION_PATH</span> <span class="o">.</span> <span class="s1">&#39;/data/cache&#39;</span>
+</span><span class='line'>                <span class="p">),</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cacheOptions</span><span class="p">[</span><span class="s1">&#39;backendOptions&#39;</span><span class="p">])</span>
+</span><span class='line'>            <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="nv">$config</span> <span class="o">=</span> <span class="nv">$cache</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;Zend_Application_Config&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$config</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$config</span> <span class="o">=</span> <span class="k">parent</span><span class="o">::</span><span class="na">_loadConfig</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+</span><span class='line'>                <span class="nv">$cache</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$config</span><span class="p">,</span> <span class="s1">&#39;Zend_Application_Config&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="nv">$config</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>application.ini:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="k">[production]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Debug output</span>
+</span><span class='line'><span class="na">phpSettings.display_startup_errors</span> <span class="o">=</span> <span class="s">0</span>
+</span><span class='line'><span class="na">phpSettings.display_errors</span> <span class="o">=</span> <span class="s">0</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># PHP Date Settings</span>
+</span><span class='line'><span class="na">phpSettings.date.timezone</span> <span class="o">=</span> <span class="s">&quot;UTC&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Include path</span>
+</span><span class='line'><span class="na">includePaths.library</span> <span class="o">=</span> <span class="s">APPLICATION_PATH &quot;/../lib&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Autoloader Namespaces</span>
+</span><span class='line'><span class="na">autoloaderNamespaces[]</span> <span class="o">=</span> <span class="s">&quot;My_&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Bootstrap</span>
+</span><span class='line'><span class="na">bootstrap.path</span> <span class="o">=</span> <span class="s">APPLICATION_PATH &quot;/Bootstrap.php&quot;</span>
+</span><span class='line'><span class="na">bootstrap.class</span> <span class="o">=</span> <span class="s">&quot;Bootstrap&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Front Controller</span>
+</span><span class='line'><span class="na">resources.frontController.controllerDirectory</span> <span class="o">=</span> <span class="s">APPLICATION_PATH &quot;/controllers&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Front Controller Params</span>
+</span><span class='line'><span class="na">resources.frontController.params.env</span> <span class="o">=</span> <span class="s">APPLICATION_ENV</span>
+</span><span class='line'><span class="na">resources.frontController.params.cdnEnabled</span> <span class="o">=</span> <span class="s">&quot;true&quot;</span>
+</span><span class='line'><span class="na">resources.frontController.params.cdnHost</span> <span class="o">=</span> <span class="s">&quot;http://static.site.com&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Layout</span>
+</span><span class='line'><span class="na">resources.layout.layout</span> <span class="o">=</span> <span class="s">&quot;layout&quot;</span>
+</span><span class='line'><span class="na">resources.layout.layoutPath</span> <span class="o">=</span> <span class="s">APPLICATION_PATH &quot;/layouts/scripts&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Views</span>
+</span><span class='line'><span class="na">resources.view.encoding</span> <span class="o">=</span> <span class="s">&quot;UTF-8&quot;</span>
+</span><span class='line'><span class="na">resources.view.basePath</span> <span class="o">=</span> <span class="s">APPLICATION_PATH &quot;/views/scripts&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Database</span>
+</span><span class='line'><span class="na">resources.db.adapter</span> <span class="o">=</span> <span class="s">&quot;mysqli&quot;</span>
+</span><span class='line'><span class="na">resources.db.params.host</span> <span class="o">=</span> <span class="s">&quot;localhost&quot;</span>
+</span><span class='line'><span class="na">resources.db.params.username</span> <span class="o">=</span> <span class="s">&quot;user&quot;</span>
+</span><span class='line'><span class="na">resources.db.params.password</span> <span class="o">=</span> <span class="s">&quot;password&quot;</span>
+</span><span class='line'><span class="na">resources.db.params.dbname</span> <span class="o">=</span> <span class="s">&quot;dbname&quot;</span>
+</span><span class='line'><span class="na">resources.db.isDefaultTableAdapter</span> <span class="o">=</span> <span class="s">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Session</span>
+</span><span class='line'><span class="na">resources.session.save_path</span> <span class="o">=</span> <span class="s">APPLICATION_PATH &quot;/data/sessions&quot;</span>
+</span><span class='line'><span class="na">resources.session.gc_maxlifetime</span> <span class="o">=</span> <span class="s">18000</span>
+</span><span class='line'><span class="na">resources.session.remember_me_seconds</span> <span class="o">=</span> <span class="s">18000</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Navigation</span>
+</span><span class='line'><span class="na">resources.navigation.storage.registry.key</span> <span class="o">=</span> <span class="s">&quot;Zend_Navigation&quot;</span>
+</span><span class='line'><span class="na">resources.navigation.pages.welcome.label</span> <span class="o">=</span> <span class="s">&quot;Welcome&quot;</span>
+</span><span class='line'><span class="na">resources.navigation.pages.welcome.uri</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">[development : production]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Debug output</span>
+</span><span class='line'><span class="na">phpSettings.display_startup_errors</span> <span class="o">=</span> <span class="s">1</span>
+</span><span class='line'><span class="na">phpSettings.display_errors</span> <span class="o">=</span> <span class="s">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Front Controller Params</span>
+</span><span class='line'><span class="na">resources.frontController.params.cdnEnabled</span> <span class="o">=</span> <span class="s">&quot;false&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Database</span>
+</span><span class='line'><span class="na">resources.db.params.dbname</span> <span class="o">=</span> <span class="s">&quot;dbname&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A couple of notes about the configuration file:</p>
+
+<ul>
+<li>Automatically set dates to UTC</li>
+<li>Automatically load classes that start with <code>My_</code> from our lib directory</li>
+<li>Pass our environment to the front controller parameters</li>
+<li>Set our sessions to expire after 4 hours (when used)</li>
+<li>Automatically store our navigation in the registry with key <code>Zend_Navigation</code></li>
+<li>The <code>resources.frontController.params.cdnEnabled</code> setting will be explained in greater detail when I discuss caching and CDN fronting your assets</li>
+</ul>
+
+
+<p>Since our application configuration has been loaded and cached, it&#8217;s time to run our bootstrap.</p>
+
+<p>Our <code>Bootstrap.php</code> extends from the <code>Zend_Application_Bootstrap_Bootstrap</code> class. Whenever you want to initialize resources, you need to create a protected function in our bootstrap prefixed like <code>protected function _init{Resource}() { ... }</code>.</p>
+
+<p>Bootstrap.php:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">Bootstrap</span> <span class="k">extends</span> <span class="nx">Zend_Application_Bootstrap_Bootstrap</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Automatically load classes that are part of the default module.</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="k">protected</span> <span class="k">function</span> <span class="nf">_initModuleAutoloader</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">new</span> <span class="nx">Zend_Application_Module_Autoloader</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                <span class="s1">&#39;namespace&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Default&#39;</span><span class="p">,</span>
+</span><span class='line'>                <span class="s1">&#39;basePath&#39;</span> <span class="o">=&gt;</span> <span class="nx">APPLICATION_PATH</span>
+</span><span class='line'>            <span class="p">));</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Initialize our routes.</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="k">protected</span> <span class="k">function</span> <span class="nf">_initRoutes</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="s1">&#39;frontcontroller&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$front</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span><span class="s1">&#39;frontcontroller&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="nv">$router</span> <span class="o">=</span> <span class="nv">$front</span><span class="o">-&gt;</span><span class="na">getRouter</span><span class="p">();</span>
+</span><span class='line'>            <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">addRoute</span><span class="p">(</span><span class="s1">&#39;index-action&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Zend_Controller_Router_Route</span><span class="p">(</span>
+</span><span class='line'>                <span class="s1">&#39;:action/*&#39;</span><span class="p">,</span>
+</span><span class='line'>                <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                    <span class="s1">&#39;controller&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="s1">&#39;action&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;index&#39;</span>
+</span><span class='line'>                <span class="p">)</span>
+</span><span class='line'>            <span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">return</span> <span class="nv">$router</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Get our database adapter and add it to our registry for easy access</span>
+</span><span class='line'><span class="sd">         * throughout the application.</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="k">protected</span> <span class="k">function</span> <span class="nf">_initDbAdapter</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="s1">&#39;db&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$db</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getPluginResource</span><span class="p">(</span><span class="s1">&#39;db&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="nx">Zend_Registry</span><span class="o">::</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;db&#39;</span><span class="p">,</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">getDbAdapter</span><span class="p">());</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Initialize our view and add it to the ViewRenderer action helper.</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="k">protected</span> <span class="k">function</span> <span class="nf">_initView</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// Initialize view</span>
+</span><span class='line'>            <span class="nv">$view</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Zend_View</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Add it to the ViewRenderer</span>
+</span><span class='line'>            <span class="nv">$viewRenderer</span> <span class="o">=</span>
+</span><span class='line'>                <span class="nx">Zend_Controller_Action_HelperBroker</span><span class="o">::</span><span class="na">getStaticHelper</span><span class="p">(</span><span class="s1">&#39;ViewRenderer&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$viewRenderer</span><span class="o">-&gt;</span><span class="na">setView</span><span class="p">(</span><span class="nv">$view</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Return it, so that it can be stored by the bootstrap</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nv">$view</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="sd">/**</span>
+</span><span class='line'><span class="sd">         * Here we will initialize any view helpers.    This will also setup basic</span>
+</span><span class='line'><span class="sd">         * head information for the view/layout.</span>
+</span><span class='line'><span class="sd">         */</span>
+</span><span class='line'>        <span class="k">protected</span> <span class="k">function</span> <span class="nf">_initViewHelpers</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;frontcontroller&#39;</span><span class="p">,</span> <span class="s1">&#39;view&#39;</span><span class="p">));</span>
+</span><span class='line'>            <span class="nv">$frontController</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span><span class="s1">&#39;frontcontroller&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$view</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Add helper paths.</span>
+</span><span class='line'>            <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">addHelperPath</span><span class="p">(</span><span class="nx">APPLICATION_PATH</span> <span class="o">.</span> <span class="s1">&#39;/views/helpers&#39;</span><span class="p">,</span> <span class="s1">&#39;Default_View_Helper&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Setup our AssetUrl View Helper</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">((</span><span class="nx">bool</span><span class="p">)</span> <span class="nv">$frontController</span><span class="o">-&gt;</span><span class="na">getParam</span><span class="p">(</span><span class="s1">&#39;cdnEnabled&#39;</span><span class="p">))</span>
+</span><span class='line'>                <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">getHelper</span><span class="p">(</span><span class="s1">&#39;AssetUrl&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setBaseUrl</span><span class="p">(</span><span class="nv">$frontController</span><span class="o">-&gt;</span><span class="na">getParam</span><span class="p">(</span><span class="s1">&#39;cdnHost&#39;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Set our DOCTYPE</span>
+</span><span class='line'>            <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">doctype</span><span class="p">(</span><span class="s1">&#39;XHTML1_STRICT&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Set our TITLE</span>
+</span><span class='line'>            <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">headTitle</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setSeparator</span><span class="p">(</span><span class="s1">&#39; - &#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">append</span><span class="p">(</span><span class="s1">&#39;Site&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Add any META elements</span>
+</span><span class='line'>            <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">headMeta</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">appendHttpEquiv</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s1">&#39;text/html; charset=UTF-8&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">headMeta</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">appendHttpEquiv</span><span class="p">(</span><span class="s1">&#39;Content-Style-Type&#39;</span><span class="p">,</span> <span class="s1">&#39;text/css&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">headMeta</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">appendHttpEquiv</span><span class="p">(</span><span class="s1">&#39;imagetoolbar&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Add our favicon</span>
+</span><span class='line'>            <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">headLink</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">headLink</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                <span class="s1">&#39;rel&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;favicon&#39;</span><span class="p">,</span>
+</span><span class='line'>                <span class="s1">&#39;type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;image/ico&#39;</span><span class="p">,</span>
+</span><span class='line'>                <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">baseUrl</span><span class="p">(</span><span class="s1">&#39;favicon.ico&#39;</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Add Stylesheet&#39;s</span>
+</span><span class='line'>            <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">headLink</span><span class="p">()</span>
+</span><span class='line'>                <span class="o">-&gt;</span><span class="na">appendStylesheet</span><span class="p">(</span><span class="nv">$view</span><span class="o">-&gt;</span><span class="na">assetUrl</span><span class="p">(</span><span class="s1">&#39;css/reset.css&#39;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// Add JavaScript&#39;s</span>
+</span><span class='line'>            <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">headScript</span><span class="p">()</span>
+</span><span class='line'>                <span class="o">-&gt;</span><span class="na">appendFile</span><span class="p">(</span><span class="s1">&#39;http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A few things to take note in our <code>Bootstrap.php</code>:</p>
+
+<ul>
+<li>We setup a default route that allows the user to load an action like <code>IndexController:testAction()</code> through the URL like mysite.com/test. This allows us to not have to prefix the action with the controller like mysite.com/index/test. However, since the default route is there, that would still work and any other <code>:controller/:action</code> routes</li>
+<li>We store our DB adapter in the registry so we can access it throughout our application</li>
+<li>When we initialize our view helpers, we add the views/helpers directory to our helper path(s) and we setup some head information for our view/layout</li>
+<li>The <code>AssetUrl</code> view helper will be explained in greater detail when I discuss caching &amp; CDN fronting your assets</li>
+</ul>
+
+
+<p>Now we are at a point where our application has been setup and is ready to process the request.</p>
+
+<p>We&#8217;ve covered a lot so far. There are a few things I didn&#8217;t talk about, for example, how the <code>ErrorController.php</code> and <code>error.phtml</code> look, <code>AssetUrl.php</code>, or what the <code>layout.phtml</code> looks like. However, I have included a <a href="http://joegornick.com/wp-content/uploads/2009/11/zfbp-base1.zip">Zend Framework Best Practices - Base Directory Structure/Files</a> zip file containing the file structure and base files I&#8217;ve discussed here.</p>
+
+<p><strong>Update:</strong> I found two issues with the <code>application.ini</code> and <code>AssetUrl.php</code> files. They are now fixed and the post reflects the changes.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Joe Gornick</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-18T23:19:00-06:00" pubdate data-updated="true">Nov 18<span>th</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jgornick.github.com/2009/11/18/zend-framework-best-practices-part-1-getting-started" data-via="jgornick" data-counturl="http://jgornick.github.com/2009/11/18/zend-framework-best-practices-part-1-getting-started" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2007/07/24/wheres-the-prototype-framework-community" title="Previous Post: Where’s the Prototype Framework community?">&laquo; Where’s the Prototype Framework community?</a>
+      
+      
+        <a class="basic-alignment right" href="/2009/12/02/zend-framework-best-practices-part-2-i18n" title="Next Post: Zend Framework Best Practices – Part 2: I18n">Zend Framework Best Practices – Part 2: I18n &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2010/01/14/setting-up-multiple-browsers-on-mac-os-x">Setting up multiple browsers on Mac OS X</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/30/announcing-reserved-word-search-find-reserved-words-instantly-as-you-type">Announcing Reserved Word Search. Find reserved words instantly as you type!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/30/mysql-created-and-modified-date-fields">MySQL: Created &amp; Modified Date Fields</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/29/introducing-gistdoit-run-your-gists-and-see-the-output">Introducing GistDoIt! Run your gists and see the output!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/02/zend-framework-best-practices-part-2-i18n">Zend Framework Best Practices – Part 2: I18n</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/jgornick">@jgornick</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'jgornick',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("jgornick", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/jgornick" class="twitter-follow-button" data-show-count="false">Follow @jgornick</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Joe Gornick -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jgornick';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jgornick.github.com/2009/11/18/zend-framework-best-practices-part-1-getting-started';
+        var disqus_url = 'http://jgornick.github.com/2009/11/18/zend-framework-best-practices-part-1-getting-started';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
