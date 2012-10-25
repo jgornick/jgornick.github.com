@@ -4,7 +4,7 @@
   <title><![CDATA[Joe Gornick]]></title>
   <link href="http://jgornick.github.com/atom.xml" rel="self"/>
   <link href="http://jgornick.github.com/"/>
-  <updated>2012-07-03T12:01:45-05:00</updated>
+  <updated>2012-10-25T01:31:01-05:00</updated>
   <id>http://jgornick.github.com/</id>
   <author>
     <name><![CDATA[Joe Gornick]]></name>
@@ -12,6 +12,228 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[MongoDB Unique Indexes on Single/Embedded Documents]]></title>
+    <link href="http://jgornick.github.com/2012/10/25/mongodb-unique-indexes-on-single-embedded-documents"/>
+    <updated>2012-10-25T01:13:00-05:00</updated>
+    <id>http://jgornick.github.com/2012/10/25/mongodb-unique-indexes-on-single-embedded-documents</id>
+    <content type="html"><![CDATA[<p>MongoDB doesn&#8217;t support unique indexes on embedded documents <strong>in the same document</strong>. However, it does support some scenarios for adding <a href="http://www.mongodb.org/display/DOCS/Indexes">unique indexes</a> on embedded documents. When you apply a unique index to an embedded document, MongoDB treats it as unique in the collection. The following is an example of setting up a unique index on an embedded document:</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>use bugs;
+</span><span class='line'>
+</span><span class='line'>db.issues.ensureIndex({ title: 1 }, { unique: true });
+</span><span class='line'>db.issues.ensureIndex({ "tasks.title": 1 }, { unique: true, sparse: true });
+</span><span class='line'>
+</span><span class='line'>// add an issue with a task
+</span><span class='line'>db.issues.insert({ title: "Issue1", tasks: [ { title: "Task1" } ] });
+</span><span class='line'>
+</span><span class='line'>// add another issue with a task and the same title
+</span><span class='line'>db.issues.insert({ title: "Issue2", tasks: [ { title: "Task1" } ] });</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When you run the last insert statement, you will receive <code>E11000 duplicate key error index: bugs.issues.$tasks.title_1  dup key: { : "Task1" }</code> This is because you are trying to insert an embedded task in the issues collection with the same title.</p>
+
+<p>Let&#8217;s say you wanted to allow a task with the same title embedded in another issue. In order to accomplish this, you need to create a compound index.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>use bugs;
+</span><span class='line'>
+</span><span class='line'>db.issues.ensureIndex({ title: 1 }, { unique: true });
+</span><span class='line'>db.issues.ensureIndex({ title: 1, "tasks.title": 1 }, { unique: true, sparse: true });
+</span><span class='line'>
+</span><span class='line'>// add an issue with a task
+</span><span class='line'>db.issues.insert({ title: "Issue1", tasks: [ { title: "Task1" } ] });
+</span><span class='line'>
+</span><span class='line'>// add another issue with a task and the same title
+</span><span class='line'>db.issues.insert({ title: "Issue2", tasks: [ { title: "Task1" } ] });</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With our compound index, we can now add a task with the same title in different documents.</p>
+
+<h2>Single Document Unique Indexes</h2>
+
+<p>We&#8217;ve covered embedded unique indexes for the collection and over multiple documents. However, what about the scenario for only allowing unique tasks on a single document? Let&#8217;s take a look at the following example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>use bugs;
+</span><span class='line'>
+</span><span class='line'>db.issues.ensureIndex({ title: 1 }, { unique: true });
+</span><span class='line'>db.issues.ensureIndex({ title: 1, "tasks.title": 1 }, { unique: true, sparse: true });
+</span><span class='line'>
+</span><span class='line'>// add an issue with a task
+</span><span class='line'>db.issues.insert({ title: "Issue1", tasks: [ { title: "Task1" } ] });
+</span><span class='line'>
+</span><span class='line'>// add another task to the issue with the same title
+</span><span class='line'>db.issues.update({ title: "Issue1" }, { $push: { tasks: { title: "Task1" } } });</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Would you expect the last update statement to return a unique error or add another task with the same title? As of MongoDB 2.2, the task is <strong>added</strong>.</p>
+
+<p>There has been an <a href="https://jira.mongodb.org/browse/SERVER-1068">issue open since April of 2010</a>. It&#8217;s simply because the original design of unique indexes were document based and not targeted for embedded documents.</p>
+
+<h2>Workarounds</h2>
+
+<p>There are some workarounds to preventing duplicated data from being added to an embedded collection. It&#8217;s important to note the workarounds don&#8217;t utilize a unique index, but rather use existing features to prevent duplicate data from being inserted.</p>
+
+<p>One of the workarounds is <a href="https://groups.google.com/d/msg/mongodb-user/uaiPPLcjJjY/QpNy54kdokkJ">described by Kyle Banker</a> in the mongodb-user group. Kyle&#8217;s workaround specifies a detailed query to only update a document if it does not contain an embedded document value:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>db.issues.update(
+</span><span class='line'>  { title: "Issue1", "tasks.title": { $ne: "Task1" } }, 
+</span><span class='line'>  { $push: { tasks: { title: "Task1" } } }
+</span><span class='line'>);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The previous update statement will only add a task with the title of &#8220;Task1&#8221; if the issue doesn&#8217;t contain one already. This approach is good for simple scenarios, but when you have multiple fields and potentially multiple levels of embedded documents, the condition becomes quite large.</p>
+
+<p>Another workaround is to use the <a href="http://www.mongodb.org/display/DOCS/Updating#Updating-%24addToSetand%24each">$addToSet</a> modifier operation. This operation will add a value to an array only when the value doesn&#8217;t already exist. The following is an example of adding a task with the same title:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>db.issues.update({ title: "Issue1" }, { $addToSet: { tasks: { title: "Task1" } } });</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The previous statement will add the task to the issue if it doesn&#8217;t exist. You can also add many values in a single operation when using the $each qualifier:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>db.issues.update(
+</span><span class='line'>  { title: "Issue1" }, 
+</span><span class='line'>  { $addToSet: { tasks: { $each: [{ title: "Task1" }, { title: "Task2" }] } } }
+</span><span class='line'>);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The two listed workarounds are targeted at adding unique embedded documents. Without single-document unique indexes, you are unable to enfore uniqueness during the update. This means we could rename the task with the title of &#8220;Task1&#8221; to &#8220;Task2&#8221; without causing an error. This is unexpected behavior.</p>
+
+<p>Since the workarounds don&#8217;t utilize a unique index, an error is never thrown. This behavior could be beneficial to applications wanting to notify the user of inserting duplicated data. The workarounds are more of a &#8220;set it and forget it&#8221; update.</p>
+
+<p>The following statements and comments are a summary of the current behavior and expected results:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>use bugs;
+</span><span class='line'>
+</span><span class='line'>db.issues.ensureIndex({ title: 1 }, { unique: true });
+</span><span class='line'>db.issues.ensureIndex({ title: 1, "tasks.title": 1 }, { unique: true, sparse: true });
+</span><span class='line'>
+</span><span class='line'>// insert our initial issue with a single task
+</span><span class='line'>db.issues.insert({ title: "Issue1", tasks: [ { title: "Task1" } ] });
+</span><span class='line'>
+</span><span class='line'>// the following add or set a duplicate task, however, expected result would be 
+</span><span class='line'>// a unique index violation error
+</span><span class='line'>db.issues.update({ title: "Issue1" }, { $push: { tasks: { title: "Task1" } } });
+</span><span class='line'>db.issues.update({ title: "Issue1" }, { $pushAll: { tasks: [ { title: "Task1" } ] } });
+</span><span class='line'>db.issues.update({ title: "Issue1" }, { $set: { tasks: [ { title: "Task1" }, { title: "Task1" } ]} });
+</span><span class='line'>
+</span><span class='line'>// the following do not allow a duplicate task to be added
+</span><span class='line'>db.issues.update({ title: "Issue1" }, { $addToSet: { tasks: { title: "Task1" } } });
+</span><span class='line'>db.issues.update({ title: "Issue1" }, { $addToSet: { tasks: { $each: [ { title: "Task1" }, { title: "Task1" } ] } } });
+</span><span class='line'>
+</span><span class='line'>// this should throw a unique index violation error and not insert a new issue with duplicate tasks
+</span><span class='line'>db.issues.insert({ title: "Issue5", tasks: [ { title: "Task1" }, { title: "Task1" } ] });</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Possible Solutions</h2>
+
+<p>I haven&#8217;t found any proposed solutions to allow unique indexes on embedded documents. After digging into this, I&#8217;ve come up with two:</p>
+
+<h5>Create a new index creation option for single document</h5>
+
+<p>This approach would allow a user to specify a new creation option in the ensureIndex method. You would be able to only apply this creation option on embedded field paths. An example would be:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>db.issues.ensureIndex({ "tasks.title": 1 }, { docUnique: true });</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The previous statement would add a unique index on a task title for each document. This would then throw a unique index violation error if you tried to add or update a task title to an existing title.</p>
+
+<h5>Allow a positional-like operator when defining the path of the index</h5>
+
+<p>This would allow a user to define the path to a field using a <code>$</code> as an identifier representing embedded documents.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>db.issues.ensureIndex({ "tasks.$.title": 1 }, { unique: true });</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The previous statement would add the same type of index as the previous solution, but using a different notation.</p>
+
+<h2>Unique Arrays</h2>
+
+<p>One last thing to note, and it&#8217;s important; this article focuses only on embedded documents. However, the unique index applies more natively to arrays. This means that you can&#8217;t apply a unique index so an array can contain unique values. In the following example, you are allowed to have the same values in an array:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>use foo;
+</span><span class='line'>
+</span><span class='line'>db.bookmarks.ensureIndex({ tags: 1 }, { unique: true, sparse: true });
+</span><span class='line'>db.bookmarks.insert({ title: "Bookmark1", tags: ["tag1", "tag2", "tag3"] });
+</span><span class='line'>db.bookmarks.update({ title: "Bookmark1" }, { $push: { tags: "tag1" } });</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The last statement will add &#8220;tag1&#8221; to the list of tags again. The expected result would be that tags are unique.</p>
+
+<p>I hope I haven&#8217;t murdered this too badly. Comments are welcome!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Setting up multiple browsers on Mac OS X]]></title>
