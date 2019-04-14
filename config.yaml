@@ -1,0 +1,29 @@
+languageCode: "en-us"
+baseURL: "https://www.joegornick.com/"
+title: "Joe Gornick"
+copyright: "Copyright &copy; 2019 - Joe Gornick"
+canonifyurls: true
+theme: "kiera-github"
+
+paginate: 3
+
+summaryLength: 30
+enableEmoji: true
+pygmentsCodeFences: true
+disqusShortname: jgornick
+
+permalinks:
+  posts: /:year/:month/:day/:title/
+
+author:
+  name: "Joe Gornick"
+  github: "jgornick"
+  gitlab: "jgornick"
+  linkedin: "jgornick"
+  facebook: ""
+  twitter: "jgornick"
+  instagram: ""
+
+params:
+  mainSections: ["posts"]
+  tagline: ""
