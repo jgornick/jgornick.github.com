@@ -1,0 +1,7 @@
+#container main {
+  display: flex;
+}
+
+iframe {
+  flex: 1;
+}

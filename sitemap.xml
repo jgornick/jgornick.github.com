@@ -1,55 +1,65 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
-    <url>
-        <loc>http://jgornick.github.com/2007/07/24/wheres-the-prototype-framework-community</loc>
-        <lastmod>2012-07-01T01:03:46-05:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://jgornick.github.com/2009/11/18/zend-framework-best-practices-part-1-getting-started
-        </loc>
-        <lastmod>2012-07-01T01:03:40-05:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jgornick.github.com/2009/12/02/zend-framework-best-practices-part-2-i18n</loc>
-        <lastmod>2012-07-01T01:03:35-05:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://jgornick.github.com/2009/12/29/introducing-gistdoit-run-your-gists-and-see-the-output
-        </loc>
-        <lastmod>2012-06-30T22:50:53-05:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jgornick.github.com/2009/12/30/mysql-created-and-modified-date-fields</loc>
-        <lastmod>2012-07-01T01:03:21-05:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://jgornick.github.com/2009/12/30/announcing-reserved-word-search-find-reserved-words-instantly-as-you-type
-        </loc>
-        <lastmod>2012-06-30T22:43:55-05:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jgornick.github.com/2010/01/14/setting-up-multiple-browsers-on-mac-os-x</loc>
-        <lastmod>2012-07-01T01:02:46-05:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://jgornick.github.com/2012/10/25/mongodb-unique-indexes-on-single-embedded-documents
-        </loc>
-        <lastmod>2012-10-25T01:30:11-05:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jgornick.github.com/archives/</loc>
-        <lastmod>2012-10-25T01:30:11-05:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jgornick.github.com/</loc>
-        <lastmod>2012-10-25T01:30:11-05:00</lastmod>
-    </url>
-    <url>
-        <loc>http://jgornick.github.com/resume/</loc>
-        <lastmod>2012-07-01T00:44:40-05:00</lastmod>
-    </url>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://www.joegornick.com/posts/</loc>
+    <lastmod>2012-10-25T01:13:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/</loc>
+    <lastmod>2012-10-25T01:13:00-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/2012/10/25/mongodb-unique-indexes-on-single/embedded-documents/</loc>
+    <lastmod>2012-10-25T01:13:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/2010/01/14/setting-up-multiple-browsers-on-mac-os-x/</loc>
+    <lastmod>2010-01-14T16:32:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/2009/12/30/announcing-reserved-word-search.-find-reserved-words-instantly-as-you-type/</loc>
+    <lastmod>2009-12-30T22:42:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/2009/12/30/mysql-created-and-modified-date-fields/</loc>
+    <lastmod>2009-12-30T22:22:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/2009/12/02/zend-framework-best-practices-part-2-i18n/</loc>
+    <lastmod>2009-12-02T22:54:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/2009/11/18/zend-framework-best-practices-part-1-getting-started/</loc>
+    <lastmod>2009-11-18T23:19:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/2007/07/24/wheres-the-prototype-framework-community/</loc>
+    <lastmod>2007-07-24T23:54:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/resume/</loc>
+  </url>
+  
+  <url>
+    <loc>https://www.joegornick.com/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
 </urlset>

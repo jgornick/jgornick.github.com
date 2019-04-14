@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Joe Gornick</title>
+    <link>https://www.joegornick.com/posts/</link>
+    <description>Recent content in Posts on Joe Gornick</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright &amp;copy; 2019 - Joe Gornick</copyright>
+    <lastBuildDate>Thu, 25 Oct 2012 01:13:00 -0500</lastBuildDate>
+    
+	<atom:link href="https://www.joegornick.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MongoDB Unique Indexes on Single/Embedded Documents</title>
+      <link>https://www.joegornick.com/2012/10/25/mongodb-unique-indexes-on-single/embedded-documents/</link>
+      <pubDate>Thu, 25 Oct 2012 01:13:00 -0500</pubDate>
+      
+      <guid>https://www.joegornick.com/2012/10/25/mongodb-unique-indexes-on-single/embedded-documents/</guid>
+      <description>MongoDB doesn&amp;rsquo;t support unique indexes on embedded documents in the same document. However, it does support some scenarios for adding unique indexes on embedded documents. When you apply a unique index to an embedded document, MongoDB treats it as unique in the collection.</description>
+    </item>
+    
+    <item>
+      <title>Setting up multiple browsers on Mac OS X</title>
+      <link>https://www.joegornick.com/2010/01/14/setting-up-multiple-browsers-on-mac-os-x/</link>
+      <pubDate>Thu, 14 Jan 2010 16:32:00 -0500</pubDate>
+      
+      <guid>https://www.joegornick.com/2010/01/14/setting-up-multiple-browsers-on-mac-os-x/</guid>
+      <description>When doing web development, you need to test your work on many operating systems and browsers. Depending on your host operating system, you will also need to run virtual machines to test other operating systems and browsers.</description>
+    </item>
+    
+    <item>
+      <title>Announcing Reserved Word Search. Find reserved words instantly as you type!</title>
+      <link>https://www.joegornick.com/2009/12/30/announcing-reserved-word-search.-find-reserved-words-instantly-as-you-type/</link>
+      <pubDate>Wed, 30 Dec 2009 22:42:00 -0500</pubDate>
+      
+      <guid>https://www.joegornick.com/2009/12/30/announcing-reserved-word-search.-find-reserved-words-instantly-as-you-type/</guid>
+      <description>To keep things rolling, I&amp;rsquo;ve released another project called Reserved Word Search. With Reserved Word Search you can instantly find reserved words as you type. This is extremely useful when doing database design and/or designing an API.</description>
+    </item>
+    
+    <item>
+      <title>MySQL: Created and Modified Date Fields</title>
+      <link>https://www.joegornick.com/2009/12/30/mysql-created-and-modified-date-fields/</link>
+      <pubDate>Wed, 30 Dec 2009 22:22:00 -0500</pubDate>
+      
+      <guid>https://www.joegornick.com/2009/12/30/mysql-created-and-modified-date-fields/</guid>
+      <description>I&amp;rsquo;ve been searching for an efficient way to set created and modified date fields in MySQL. Of course, this can be done in the application you&amp;rsquo;re writing, however, I wanted to find a way to automatically do this on the database layer.</description>
+    </item>
+    
+    <item>
+      <title>Zend Framework Best Practices – Part 2: I18n</title>
+      <link>https://www.joegornick.com/2009/12/02/zend-framework-best-practices-part-2-i18n/</link>
+      <pubDate>Wed, 02 Dec 2009 22:54:00 -0500</pubDate>
+      
+      <guid>https://www.joegornick.com/2009/12/02/zend-framework-best-practices-part-2-i18n/</guid>
+      <description>For the second part of my Zend Framework Best Practices series, I&amp;rsquo;d like to show you what I&amp;rsquo;ve found to be a simple and solid implementation of internationalizing your website.</description>
+    </item>
+    
+    <item>
+      <title>Zend Framework Best Practices – Part 1: Getting Started</title>
+      <link>https://www.joegornick.com/2009/11/18/zend-framework-best-practices-part-1-getting-started/</link>
+      <pubDate>Wed, 18 Nov 2009 23:19:00 -0500</pubDate>
+      
+      <guid>https://www.joegornick.com/2009/11/18/zend-framework-best-practices-part-1-getting-started/</guid>
+      <description>Welcome to part one of my Zend Framework Best Practices series. When I started using Zend Framework a little over two years ago, I found it very difficult to find definitive methods to use when building your application.</description>
+    </item>
+    
+    <item>
+      <title>Where’s the Prototype Framework community?</title>
+      <link>https://www.joegornick.com/2007/07/24/wheres-the-prototype-framework-community/</link>
+      <pubDate>Tue, 24 Jul 2007 23:54:00 -0500</pubDate>
+      
+      <guid>https://www.joegornick.com/2007/07/24/wheres-the-prototype-framework-community/</guid>
+      <description>Over the past year, I&amp;rsquo;ve been using the Prototype javascript framework. I like it because of it&amp;rsquo;s simplicity, documentation and speed. I&amp;rsquo;ve also been keeping an eye on the progression of jQuery.</description>
+    </item>
+    
+  </channel>
+</rss>

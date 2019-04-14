@@ -1,0 +1,282 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Joe Gornick</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Joe Gornick" />
+  <meta name="generator" content="Hugo 0.55.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+<link rel="stylesheet" type="text/css" href="https://www.joegornick.com/css/styles.css" />
+</head>
+
+<body>
+  <div id="container" class="markdown-body">
+    <header>
+      <h1>
+        <a href="https://www.joegornick.com/">Joe Gornick</a>
+      </h1>
+
+      <ul id="social-media">
+        
+        <li><a href="https://twitter.com/jgornick"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+         
+        <li><a href="https://www.linkedin.com/in/jgornick"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+         
+        <li><a href="https://github.com/jgornick"><i class="fa fa-github fa-lg" aria-hidden="true"></i></a></li>
+         
+        <li><a href="https://gitlab.com/jgornick"><i class="fa fa-gitlab fa-lg" aria-hidden="true"></i></a></li>
+          
+      </ul>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://www.joegornick.com/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://www.joegornick.com/resume/">
+                <i class="fa-li fa  fa-lg"></i><span>Resume</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>MongoDB Unique Indexes on Single/Embedded Documents</h1>
+
+    
+        <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2012-10-25T01:13:00-05:00">Oct 25, 2012</time>
+        </li>
+        
+        
+
+        
+
+        <li>6 min read</li>
+    </ul>
+</aside>
+    
+
+    
+
+<p>MongoDB doesn&rsquo;t support unique indexes on embedded documents <strong>in the same document</strong>. However, it does support some scenarios for adding <a href="http://www.mongodb.org/display/DOCS/Indexes">unique indexes</a> on embedded documents. When you apply a unique index to an embedded document, MongoDB treats it as unique in the collection. The following is an example of setting up a unique index on an embedded document:</p>
+
+<!-- more -->
+
+<pre><code>use bugs;
+
+db.issues.ensureIndex({ title: 1 }, { unique: true });
+db.issues.ensureIndex({ &quot;tasks.title&quot;: 1 }, { unique: true, sparse: true });
+
+// add an issue with a task
+db.issues.insert({ title: &quot;Issue1&quot;, tasks: [ { title: &quot;Task1&quot; } ] });
+
+// add another issue with a task and the same title
+db.issues.insert({ title: &quot;Issue2&quot;, tasks: [ { title: &quot;Task1&quot; } ] });
+</code></pre>
+
+<p>When you run the last insert statement, you will receive <code>E11000 duplicate key error index: bugs.issues.$tasks.title_1  dup key: { : &quot;Task1&quot; }</code> This is because you are trying to insert an embedded task in the issues collection with the same title.</p>
+
+<p>Let&rsquo;s say you wanted to allow a task with the same title embedded in another issue. In order to accomplish this, you need to create a compound index.</p>
+
+<pre><code>use bugs;
+
+db.issues.ensureIndex({ title: 1 }, { unique: true });
+db.issues.ensureIndex({ title: 1, &quot;tasks.title&quot;: 1 }, { unique: true, sparse: true });
+
+// add an issue with a task
+db.issues.insert({ title: &quot;Issue1&quot;, tasks: [ { title: &quot;Task1&quot; } ] });
+
+// add another issue with a task and the same title
+db.issues.insert({ title: &quot;Issue2&quot;, tasks: [ { title: &quot;Task1&quot; } ] });
+</code></pre>
+
+<p>With our compound index, we can now add a task with the same title in different documents.</p>
+
+<h2 id="single-document-unique-indexes">Single Document Unique Indexes</h2>
+
+<p>We&rsquo;ve covered embedded unique indexes for the collection and over multiple documents. However, what about the scenario for only allowing unique tasks on a single document? Let&rsquo;s take a look at the following example:</p>
+
+<pre><code>use bugs;
+
+db.issues.ensureIndex({ title: 1 }, { unique: true });
+db.issues.ensureIndex({ title: 1, &quot;tasks.title&quot;: 1 }, { unique: true, sparse: true });
+
+// add an issue with a task
+db.issues.insert({ title: &quot;Issue1&quot;, tasks: [ { title: &quot;Task1&quot; } ] });
+
+// add another task to the issue with the same title
+db.issues.update({ title: &quot;Issue1&quot; }, { $push: { tasks: { title: &quot;Task1&quot; } } });
+</code></pre>
+
+<p>Would you expect the last update statement to return a unique error or add another task with the same title? As of MongoDB 2.2, the task is <strong>added</strong>.</p>
+
+<p>There has been an <a href="https://jira.mongodb.org/browse/SERVER-1068">issue open since April of 2010</a>. It&rsquo;s simply because the original design of unique indexes were document based and not targeted for embedded documents.</p>
+
+<h2 id="workarounds">Workarounds</h2>
+
+<p>There are some workarounds to preventing duplicated data from being added to an embedded collection. It&rsquo;s important to note the workarounds don&rsquo;t utilize a unique index, but rather use existing features to prevent duplicate data from being inserted.</p>
+
+<p>One of the workarounds is <a href="https://groups.google.com/d/msg/mongodb-user/uaiPPLcjJjY/QpNy54kdokkJ">described by Kyle Banker</a> in the mongodb-user group. Kyle&rsquo;s workaround specifies a detailed query to only update a document if it does not contain an embedded document value:</p>
+
+<pre><code>db.issues.update(
+  { title: &quot;Issue1&quot;, &quot;tasks.title&quot;: { $ne: &quot;Task1&quot; } },
+  { $push: { tasks: { title: &quot;Task1&quot; } } }
+);
+</code></pre>
+
+<p>The previous update statement will only add a task with the title of &ldquo;Task1&rdquo; if the issue doesn&rsquo;t contain one already. This approach is good for simple scenarios, but when you have multiple fields and potentially multiple levels of embedded documents, the condition becomes quite large.</p>
+
+<p>Another workaround is to use the <a href="http://www.mongodb.org/display/DOCS/Updating#Updating-%24addToSetand%24each">$addToSet</a> modifier operation. This operation will add a value to an array only when the value doesn&rsquo;t already exist. The following is an example of adding a task with the same title:</p>
+
+<pre><code>db.issues.update({ title: &quot;Issue1&quot; }, { $addToSet: { tasks: { title: &quot;Task1&quot; } } });
+</code></pre>
+
+<p>The previous statement will add the task to the issue if it doesn&rsquo;t exist. You can also add many values in a single operation when using the $each qualifier:</p>
+
+<pre><code>db.issues.update(
+  { title: &quot;Issue1&quot; },
+  { $addToSet: { tasks: { $each: [{ title: &quot;Task1&quot; }, { title: &quot;Task2&quot; }] } } }
+);
+</code></pre>
+
+<p>The two listed workarounds are targeted at adding unique embedded documents. Without single-document unique indexes, you are unable to enfore uniqueness during the update. This means we could rename the task with the title of &ldquo;Task1&rdquo; to &ldquo;Task2&rdquo; without causing an error. This is unexpected behavior.</p>
+
+<p>Since the workarounds don&rsquo;t utilize a unique index, an error is never thrown. This behavior could be beneficial to applications wanting to notify the user of inserting duplicated data. The workarounds are more of a &ldquo;set it and forget it&rdquo; update.</p>
+
+<p>The following statements and comments are a summary of the current behavior and expected results:</p>
+
+<pre><code>use bugs;
+
+db.issues.ensureIndex({ title: 1 }, { unique: true });
+db.issues.ensureIndex({ title: 1, &quot;tasks.title&quot;: 1 }, { unique: true, sparse: true });
+
+// insert our initial issue with a single task
+db.issues.insert({ title: &quot;Issue1&quot;, tasks: [ { title: &quot;Task1&quot; } ] });
+
+// the following add or set a duplicate task, however, expected result would be
+// a unique index violation error
+db.issues.update({ title: &quot;Issue1&quot; }, { $push: { tasks: { title: &quot;Task1&quot; } } });
+db.issues.update({ title: &quot;Issue1&quot; }, { $pushAll: { tasks: [ { title: &quot;Task1&quot; } ] } });
+db.issues.update({ title: &quot;Issue1&quot; }, { $set: { tasks: [ { title: &quot;Task1&quot; }, { title: &quot;Task1&quot; } ]} });
+
+// the following do not allow a duplicate task to be added
+db.issues.update({ title: &quot;Issue1&quot; }, { $addToSet: { tasks: { title: &quot;Task1&quot; } } });
+db.issues.update({ title: &quot;Issue1&quot; }, { $addToSet: { tasks: { $each: [ { title: &quot;Task1&quot; }, { title: &quot;Task1&quot; } ] } } });
+
+// this should throw a unique index violation error and not insert a new issue with duplicate tasks
+db.issues.insert({ title: &quot;Issue5&quot;, tasks: [ { title: &quot;Task1&quot; }, { title: &quot;Task1&quot; } ] });
+</code></pre>
+
+<h2 id="possible-solutions">Possible Solutions</h2>
+
+<p>I haven&rsquo;t found any proposed solutions to allow unique indexes on embedded documents. After digging into this, I&rsquo;ve come up with two:</p>
+
+<h5 id="create-a-new-index-creation-option-for-single-document">Create a new index creation option for single document</h5>
+
+<p>This approach would allow a user to specify a new creation option in the ensureIndex method. You would be able to only apply this creation option on embedded field paths. An example would be:</p>
+
+<pre><code>db.issues.ensureIndex({ &quot;tasks.title&quot;: 1 }, { docUnique: true });
+</code></pre>
+
+<p>The previous statement would add a unique index on a task title for each document. This would then throw a unique index violation error if you tried to add or update a task title to an existing title.</p>
+
+<h5 id="allow-a-positional-like-operator-when-defining-the-path-of-the-index">Allow a positional-like operator when defining the path of the index</h5>
+
+<p>This would allow a user to define the path to a field using a <code>$</code> as an identifier representing embedded documents.</p>
+
+<pre><code>db.issues.ensureIndex({ &quot;tasks.$.title&quot;: 1 }, { unique: true });
+</code></pre>
+
+<p>The previous statement would add the same type of index as the previous solution, but using a different notation.</p>
+
+<h2 id="unique-arrays">Unique Arrays</h2>
+
+<p>One last thing to note, and it&rsquo;s important; this article focuses only on embedded documents. However, the unique index applies more natively to arrays. This means that you can&rsquo;t apply a unique index so an array can contain unique values. In the following example, you are allowed to have the same values in an array:</p>
+
+<pre><code>use foo;
+
+db.bookmarks.ensureIndex({ tags: 1 }, { unique: true, sparse: true });
+db.bookmarks.insert({ title: &quot;Bookmark1&quot;, tags: [&quot;tag1&quot;, &quot;tag2&quot;, &quot;tag3&quot;] });
+db.bookmarks.update({ title: &quot;Bookmark1&quot; }, { $push: { tags: &quot;tag1&quot; } });
+</code></pre>
+
+<p>The last statement will add &ldquo;tag1&rdquo; to the list of tags again. The expected result would be that tags are unique.</p>
+
+<p>I hope I haven&rsquo;t murdered this too badly. Comments are welcome!</p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://www.joegornick.com/2010/01/14/setting-up-multiple-browsers-on-mac-os-x/"><i class="fa fa-chevron-circle-left"></i> Setting up multiple browsers on Mac OS X</a>
+        </li>
+        
+        
+    </ul>
+</section>
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jgornick" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright &copy; 2019 - Joe Gornick | 
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://www.joegornick.com/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="https://www.joegornick.com/js/scripts.js"></script>
+</body>
+
+</html>

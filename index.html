@@ -1,428 +1,228 @@
+<!doctype html>
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<html lang="en-us">
+
 <head>
-  <meta charset="utf-8">
   <title>Joe Gornick</title>
-  <meta name="author" content="Joe Gornick">
-
-  
-  <meta name="description" content="MongoDB doesn&#8217;t support unique indexes on embedded documents in the same document. However, it does support some scenarios for adding unique &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://jgornick.github.com/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="http://feeds.feedburner.com/jgornick" rel="alternate" title="Joe Gornick" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-2943070-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Joe Gornick" />
+  <meta name="generator" content="Hugo 0.55.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+<link rel="stylesheet" type="text/css" href="https://www.joegornick.com/css/styles.css" />
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Joe Gornick</a></h1>
-  
-    <h2>Web Geekology</h2>
-  
-</hgroup>
+<body>
+  <div id="container" class="markdown-body">
+    <header>
+      <h1>
+        <a href="https://www.joegornick.com/">Joe Gornick</a>
+      </h1>
 
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="http://feeds.feedburner.com/jgornick" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:jgornick.github.com" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/resume">Resume</a></li>
-  <li><a href="/archives">Archives</a></li>
-</ul>
+      <ul id="social-media">
+        
+        <li><a href="https://twitter.com/jgornick"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+         
+        <li><a href="https://www.linkedin.com/in/jgornick"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+         
+        <li><a href="https://github.com/jgornick"><i class="fa fa-github fa-lg" aria-hidden="true"></i></a></li>
+         
+        <li><a href="https://gitlab.com/jgornick"><i class="fa fa-gitlab fa-lg" aria-hidden="true"></i></a></li>
+          
+      </ul>
+      
+    </header>
 
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://www.joegornick.com/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://www.joegornick.com/resume/">
+                <i class="fa-li fa  fa-lg"></i><span>Resume</span>
+            </a>
+        </li>
+        
+    </ul>
 </nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
+
+    <main>
+
+
+
+
+<section id="home">
+  <ul>
     
-      <h1 class="entry-title"><a href="/2012/10/25/mongodb-unique-indexes-on-single-embedded-documents">MongoDB Unique Indexes on Single/Embedded Documents</a></h1>
-    
-    
-      <p class="meta">
+    <li class="first">
+      <h1><a href="https://www.joegornick.com/2012/10/25/mongodb-unique-indexes-on-single/embedded-documents/" title="MongoDB Unique Indexes on Single/Embedded Documents">MongoDB Unique Indexes on Single/Embedded Documents</a></h1>
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2012-10-25T01:13:00-05:00">Oct 25, 2012</time>
+        </li>
+        
         
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-25T01:13:00-05:00" pubdate data-updated="true">Oct 25<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>MongoDB doesn&#8217;t support unique indexes on embedded documents <strong>in the same document</strong>. However, it does support some scenarios for adding <a href="http://www.mongodb.org/display/DOCS/Indexes">unique indexes</a> on embedded documents. When you apply a unique index to an embedded document, MongoDB treats it as unique in the collection. The following is an example of setting up a unique index on an embedded document:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/10/25/mongodb-unique-indexes-on-single-embedded-documents">Continue reading &raquo;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2010/01/14/setting-up-multiple-browsers-on-mac-os-x">Setting Up Multiple Browsers on Mac OS X</a></h1>
-    
-    
-      <p class="meta">
         
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-01-14T16:32:00-06:00" pubdate data-updated="true">Jan 14<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When doing web development, you need to test your work on many operating systems and browsers. Depending on your host operating system, you will also need to run virtual machines to test other operating systems and browsers. For this article, we are focusing on setting up different browsers/version on OS X (10.6 - Snow Leopard).</p>
-
-<p>For Mac, the most common browsers are Safari, Firefox, Opera and recently Chrome. On my machine, I have setup the following browsers and versions:</p>
-
-<ul>
-<li>Safari: 2.04, 3.04, 3.12, 3.21, 4.04</li>
-<li>Firefox: 2.0.0.20, 3.0.17, 3.5.7</li>
-<li>Opera: 9.52, 9.64, 10.01, 10.10</li>
-<li>Chrome: 4.0.249.49 (Latest)</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2010/01/14/setting-up-multiple-browsers-on-mac-os-x">Continue reading &raquo;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/12/30/announcing-reserved-word-search-find-reserved-words-instantly-as-you-type">Announcing Reserved Word Search. Find Reserved Words Instantly as You Type!</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-12-30T22:42:00-06:00" pubdate data-updated="true">Dec 30<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>To keep things rolling, I&#8217;ve released another project called Reserved Word Search. With Reserved Word Search you can instantly find reserved words as you type. This is extremely useful when doing database design and/or designing an API.</p>
-
-<p>So go ahead and check out Reserved Word Search @ <a href="http://www.reservedwordsearch.com">www.reservedwordsearch.com</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/12/30/mysql-created-and-modified-date-fields">MySQL: Created &amp; Modified Date Fields</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-12-30T22:22:00-06:00" pubdate data-updated="true">Dec 30<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&#8217;ve been searching for an efficient way to set created and modified date fields in MySQL. Of course, this can be done in the application you&#8217;re writing, however, I wanted to find a way to automatically do this on the database layer.</p>
-
-<p>Please note, this approach is targeted for MySQL 5.0+.</p>
-
-<p>The approach I take here is a combination of using the <a href="http://dev.mysql.com/doc/refman/5.0/en/timestamp.html">TIMESTAMP</a> field data type and a <code>TRIGGER</code>.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2009/12/30/mysql-created-and-modified-date-fields">Continue reading &raquo;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2009/12/29/introducing-gistdoit-run-your-gists-and-see-the-output">Introducing GistDoIt! Run Your Gists and See the Output!</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-12-29T22:48:00-06:00" pubdate data-updated="true">Dec 29<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>For the past couple of months, I&#8217;ve been working on a mashup service between <a href="http://gist.github.com">gist.github.com</a> and <a href="http://ideone.com">ideone.com</a>. The service allows someone to execute a gist and view the results.</p>
-
-<p>For more information, please check out GistDoIt! @ <a href="http://www.gistdoit.com">www.gistdoit.com</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/page/2/">&larr; Older</a>
-    
-    <a href="/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/2012/10/25/mongodb-unique-indexes-on-single-embedded-documents">MongoDB Unique Indexes on Single/Embedded Documents</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2010/01/14/setting-up-multiple-browsers-on-mac-os-x">Setting up multiple browsers on Mac OS X</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2009/12/30/announcing-reserved-word-search-find-reserved-words-instantly-as-you-type">Announcing Reserved Word Search. Find reserved words instantly as you type!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2009/12/30/mysql-created-and-modified-date-fields">MySQL: Created &amp; Modified Date Fields</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2009/12/29/introducing-gistdoit-run-your-gists-and-see-the-output">Introducing GistDoIt! Run your gists and see the output!</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/jgornick">@jgornick</a> on GitHub
-  
-  <script type="text/javascript">
-    $.domReady(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'jgornick',
-            count: 5,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-<section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("jgornick", 4, false);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/jgornick" class="twitter-follow-button" data-show-count="false">Follow @jgornick</a>
-  
-</section>
-
-
-
-
-
-  
+        <li>6 min read</li>
+    </ul>
 </aside>
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2012 - Joe Gornick -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
-
-<script type="text/javascript">
-      var disqus_shortname = 'jgornick';
+      <p>MongoDB doesn&rsquo;t support unique indexes on embedded documents in the same document. However, it does support some scenarios for adding unique indexes on embedded documents. When you apply a unique index to an embedded document, MongoDB treats it as unique in the collection.</p>
       
+      <a href="https://www.joegornick.com/2012/10/25/mongodb-unique-indexes-on-single/embedded-documents/">Read more&hellip;</a>
+      
+    </li>
+    
+    <li >
+      <h1><a href="https://www.joegornick.com/2010/01/14/setting-up-multiple-browsers-on-mac-os-x/" title="Setting up multiple browsers on Mac OS X">Setting up multiple browsers on Mac OS X</a></h1>
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2010-01-14T16:32:00-05:00">Jan 14, 2010</time>
+        </li>
         
-        var disqus_script = 'count.js';
+        
+
+        
+
+        <li>5 min read</li>
+    </ul>
+</aside>
+      <p>When doing web development, you need to test your work on many operating systems and browsers. Depending on your host operating system, you will also need to run virtual machines to test other operating systems and browsers.</p>
       
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
+      <a href="https://www.joegornick.com/2010/01/14/setting-up-multiple-browsers-on-mac-os-x/">Read more&hellip;</a>
+      
+    </li>
+    
+    <li >
+      <h1><a href="https://www.joegornick.com/2009/12/30/announcing-reserved-word-search.-find-reserved-words-instantly-as-you-type/" title="Announcing Reserved Word Search. Find reserved words instantly as you type!">Announcing Reserved Word Search. Find reserved words instantly as you type!</a></h1>
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2009-12-30T22:42:00-05:00">Dec 30, 2009</time>
+        </li>
+        
+        
+
+        
+
+        <li>1 min read</li>
+    </ul>
+</aside>
+      <p>To keep things rolling, I&rsquo;ve released another project called Reserved Word Search. With Reserved Word Search you can instantly find reserved words as you type. This is extremely useful when doing database design and/or designing an API.</p>
+      
+      <a href="https://www.joegornick.com/2009/12/30/announcing-reserved-word-search.-find-reserved-words-instantly-as-you-type/">Read more&hellip;</a>
+      
+    </li>
+    
+    <li >
+      <h1><a href="https://www.joegornick.com/2009/12/30/mysql-created-and-modified-date-fields/" title="MySQL: Created and Modified Date Fields">MySQL: Created and Modified Date Fields</a></h1>
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2009-12-30T22:22:00-05:00">Dec 30, 2009</time>
+        </li>
+        
+        
+
+        
+
+        <li>2 min read</li>
+    </ul>
+</aside>
+      <p>I&rsquo;ve been searching for an efficient way to set created and modified date fields in MySQL. Of course, this can be done in the application you&rsquo;re writing, however, I wanted to find a way to automatically do this on the database layer.</p>
+      
+      <a href="https://www.joegornick.com/2009/12/30/mysql-created-and-modified-date-fields/">Read more&hellip;</a>
+      
+    </li>
+    
+    <li >
+      <h1><a href="https://www.joegornick.com/2009/12/02/zend-framework-best-practices-part-2-i18n/" title="Zend Framework Best Practices – Part 2: I18n">Zend Framework Best Practices – Part 2: I18n</a></h1>
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2009-12-02T22:54:00-05:00">Dec 2, 2009</time>
+        </li>
+        
+        
+
+        
+
+        <li>10 min read</li>
+    </ul>
+</aside>
+      <p>For the second part of my Zend Framework Best Practices series, I&rsquo;d like to show you what I&rsquo;ve found to be a simple and solid implementation of internationalizing your website.</p>
+      
+      <a href="https://www.joegornick.com/2009/12/02/zend-framework-best-practices-part-2-i18n/">Read more&hellip;</a>
+      
+    </li>
+    
+    <li >
+      <h1><a href="https://www.joegornick.com/2009/11/18/zend-framework-best-practices-part-1-getting-started/" title="Zend Framework Best Practices – Part 1: Getting Started">Zend Framework Best Practices – Part 1: Getting Started</a></h1>
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2009-11-18T23:19:00-05:00">Nov 18, 2009</time>
+        </li>
+        
+        
+
+        
+
+        <li>8 min read</li>
+    </ul>
+</aside>
+      <p>Welcome to part one of my Zend Framework Best Practices series. When I started using Zend Framework a little over two years ago, I found it very difficult to find definitive methods to use when building your application.</p>
+      
+      <a href="https://www.joegornick.com/2009/11/18/zend-framework-best-practices-part-1-getting-started/">Read more&hellip;</a>
+      
+    </li>
+    
+    <li >
+      <h1><a href="https://www.joegornick.com/2007/07/24/wheres-the-prototype-framework-community/" title="Where’s the Prototype Framework community?">Where’s the Prototype Framework community?</a></h1>
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2007-07-24T23:54:00-05:00">Jul 24, 2007</time>
+        </li>
+        
+        
+
+        
+
+        <li>2 min read</li>
+    </ul>
+</aside>
+      <p>Over the past year, I&rsquo;ve been using the Prototype javascript framework. I like it because of it&rsquo;s simplicity, documentation and speed. I&rsquo;ve also been keeping an eye on the progression of jQuery.</p>
+      
+      <a href="https://www.joegornick.com/2007/07/24/wheres-the-prototype-framework-community/">Read more&hellip;</a>
+      
+    </li>
+    
+  </ul>
+</section>
 
 
 
-
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
-
+</main>
+    <footer>
+        <h6>Copyright &copy; 2019 - Joe Gornick | 
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://www.joegornick.com/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="https://www.joegornick.com/js/scripts.js"></script>
 </body>
+
 </html>
