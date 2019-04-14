@@ -1,5 +1,5 @@
 languageCode: "en-us"
-baseURL: "https://www.joegornick.com/"
+baseURL: "https://joegornick.com/"
 title: "Joe Gornick"
 copyright: "Copyright &copy; 2019 - Joe Gornick"
 canonifyurls: true
@@ -11,6 +11,7 @@ summaryLength: 30
 enableEmoji: true
 pygmentsCodeFences: true
 disqusShortname: jgornick
+googleAnalytics: UA-2943070-1
 
 permalinks:
   posts: /:year/:month/:day/:title/
