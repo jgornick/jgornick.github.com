@@ -2,13 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Joe Gornick</title>
-    <link>https://www.joegornick.com/tags/</link>
+    <link>https://joegornick.com/tags/</link>
     <description>Recent content in Tags on Joe Gornick</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; 2019 - Joe Gornick</copyright>
     
-	<atom:link href="https://www.joegornick.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://joegornick.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
