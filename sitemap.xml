@@ -4,13 +4,18 @@
   
   <url>
     <loc>https://joegornick.com/posts/</loc>
-    <lastmod>2012-10-25T01:13:00-05:00</lastmod>
+    <lastmod>2019-04-14T22:10:43-05:00</lastmod>
   </url>
   
   <url>
     <loc>https://joegornick.com/</loc>
-    <lastmod>2012-10-25T01:13:00-05:00</lastmod>
+    <lastmod>2019-04-14T22:10:43-05:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://joegornick.com/2019/04/14/lets-try-this-again-with-hugo/</loc>
+    <lastmod>2019-04-14T22:10:43-05:00</lastmod>
   </url>
   
   <url>

@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; 2019 - Joe Gornick</copyright>
-    <lastBuildDate>Thu, 25 Oct 2012 01:13:00 -0500</lastBuildDate>
+    <lastBuildDate>Sun, 14 Apr 2019 22:10:43 -0500</lastBuildDate>
     
 	<atom:link href="https://joegornick.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Let&#39;s try this again, with Hugo</title>
+      <link>https://joegornick.com/2019/04/14/lets-try-this-again-with-hugo/</link>
+      <pubDate>Sun, 14 Apr 2019 22:10:43 -0500</pubDate>
+      
+      <guid>https://joegornick.com/2019/04/14/lets-try-this-again-with-hugo/</guid>
+      <description>Yes, I still have a blog. But in my defense, the last time I published something, it was a few months before my first daughter (Aria) was born. We moved to a new home and had our second daughter (Ellie) in less than 2 years after that.</description>
+    </item>
     
     <item>
       <title>MongoDB Unique Indexes on Single/Embedded Documents</title>
