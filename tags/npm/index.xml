@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>npm on Joe Gornick</title>
+    <link>https://joegornick.com/tags/npm/</link>
+    <description>Recent content in npm on Joe Gornick</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright &amp;copy; 2019 - Joe Gornick</copyright>
+    <lastBuildDate>Mon, 15 Apr 2019 13:00:06 -0500</lastBuildDate>
+    
+	<atom:link href="https://joegornick.com/tags/npm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>yarn with private npm registries and authentication</title>
+      <link>https://joegornick.com/2019/04/15/yarn-with-private-npm-registries-and-authentication/</link>
+      <pubDate>Mon, 15 Apr 2019 13:00:06 -0500</pubDate>
+      
+      <guid>https://joegornick.com/2019/04/15/yarn-with-private-npm-registries-and-authentication/</guid>
+      <description>We recently switched over a project from npm to yarn. Our existing project npm configuration (i.e. npmrc) specified private registries with authentication. I assumed that yarn would use existing npm configurations.</description>
+    </item>
+    
+  </channel>
+</rss>

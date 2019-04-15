@@ -4,13 +4,36 @@
   
   <url>
     <loc>https://joegornick.com/posts/</loc>
-    <lastmod>2019-04-14T22:10:43-05:00</lastmod>
+    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
   </url>
   
   <url>
     <loc>https://joegornick.com/</loc>
-    <lastmod>2019-04-14T22:10:43-05:00</lastmod>
+    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://joegornick.com/tags/</loc>
+    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://joegornick.com/tags/npm/</loc>
+    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://joegornick.com/tags/yarn/</loc>
+    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://joegornick.com/2019/04/15/yarn-with-private-npm-registries-and-authentication/</loc>
+    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
   </url>
   
   <url>
@@ -60,11 +83,6 @@
   
   <url>
     <loc>https://joegornick.com/resume/</loc>
-  </url>
-  
-  <url>
-    <loc>https://joegornick.com/tags/</loc>
-    <priority>0</priority>
   </url>
   
 </urlset>

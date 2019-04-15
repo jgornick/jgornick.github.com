@@ -62,54 +62,58 @@
 
 <article>
 
-    <h1>Let&#39;s try this again, with Hugo</h1>
+    <h1>yarn with private npm registries and authentication</h1>
 
     
         <aside>
     <ul>
         <li>
-            <time class="post-date" datetime="2019-04-14T22:10:43-05:00">Apr 14, 2019</time>
+            <time class="post-date" datetime="2019-04-15T13:00:06-05:00">Apr 15, 2019</time>
         </li>
         
         
 
         
+        <li>
+            <em>
+                
+                    
+                    <a href="https://joegornick.com/tags/yarn/">#yarn</a>
+                
+                    , 
+                    <a href="https://joegornick.com/tags/npm/">#npm</a>
+                
+            </em>
+        </li>
+        
 
-        <li>3 min read</li>
+        <li>1 min read</li>
     </ul>
 </aside>
     
 
     
 
-<p>Yes, I still have a blog. But in my defense, the last time I published something, it was a few months before my first daughter (Aria) was born. We moved to a new home and had our second daughter (Ellie) in less than 2 years after that. Needless to say, things didn&rsquo;t calm down at all.</p>
+<p>We recently switched over a project from npm to yarn. Our existing project npm configuration (i.e. npmrc) specified private registries with authentication. I assumed that yarn would use existing npm configurations. However, after following <a href="https://github.com/yarnpkg/yarn/issues/4451">this yarn issue thread</a>, <strong>you must have a project yarnrc with the custom registries specified</strong>. Once the registries are defined, the existing npm configurations are used for authentication.</p>
 
-<p>In the last few years, I, with the help of others, have done some really cool work and solved challenging problems. A lot of those problems were solved by other posts (e.g. blog, forum, issue comments). Sometimes, it would take multiple posts to piece together a solution to a problem. But, because of all the hard work other people had done, I always felt the need to write a post about how we were able to solve the problem. That&rsquo;s what I hope to do here.</p>
+<p>For example, the project folder already had the following <code>.npmrc</code>:</p>
 
-<p>The time for writing posts on my blog before was high. I was using <a href="http://octopress.org/">Octopress</a> and the workflow to write posts and deploy was one too many steps for my liking. Parts of the site were broken too. It was a little overwhelming, especially when starting a family. I&rsquo;m certain a lot of that difficulty was my own doing.</p>
+<pre><code>registry=https://npm.joegornick.com
+@foo:registry=https://npm.foo.com
 
-<p>Just in the last week, I switched over to use <a href="https://gohugo.io">Hugo</a>. I found a <a href="https://github.com/avianto/hugo-kiera">basic theme</a> and <a href="https://github.com/jgornick/hugo-kiera-github">updated it to use the GitHub markdown style</a>. I&rsquo;ve been happy with the workflow to write posts and deploy them:</p>
+_auth={token}
+//npm.foo.com/:_authToken={token}
+</code></pre>
 
-<ul>
-<li>Create a new posts using <code>hugo new ./content/posts/my-new-post.md</code></li>
-<li>Edit with <a href="https://macdown.uranusjr.com/">MacDown</a></li>
-<li><a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/#put-it-into-a-script">Deploy with a single script</a>.</li>
-</ul>
+<p>I then added the following <code>.yarnrc</code> to the project:</p>
 
-<p>Because my blog is hosted on <a href="https://help.github.com/en/articles/what-is-github-pages">GitHub Pages</a>, the actual deployment is all handled automatically.</p>
-
-<p>This simple workflow allows me to spend more of what little time I have, to write. My blog has primarily been only about software development, but there are many other things I enjoy doing in my life that I think might be useful to share with others. For example, in the last week, I spent time looking how to build storage solutions above our garage door. I reviewed different images and posts to finally come up with my solution, and it worked out well!</p>
-
-<p>I plan on using this blog as more of a tool to archive certain solutions to problem, home projects, or just thoughts for reference in the future. My intent though with each post is to be of some help to others. I wrote earlier how I have been able to solve many problems from other people&rsquo;s posts, so this is my way of paying it forward.</p>
-
-<p>Now, hopefully it won&rsquo;t be another 9 years till my next post! 😄</p>
+<pre><code>registry &quot;https://npm.joegornick.com&quot;
+&quot;@foo:registry&quot; &quot;https://npm.foo.com&quot;
+</code></pre>
 
 <h2 id="references">References</h2>
 
-<ul>
-<li><a href="https://github.com/avianto/hugo-kiera">avianto/hugo-kiera</a></li>
-<li><a href="https://github.com/jgornick/hugo-kiera-github">jgornick/hugo-kiera-github</a></li>
-</ul>
+<p><a href="https://github.com/yarnpkg/yarn/issues/4451">yarn does not honor authentication settings in .npmrc</a></p>
 
 
 </article>
@@ -119,13 +123,9 @@
     <ul>
       
         <li>
-            <a href="https://joegornick.com/2012/10/25/mongodb-unique-indexes-on-single/embedded-documents/"><i class="fa fa-chevron-circle-left"></i> MongoDB Unique Indexes on Single/Embedded Documents</a>
+            <a href="https://joegornick.com/2019/04/14/lets-try-this-again-with-hugo/"><i class="fa fa-chevron-circle-left"></i> Let&#39;s try this again, with Hugo</a>
         </li>
       
-      
-        <li>
-            <a href="https://joegornick.com/2019/04/15/yarn-with-private-npm-registries-and-authentication/">yarn with private npm registries and authentication <i class="fa fa-chevron-circle-right"></i> </a>
-        </li>
       
     </ul>
   </section>
