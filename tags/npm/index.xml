@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; 2019 - Joe Gornick</copyright>
-    <lastBuildDate>Mon, 15 Apr 2019 13:00:06 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 01 May 2019 20:57:27 -0500</lastBuildDate>
     
 	<atom:link href="https://joegornick.com/tags/npm/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Publish a scoped package to a custom registry</title>
+      <link>https://joegornick.com/2019/05/01/publish-a-scoped-package-to-a-custom-registry/</link>
+      <pubDate>Wed, 01 May 2019 20:57:27 -0500</pubDate>
+      
+      <guid>https://joegornick.com/2019/05/01/publish-a-scoped-package-to-a-custom-registry/</guid>
+      <description>When publishing a npm package, npm will use your configuration sources for a destination registry. npm also provides an ability to override configuration via the publishConfig field in package.json.</description>
+    </item>
     
     <item>
       <title>yarn with private npm registries and authentication</title>

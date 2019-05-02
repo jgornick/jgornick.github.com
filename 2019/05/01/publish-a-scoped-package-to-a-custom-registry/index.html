@@ -62,13 +62,13 @@
 
 <article>
 
-    <h1>yarn with private npm registries and authentication</h1>
+    <h1>Publish a scoped package to a custom registry</h1>
 
     
         <aside>
     <ul>
         <li>
-            <time class="post-date" datetime="2019-04-15T13:00:06-05:00">Apr 15, 2019</time>
+            <time class="post-date" datetime="2019-05-01T20:57:27-05:00">May 1, 2019</time>
         </li>
         
         
@@ -78,9 +78,6 @@
             <em>
                 
                     
-                    <a href="https://joegornick.com/tags/yarn/">#yarn</a>
-                
-                    , 
                     <a href="https://joegornick.com/tags/npm/">#npm</a>
                 
             </em>
@@ -94,26 +91,23 @@
 
     
 
-<p>We recently switched over a project from npm to yarn. Our existing project npm configuration (i.e. npmrc) specified private registries with authentication. I assumed that yarn would use existing npm configurations. However, after following <a href="https://github.com/yarnpkg/yarn/issues/4451">this yarn issue thread</a>, <strong>you must have a project yarnrc with the custom registries specified</strong>. Once the registries are defined, the existing npm configurations are used for authentication.</p>
+<p>When publishing a npm package, npm will use your <a href="https://docs.npmjs.com/misc/config">configuration sources</a> for a destination registry. npm also provides an ability to override configuration via the <a href="https://docs.npmjs.com/files/package.json#publishconfig"><code>publishConfig</code></a> field in <code>package.json</code>.</p>
 
-<p>For example, the project folder already had the following <code>.npmrc</code>:</p>
-
-<pre><code>registry=https://npm.joegornick.com
-@foo:registry=https://npm.foo.com
-
-_auth={token}
-//npm.foo.com/:_authToken={token}
-</code></pre>
-
-<p>I then added the following <code>.yarnrc</code> to the project:</p>
-
-<pre><code>registry &quot;https://npm.joegornick.com&quot;
-&quot;@foo:registry&quot; &quot;https://npm.foo.com&quot;
-</code></pre>
-
+<p>If your package is non-scoped, then you can override the publish npm registry:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;publishConfig&#34;</span>: {
+    <span style="color:#f92672">&#34;registry&#34;</span>: <span style="color:#e6db74">&#34;https://npm.joegornick.com&#34;</span>
+  }
+}</code></pre></div>
+<p>However, if your package is <a href="https://docs.npmjs.com/misc/scope"><strong>scoped</strong></a>, then there&rsquo;s an <a href="https://github.com/npm/npm/issues/10117#issuecomment-209732223">undocumented ability to override the publish npm registry</a> by prefixing <code>registry</code> with the <code>@scope</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;publishConfig&#34;</span>: {
+    <span style="color:#f92672">&#34;@foo:registry&#34;</span>: <span style="color:#e6db74">&#34;https://npm.foo.com&#34;</span>
+  }
+}</code></pre></div>
 <h2 id="references">References</h2>
 
-<p><a href="https://github.com/yarnpkg/yarn/issues/4451">yarn does not honor authentication settings in .npmrc</a></p>
+<p><a href="https://github.com/npm/npm/issues/10117#">No way to override registry in .npmrc for scoped packages w/&ndash;registry flag</a></p>
 
 
 </article>
@@ -123,13 +117,9 @@ _auth={token}
     <ul>
       
         <li>
-            <a href="https://joegornick.com/2019/04/14/lets-try-this-again-with-hugo/"><i class="fa fa-chevron-circle-left"></i> Let&#39;s try this again, with Hugo</a>
+            <a href="https://joegornick.com/2019/04/15/yarn-with-private-npm-registries-and-authentication/"><i class="fa fa-chevron-circle-left"></i> yarn with private npm registries and authentication</a>
         </li>
       
-      
-        <li>
-            <a href="https://joegornick.com/2019/05/01/publish-a-scoped-package-to-a-custom-registry/">Publish a scoped package to a custom registry <i class="fa fa-chevron-circle-right"></i> </a>
-        </li>
       
     </ul>
   </section>

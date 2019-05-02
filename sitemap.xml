@@ -4,24 +4,29 @@
   
   <url>
     <loc>https://joegornick.com/posts/</loc>
-    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
+    <lastmod>2019-05-01T20:57:27-05:00</lastmod>
   </url>
   
   <url>
     <loc>https://joegornick.com/</loc>
-    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
+    <lastmod>2019-05-01T20:57:27-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>https://joegornick.com/2019/05/01/publish-a-scoped-package-to-a-custom-registry/</loc>
+    <lastmod>2019-05-01T20:57:27-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://joegornick.com/tags/</loc>
-    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
+    <lastmod>2019-05-01T20:57:27-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://joegornick.com/tags/npm/</loc>
-    <lastmod>2019-04-15T13:00:06-05:00</lastmod>
+    <lastmod>2019-05-01T20:57:27-05:00</lastmod>
     <priority>0</priority>
   </url>
   
