@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; 2019 - Joe Gornick</copyright>
-    <lastBuildDate>Wed, 01 May 2019 20:57:27 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 21 Aug 2019 15:07:19 -0500</lastBuildDate>
     
 	<atom:link href="https://joegornick.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to test and wait for React async events</title>
+      <link>https://joegornick.com/2019/08/21/how-to-test-and-wait-for-react-async-events/</link>
+      <pubDate>Wed, 21 Aug 2019 15:07:19 -0500</pubDate>
+      
+      <guid>https://joegornick.com/2019/08/21/how-to-test-and-wait-for-react-async-events/</guid>
+      <description>If you are trying to simulate an event on a React component, and that event&amp;rsquo;s handler is an async method, it&amp;rsquo;s not clear how to wait for the handler to finish before making any assertions.</description>
+    </item>
     
     <item>
       <title>Publish a scoped package to a custom registry</title>
