@@ -1,5 +1,5 @@
 ---
-title: "How to test and wait for React async events"
+title: How to test and wait for React async events
 date: 2019-08-21T15:07:19-05:00
 tags: []
 categories: []

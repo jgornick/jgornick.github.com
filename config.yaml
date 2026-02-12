@@ -1,30 +1,56 @@
 languageCode: "en-us"
 baseURL: "https://joegornick.com/"
 title: "Joe Gornick"
-copyright: "Copyright &copy; 2019 - Joe Gornick"
-canonifyurls: true
-theme: "kiera-github"
+copyright: "Joe Gornick"
 
-paginate: 3
+module:
+  imports:
+    - path: github.com/athul/archie
+
+pagination:
+  pagerSize: 10
 
 summaryLength: 30
 enableEmoji: true
-pygmentsCodeFences: true
-disqusShortname: jgornick
-googleAnalytics: UA-2943070-1
+
+markup:
+  highlight:
+    noClasses: false  # Use CSS classes for syntax highlighting
+    lineNos: false
+    lineNumbersInTable: false
 
 permalinks:
   posts: /:year/:month/:day/:title/
 
-author:
-  name: "Joe Gornick"
-  github: "jgornick"
-  gitlab: "jgornick"
-  linkedin: "jgornick"
-  facebook: ""
-  twitter: "jgornick"
-  instagram: ""
-
 params:
-  mainSections: ["posts"]
-  tagline: ""
+  mode: "dark"  # Force dark theme only
+  useCDN: false
+  subtitle: "Dad, Husband, Nerd from Minnesota"
+  mathjax: false
+  customcss:
+    - "css/custom.css"
+    - "css/syntax.css"
+
+  social:
+    - name: "GitHub"
+      icon: "github"
+      url: "https://github.com/jgornick"
+
+    - name: "Instagram"
+      icon: "instagram"
+      url: "https://instagram.com/joe.gornick"
+
+menu:
+  main:
+    - name: "Home"
+      url: "/"
+      weight: 1
+
+    - name: "All Posts"
+      url: "/posts"
+      weight: 2
+
+    - name: "Tags"
+      url: "/tags"
+      weight: 3
+

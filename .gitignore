@@ -102,3 +102,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/go,hugo,linux,macos,windows
+
+# Hugo Modules
+_vendor/
+go.sum
+.hugo_build.lock
