@@ -1,0 +1,78 @@
+# Decap CMS Configuration
+# Documentation: https://decapcms.org/docs/configuration-options/
+
+# Backend configuration
+backend:
+  name: github
+  repo: jgornick/jgornick.github.com
+  branch: main
+  base_url: https://joegornick-cms-oauth.jgornick.workers.dev
+  auth_endpoint: /auth
+
+# Local development backend
+# Run: npx @decaporg/decap-server
+# Then access: http://localhost:1313/admin/
+local_backend: true
+
+# Media files configuration
+media_folder: "static/images"
+public_folder: "/images"
+
+# Site URL (optional, helps with previews)
+site_url: https://joegornick.com
+
+# Collections define the structure of content types
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Description"
+        name: "description"
+        widget: "text"
+        required: false
+        hint: "Short description of the post"
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: "HH:mm:ssZ"
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+
+      - label: "TL;DR"
+        name: "tldr"
+        widget: "text"
+        required: false
+        hint: "Quick summary of the post"
+
+      - label: "Draft"
+        name: "draft"
+        widget: "boolean"
+        default: true
+        required: false
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+        default: []
+
+      - label: "Table of Contents"
+        name: "toc"
+        widget: "boolean"
+        default: false
+        required: false
+        hint: "Show table of contents for this post"
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"

@@ -1,0 +1,7 @@
+name = "joegornick-cms-oauth"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Environment variables (secrets) - set via: npx wrangler secret put OAUTH_CLIENT_ID
+# OAUTH_CLIENT_ID - GitHub OAuth App Client ID
+# OAUTH_CLIENT_SECRET - GitHub OAuth App Client Secret

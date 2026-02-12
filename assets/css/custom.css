@@ -1,0 +1,259 @@
+/* Catppuccin Frappé (Dark) Theme - https://catppuccin.com/palette */
+
+:root {
+    /* Custom variables */
+    --accent: #8caaee;      /* Blue - primary accent */
+    --main: #c6d0f5;        /* Text - main text color */
+    --secondary: #b5bfe2;   /* Subtext1 - secondary text */
+    --bg: #303446;          /* Base - background */
+    --border: #414559;      /* Surface0 - borders */
+    --hover: #85c1dc;       /* Sapphire - hover states */
+
+    /* Override Archie theme variables */
+    --color-primary: #8caaee;           /* Blue */
+    --color-primary-hover: #85c1dc;     /* Sapphire */
+    --color-border: #737994;            /* Overlay0 */
+    --color-callout: #99d1db;           /* Sky */
+    --color-text: #c6d0f5;              /* Text */
+    --color-text-muted: #a5adce;        /* Subtext0 */
+    --color-text-meta: #838ba7;         /* Overlay1 */
+    --color-background: #303446;        /* Base */
+    --color-background-code: #292c3c;   /* Mantle */
+    --color-background-pre: #232634;    /* Crust */
+    --color-background-toc: #292c3c;    /* Mantle */
+    --color-background-draft: #f2d5cf;  /* Rosewater */
+
+    /* Dark mode variables (same as root) */
+    --color-primary-dark: #8caaee;
+    --color-primary-hover-dark: #85c1dc;
+    --color-border-dark: #737994;
+    --color-text-dark: #c6d0f5;
+    --color-text-muted-dark: #a5adce;
+    --color-background-dark: #303446;
+    --color-background-code-dark: #292c3c;
+    --color-background-pre-dark: #232634;
+}
+
+/* Text Selection */
+::selection {
+    background: #8caaee;  /* Frappé Blue */
+    color: #303446;       /* Frappé Base */
+}
+
+::-moz-selection {
+    background: #8caaee;  /* Frappé Blue */
+    color: #303446;       /* Frappé Base */
+}
+
+/* Background colors */
+body {
+    background-color: var(--bg);
+    color: var(--main);
+}
+
+/* Links - cool gray with subtle hover */
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--hover);
+}
+
+/* Headings - maintain hierarchy with grays */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--main);
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+    color: var(--accent);
+}
+
+h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover {
+    color: var(--hover);
+}
+
+/* Site title and header */
+.header .sitename a {
+    color: var(--main);
+}
+
+.header .sitename a:hover {
+    color: var(--accent);
+}
+
+/* Navigation menu */
+.nav a {
+    color: var(--secondary);
+}
+
+.nav a:hover,
+.nav a.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* Tags - subtle gray with border */
+.tag {
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--secondary);
+}
+
+.tag:hover {
+    background-color: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+}
+
+/* Post metadata */
+.post-meta,
+.post-date,
+.post-tags {
+    color: var(--secondary);
+}
+
+/* Code blocks - subtle styling with minimal borders */
+code {
+    background-color: var(--color-background-code);  /* Mantle - subtle dark */
+    color: var(--main);
+    border-radius: 3px;
+    padding: 2px 6px;
+}
+
+pre {
+    background-color: var(--color-background-pre);  /* Crust - darker for contrast */
+    border: 1px solid #414559;  /* Surface0 - very subtle */
+    border-radius: 4px;
+}
+
+pre code {
+    background-color: transparent;  /* Inherit from pre */
+    padding: 0;
+}
+
+/* Override .highlight wrapper - remove extra background layer */
+.highlight {
+    background-color: transparent !important;
+    padding: 0 !important;
+}
+
+.highlight pre {
+    margin: 0;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left-color: var(--accent);
+    color: var(--secondary);
+}
+
+/* Horizontal rules */
+hr {
+    border-color: var(--border);
+}
+
+/* Tables */
+table {
+    border-color: var(--border);
+}
+
+th {
+    background-color: var(--border);
+    color: var(--main);
+}
+
+td {
+    border-color: var(--border);
+}
+
+/* Footer */
+.footer {
+    color: var(--secondary);
+    border-top-color: var(--border);
+}
+
+.footer a {
+    color: var(--secondary);
+}
+
+.footer a:hover {
+    color: var(--accent);
+}
+
+/* Pagination */
+.pagination a {
+    color: var(--secondary);
+}
+
+.pagination a:hover,
+.pagination .active {
+    color: var(--accent);
+}
+
+/* Read more links */
+.read-more {
+    color: var(--accent);
+}
+
+.read-more:hover {
+    color: var(--hover);
+}
+
+/* Borders and separators */
+.border {
+    border-color: var(--border) !important;
+}
+
+/* Input fields */
+input,
+textarea {
+    background-color: var(--bg);
+    color: var(--main);
+    border-color: var(--border);
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--accent);
+}
+
+/* Fix hover contrast - Archie sets background on hover */
+a:hover,
+a:focus {
+    background-color: var(--color-primary-hover) !important;
+    color: #303446 !important;  /* Dark text on Sapphire background */
+    outline-color: var(--color-primary);
+}
+
+/* Post title links - ensure dark text on hover */
+.post-title a:hover,
+.post-title a:focus,
+h1 a:hover,
+h2 a:hover,
+h3 a:hover {
+    background-color: var(--color-primary-hover) !important;
+    color: #303446 !important;
+}
+
+/* Site description links */
+.site-description a:hover,
+.site-description a:focus {
+    background-color: var(--color-primary-hover);
+    color: #303446;
+}
+
+/* Tag hover - override to ensure good contrast */
+.tag:hover {
+    background-color: var(--accent);
+    color: #303446;  /* Dark text on Blue background */
+    border-color: var(--accent);
+}
+
+/* Social icons hover */
+.soc:hover,
+.soc:focus {
+    color: #303446;
+    background-color: var(--color-primary-hover);
+}
