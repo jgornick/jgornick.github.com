@@ -40,25 +40,32 @@ I’ll admit it: I am a massive Star Wars nerd.
 
 When I stumbled upon the "Rebel Loon" concept (originally a public domain design by Bernardo Anderson), my nerd brain immediately lit up. It looked just like the Alliance Starbird—the symbol of the rebels. I started tweaking it to make it "ours." I added the colors of our new state flag—the deep "Night Sky" blue and the water blue. I added the 8-point North Star as the eye.
 
+{{<figure
+  src="/images/rebel-loon-minnesota-flag.jpg"
+  alt="An image of the Rebel Loon logo with the Minnesota flag colors and north star added."
+  caption="The Minnesota Rebel Loon"
+  class="ma0 w-75"
+>}}
+
 It became a symbol that said: *We are Minnesota. We are resilient. And we are watching.*
 
 But staring at that finished design, I realized it needed to *do* something. I wanted to see this symbol out in the wild. I wanted to look around the Twin Cities—at the grocery store, the rink, or the park—and see this bird on people’s chests. I wanted a way for us to show our pride in being Minnesotans, while also signaling that we stand with our neighbors during these hard times.
 
-We knew that the families affected by these arrests needed legal protection—and that costs money. That’s when it clicked: **We could print this design on shirts to support the Immigrant Law Center of Minnesota (ILCM).**
+We knew that the families affected by these arrests needed legal protection—and that costs money. That’s when it clicked: **We could print this design on shirts to support the [Immigrant Law Center of Minnesota (ILCM)](https://www.ilcm.org/).**
 
 **Finding Afternoon Printing**
 
 I had the art and the mission, but I didn't want to use some faceless internet drop-shipping site. I wanted this to benefit the community, so the money needed to stay here.
 
-I started researching local shops and found **Afternoon Printing** in South Minneapolis. I looked at their team photos, read their bios, and scrolled through their Instagram. I saw real people who cared about their craft and their community. I sent a "cold email" explaining the idea: a fundraiser where 100% of the profits went to the ILCM to help our neighbors.
+I started researching local shops and found [**Afternoon Printing**](https://www.afternoonprinting.com/) in South Minneapolis. I looked at their team photos, read their bios, and scrolled through their [Instagram](https://www.instagram.com/afternoonprinting/). I saw real people who cared about their craft and their community. I sent a "cold email" explaining the idea: a fundraiser where 100% of the profits went to the ILCM to help our neighbors.
 
 I expected a standard "here are our rates" reply. Instead, I got a partner.
 
-Kristen and her team at Afternoon Printing didn't just say yes; they stepped up. They waived upfront costs. They set up the webstore. When the Reddit post took off, they didn't panic. They handled hundreds of orders without blinking. When we hit a snag with a sales tax glitch, they addressed it immediately.
+Kristen and her team at Afternoon Printing didn't just say yes; they stepped up. They waived upfront costs. They set up the web-store. When the Reddit post took off, they didn't panic. They handled hundreds of orders without blinking. When we hit a snag with a sales tax glitch, they addressed it immediately.
 
 **The Result**
 What started as a way to help my daughters process their fear and confusion has turned into something incredible. Because of this community, we received a total of **617** orders and raised almost **$33,000** in sales in just five days.
 
 That means we are going to be handing a massive check of **$17,700** to the ILCM to help them fight for people like the ones we saw on that drive to the hockey rink.
 
-To everyone who bought a shirt, shared the link, or just liked the post: Thank you. You showed my girls that when things get scary, we don't just watch. We act.
+To everyone who bought a shirt, shared the link, or just liked the post: **Thank you!** You showed my girls that when things get scary, we don't just watch. We act.
