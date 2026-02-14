@@ -3,6 +3,7 @@ title: "The Rebel Loon: How a Hockey Drive Turned into a Movement"
 date: 2026-02-14T15:30:00-06:00
 draft: false
 tags: []
+cover: /media/rebel-loon-minnesota-flag.jpg
 toc: false
 ---
 We are a hockey family. Our weekends are usually defined by early mornings, cold rinks, and long drives to games. But lately, those drives have felt heavy. The things we see out the window have changed, and naturally, so has the conversation in the car.
@@ -14,7 +15,7 @@ Like everyone else in the Twin Cities, we were watching the news. We saw the ima
 On our way to a tournament game recently, we witnessed an ICE arrest firsthand. It was jarring.
 
 {{<figure
-  src="/images/ice-arrest.jpg"
+  src="/media/ice-arrest.jpg"
   alt="A photograph of an ICE arrest on January 10th, 2026 in Brooklyn Park, MN"
   caption="The ICE arrest we saw firsthand."
   class="ma0 w-75"
@@ -41,7 +42,7 @@ I’ll admit it: I am a massive Star Wars nerd.
 When I stumbled upon the "Rebel Loon" concept (originally a public domain design by Bernardo Anderson), my nerd brain immediately lit up. It looked just like the Alliance Starbird—the symbol of the rebels. I started tweaking it to make it "ours." I added the colors of our new state flag—the deep "Night Sky" blue and the water blue. I added the 8-point North Star as the eye.
 
 {{<figure
-  src="/images/rebel-loon-minnesota-flag.jpg"
+  src="/media/rebel-loon-minnesota-flag.jpg"
   alt="An image of the Rebel Loon logo with the Minnesota flag colors and north star added."
   caption="The Minnesota Rebel Loon"
   class="ma0 w-75"

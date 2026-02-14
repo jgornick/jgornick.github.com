@@ -2,7 +2,6 @@
 title: "Let's try this again, with Hugo"
 date: 2019-04-14T22:10:43-05:00
 tags: []
-categories: []
 ---
 
 Yes, I still have a blog. But in my defense, the last time I published something, it was a few months before my first daughter (Aria) was born. We moved to a new home and had our second daughter (Ellie) in less than 2 years after that. Needless to say, things didn't calm down at all.

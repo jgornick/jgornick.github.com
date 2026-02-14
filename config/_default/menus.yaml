@@ -13,13 +13,6 @@ main:
     params:
       icon: posts
 
-  - identifier: nav.tags
-    name: Tags
-    pageRef: /tags
-    weight: 3
-    params:
-      icon: tags
-
 # Footer social links
 social:
   - name: GitHub

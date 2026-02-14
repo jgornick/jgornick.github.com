@@ -2,7 +2,6 @@
 title: How to test and wait for React async events
 date: 2019-08-21T15:07:19-05:00
 tags: []
-categories: []
 ---
 
 If you are trying to [`simulate`](https://airbnb.io/enzyme/docs/api/ShallowWrapper/simulate.html) an event on a React component, and that event's handler is an `async` method, it's not clear how to wait for the handler to finish before making any assertions.

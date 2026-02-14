@@ -57,14 +57,14 @@ themes:
 
 # Home page configuration
 home:
-  recentPostsCount: 10
+  recentPostsCount: 3
   contentOrder:
     - author-section
     - recent-posts
 
 # Post configuration
 post:
-  showRelated: true
+  showRelated: false
   relatedPostsCount: 3
   license:
     show: false
@@ -92,7 +92,7 @@ lightbox:
 # Code block
 codeblock:
   collapse:
-    enabled: true
+    enabled: false
     defaultState: expanded
     autoCollapseLines: 30
     autoCollapseHeight: 400
@@ -100,7 +100,7 @@ codeblock:
 
 # Reading progress
 readingProgress:
-  enabled: true
+  enabled: false
   height: 3
   showOnHomepage: false
   smoothScroll: true

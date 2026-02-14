@@ -3,7 +3,6 @@ title: "Publish a scoped package to a custom registry"
 date: 2019-05-01T20:57:27-05:00
 draft: false
 tags: [npm]
-categories: []
 ---
 
 When publishing a npm package, npm will use your [configuration sources](https://docs.npmjs.com/misc/config) for a destination registry. npm also provides an ability to override configuration via the [`publishConfig`](https://docs.npmjs.com/files/package.json#publishconfig) field in `package.json`.

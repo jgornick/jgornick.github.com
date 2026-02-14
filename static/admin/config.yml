@@ -15,8 +15,8 @@ backend:
 local_backend: true
 
 # Media files configuration
-media_folder: "static/images"
-public_folder: "/images"
+media_folder: "static/media"
+public_folder: "/media"
 
 # Site URL (optional, helps with previews)
 site_url: https://joegornick.com
@@ -48,11 +48,11 @@ collections:
         time_format: "HH:mm:ssZ"
         format: "YYYY-MM-DDTHH:mm:ssZ"
 
-      - label: "TL;DR"
-        name: "tldr"
-        widget: "text"
+      - label: "Slug"
+        name: "slug"
+        widget: "string"
         required: false
-        hint: "Quick summary of the post"
+        hint: "Custom URL slug (leave empty for auto-generated)"
 
       - label: "Draft"
         name: "draft"
@@ -65,6 +65,14 @@ collections:
         widget: "list"
         required: false
         default: []
+
+      - label: "Cover Image"
+        name: "cover"
+        widget: "image"
+        required: false
+        hint: "Post cover image (external link or local resource)"
+        media_folder: "/static/media"
+        public_folder: "/media"
 
       - label: "Table of Contents"
         name: "toc"

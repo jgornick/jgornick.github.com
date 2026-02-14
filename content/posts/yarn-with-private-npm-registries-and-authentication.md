@@ -2,7 +2,6 @@
 title: "yarn with private npm registries and authentication"
 date: 2019-04-15T13:00:06-05:00
 tags: [yarn, npm]
-categories: []
 ---
 
 We recently switched over a project from npm to yarn. Our existing project npm configuration (i.e. npmrc) specified private registries with authentication. I assumed that yarn would use existing npm configurations. However, after following [this yarn issue thread](https://github.com/yarnpkg/yarn/issues/4451), **you must have a project yarnrc with the custom registries specified**. Once the registries are defined, the existing npm configurations are used for authentication.
