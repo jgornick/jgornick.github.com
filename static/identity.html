@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joe Gornick | Identity System</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (via CDN for standalone file) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Config for Tailwind to use Catppuccin Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        base: '#303446',
+                        surface0: '#414559',
+                        surface1: '#51576d',
+                        text: '#c6d0f5',
+                        subtext0: '#a5adce',
+                        blue: '#8caaee',  /* Primary */
+                        mauve: '#ca9ee6', /* Secondary */
+                        green: '#a6d189',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #303446; color: #c6d0f5; }
+        .grid-bg {
+            background-image: radial-gradient(#414559 1px, transparent 1px);
+            background-size: 10px 10px;
+        }
+        .swatch-card:hover .copy-hint { opacity: 1; }
+
+        /* Do/Don't Cards */
+        .do-card { border-color: #a6d189; }
+        .dont-card { border-color: #e78284; }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue selection:text-base pb-20">
+
+    <!-- SVG Symbol Definitions -->
+    <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="logo-master" viewBox="0 0 100 100">
+            <g fill="#ca9ee6">
+              <rect x="35" y="20" width="10" height="40"/>
+              <rect x="25" y="20" width="10" height="10"/>
+              <rect x="15" y="60" width="30" height="10"/>
+              <rect x="15" y="50" width="10" height="10"/>
+            </g>
+            <g fill="#8caaee">
+              <rect x="60" y="20" width="20" height="10"/>
+              <rect x="50" y="20" width="10" height="50"/>
+              <rect x="60" y="60" width="20" height="10"/>
+              <rect x="70" y="40" width="10" height="20"/>
+              <rect x="65" y="40" width="5" height="10"/>
+            </g>
+        </symbol>
+
+        <symbol id="logo-white" viewBox="0 0 100 100">
+            <g fill="#ffffff">
+                <rect x="35" y="20" width="10" height="40"/>
+                <rect x="25" y="20" width="10" height="10"/>
+                <rect x="15" y="60" width="30" height="10"/>
+                <rect x="15" y="50" width="10" height="10"/>
+                <rect x="60" y="20" width="20" height="10"/>
+                <rect x="50" y="20" width="10" height="50"/>
+                <rect x="60" y="60" width="20" height="10"/>
+                <rect x="70" y="40" width="10" height="20"/>
+                <rect x="65" y="40" width="5" height="10"/>
+            </g>
+        </symbol>
+
+        <symbol id="logo-black" viewBox="0 0 100 100">
+            <g fill="#303446">
+                <rect x="35" y="20" width="10" height="40"/>
+                <rect x="25" y="20" width="10" height="10"/>
+                <rect x="15" y="60" width="30" height="10"/>
+                <rect x="15" y="50" width="10" height="10"/>
+                <rect x="60" y="20" width="20" height="10"/>
+                <rect x="50" y="20" width="10" height="50"/>
+                <rect x="60" y="60" width="20" height="10"/>
+                <rect x="70" y="40" width="10" height="20"/>
+                <rect x="65" y="40" width="5" height="10"/>
+            </g>
+        </symbol>
+
+        <symbol id="logo-j" viewBox="0 0 100 100">
+            <g class="secondary-shape">
+                <rect x="35" y="20" width="10" height="40"/>
+                <rect x="25" y="20" width="10" height="10"/>
+                <rect x="15" y="60" width="30" height="10"/>
+                <rect x="15" y="50" width="10" height="10"/>
+            </g>
+        </symbol>
+
+        <symbol id="logo-g" viewBox="0 0 100 100">
+            <g class="primary-shape">
+                <rect x="60" y="20" width="20" height="10"/>
+                <rect x="50" y="20" width="10" height="50"/>
+                <rect x="60" y="60" width="20" height="10"/>
+                <rect x="70" y="40" width="10" height="20"/>
+                <rect x="65" y="40" width="5" height="10"/>
+            </g>
+        </symbol>
+    </svg>
+
+    <!-- Header -->
+    <header class="max-w-5xl mx-auto pt-20 pb-12 px-6 border-b border-surface0">
+        <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 bg-surface0 rounded-xl flex items-center justify-center border border-surface1 shadow-lg">
+                <svg viewBox="0 0 100 100" class="w-10 h-10">
+                    <use href="#logo-master"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-4xl font-extrabold tracking-tight text-white">Joe Gornick</h1>
+                <p class="text-subtext0 font-mono text-sm mt-1">IDENTITY SYSTEM v1.2 • CATPPUCCIN FRAPPÉ</p>
+            </div>
+        </div>
+        <p class="text-lg text-subtext0 max-w-2xl leading-relaxed">
+            The complete visual language for a "Nerd from Minnesota." Built on a strict 10×10 pixel grid with interlocking logic gates, utilizing the Catppuccin Frappé palette. Includes logo variations, color alternatives, and comprehensive usage guidelines.
+        </p>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6">
+
+        <!-- SECTION 1: LOGO -->
+        <section class="py-16 border-b border-surface0">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <span class="text-blue">01.</span> The Binary Pair
+                </h2>
+                <span class="bg-surface0 text-subtext0 text-xs font-mono px-3 py-1 rounded-full">10x10 GRID SYSTEM</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Master Color -->
+                <div class="bg-surface0/30 border border-surface0 rounded-2xl p-6 flex flex-col gap-6 group">
+                    <div class="aspect-square bg-base rounded-lg border border-surface0 flex items-center justify-center relative overflow-hidden grid-bg">
+                        <svg viewBox="0 0 100 100" class="w-32 h-32 relative z-10 drop-shadow-2xl">
+                            <use href="#logo-master"/>
+                        </svg>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <h3 class="font-bold text-white">Master Color</h3>
+                            <p class="text-xs text-subtext0 mt-1">Primary usage on dark backgrounds.</p>
+                        </div>
+                        <button onclick="copyToClipboard(this, LOGO_MASTER)" class="bg-surface0 hover:bg-blue hover:text-base text-text text-xs font-bold py-2 px-4 rounded transition-colors">
+                            COPY SVG
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Solid White -->
+                <div class="bg-surface0/30 border border-surface0 rounded-2xl p-6 flex flex-col gap-6 group">
+                    <div class="aspect-square bg-base rounded-lg border border-surface0 flex items-center justify-center grid-bg">
+                        <svg viewBox="0 0 100 100" class="w-32 h-32 drop-shadow-lg">
+                            <use href="#logo-white"/>
+                        </svg>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <h3 class="font-bold text-white">Solid White</h3>
+                            <p class="text-xs text-subtext0 mt-1">For single-color dark mode.</p>
+                        </div>
+                        <button onclick="copyToClipboard(this, LOGO_WHITE)" class="bg-surface0 hover:bg-white hover:text-base text-text text-xs font-bold py-2 px-4 rounded transition-colors">
+                            COPY SVG
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Solid Black -->
+                <div class="bg-surface0/30 border border-surface0 rounded-2xl p-6 flex flex-col gap-6 group">
+                    <div class="aspect-square bg-[#eff1f5] rounded-lg border border-surface0 flex items-center justify-center">
+                         <svg viewBox="0 0 100 100" class="w-32 h-32">
+                            <use href="#logo-black"/>
+                        </svg>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <h3 class="font-bold text-white">Solid Black</h3>
+                            <p class="text-xs text-subtext0 mt-1">For light mode or print.</p>
+                        </div>
+                        <button onclick="copyToClipboard(this, LOGO_BLACK)" class="bg-surface0 hover:bg-base hover:text-white text-text text-xs font-bold py-2 px-4 rounded transition-colors">
+                            COPY SVG
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1B: FAVICON -->
+        <section class="py-16 border-b border-surface0">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <span class="text-blue">01B.</span> Favicon Sizes
+                </h2>
+                <span class="bg-surface0 text-subtext0 text-xs font-mono px-3 py-1 rounded-full">16×16 • 32×32 • 64×64</span>
+            </div>
+
+            <!-- Favicon Sizes -->
+            <div class="bg-surface0/20 rounded-2xl p-6 border border-surface0">
+                <h3 class="font-bold text-white mb-4">Favicon Sizes</h3>
+                <div class="flex items-center gap-8 flex-wrap">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-base border border-surface0 rounded-lg p-2 flex items-center justify-center" style="width: 64px; height: 64px;">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <use href="#logo-master"/>
+                            </svg>
+                        </div>
+                        <span class="text-subtext0 font-mono text-xs">64×64</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-base border border-surface0 rounded-lg p-1 flex items-center justify-center" style="width: 32px; height: 32px;">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <use href="#logo-master"/>
+                            </svg>
+                        </div>
+                        <span class="text-subtext0 font-mono text-xs">32×32</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-base border border-surface0 rounded p-0.5 flex items-center justify-center" style="width: 16px; height: 16px;">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <use href="#logo-master"/>
+                            </svg>
+                        </div>
+                        <span class="text-subtext0 font-mono text-xs">16×16</span>
+                    </div>
+                    <button onclick="copyToClipboard(this, FAVICON_LINK)" class="ml-auto bg-surface0 hover:bg-blue hover:text-base text-text text-xs font-bold py-2 px-4 rounded transition-colors">
+                        COPY HTML
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: COLORS -->
+        <section class="py-16 border-b border-surface0">
+            <h2 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                <span class="text-mauve">02.</span> Color Palette
+            </h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Blue -->
+                <button onclick="copyToClipboard(this, '#8caaee')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-blue transition-all group relative">
+                    <div class="h-16 w-full bg-blue rounded-lg mb-3 shadow-lg"></div>
+                    <p class="text-white font-bold">Blue</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">#8caaee</p>
+                    <p class="text-xs text-blue mt-2 opacity-60">Primary Brand</p>
+                    <div class="copy-hint absolute top-4 right-4 bg-base text-white text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
+                </button>
+
+                <!-- Mauve -->
+                <button onclick="copyToClipboard(this, '#ca9ee6')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-mauve transition-all group relative">
+                    <div class="h-16 w-full bg-mauve rounded-lg mb-3 shadow-lg"></div>
+                    <p class="text-white font-bold">Mauve</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">#ca9ee6</p>
+                    <p class="text-xs text-mauve mt-2 opacity-60">Secondary Brand</p>
+                    <div class="copy-hint absolute top-4 right-4 bg-base text-white text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
+                </button>
+
+                <!-- Base -->
+                <button onclick="copyToClipboard(this, '#303446')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-white transition-all group relative">
+                    <div class="h-16 w-full bg-base rounded-lg mb-3 shadow-lg border border-surface1"></div>
+                    <p class="text-white font-bold">Base</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">#303446</p>
+                    <p class="text-xs text-subtext0 mt-2 opacity-60">Background</p>
+                    <div class="copy-hint absolute top-4 right-4 bg-white text-base text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
+                </button>
+
+                <!-- Text -->
+                <button onclick="copyToClipboard(this, '#c6d0f5')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-text transition-all group relative">
+                    <div class="h-16 w-full bg-text rounded-lg mb-3 shadow-lg"></div>
+                    <p class="text-white font-bold">Text</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">#c6d0f5</p>
+                    <p class="text-xs text-text mt-2 opacity-60">Body Copy</p>
+                    <div class="copy-hint absolute top-4 right-4 bg-base text-white text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
+                </button>
+            </div>
+
+            <!-- Color Experimenter -->
+            <div class="mt-12 bg-surface0/20 rounded-2xl p-8 border border-surface0">
+                <h3 class="font-bold text-white mb-6 text-xl flex items-center gap-3">
+                    <span class="text-mauve">⚗️</span> Color Experimenter
+                </h3>
+                <p class="text-subtext0 mb-6">
+                    Try different Catppuccin Frappé color combinations to see how they work with the logo.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Color Selectors -->
+                    <div class="space-y-6">
+                        <!-- Primary Color Selector -->
+                        <div>
+                            <label class="text-white font-bold mb-3 block">Primary Color (G)</label>
+                            <select id="primaryColorSelect" onchange="updateLogoPreview()" class="w-full bg-surface0 text-text border border-surface1 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue">
+                                <option value="#e78284">Red - #e78284</option>
+                                <option value="#ef9f76">Peach - #ef9f76</option>
+                                <option value="#e5c890">Yellow - #e5c890</option>
+                                <option value="#a6d189">Green - #a6d189</option>
+                                <option value="#81c8be">Teal - #81c8be</option>
+                                <option value="#99d1db">Sky - #99d1db</option>
+                                <option value="#8caaee" selected>Blue - #8caaee</option>
+                                <option value="#babbf1">Lavender - #babbf1</option>
+                                <option value="#ca9ee6">Mauve - #ca9ee6</option>
+                                <option value="#f4b8e4">Pink - #f4b8e4</option>
+                            </select>
+                        </div>
+
+                        <!-- Secondary Color Selector -->
+                        <div>
+                            <label class="text-white font-bold mb-3 block">Secondary Color (J)</label>
+                            <select id="secondaryColorSelect" onchange="updateLogoPreview()" class="w-full bg-surface0 text-text border border-surface1 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-mauve">
+                                <option value="#e78284">Red - #e78284</option>
+                                <option value="#ef9f76">Peach - #ef9f76</option>
+                                <option value="#e5c890">Yellow - #e5c890</option>
+                                <option value="#a6d189">Green - #a6d189</option>
+                                <option value="#81c8be">Teal - #81c8be</option>
+                                <option value="#99d1db">Sky - #99d1db</option>
+                                <option value="#8caaee">Blue - #8caaee</option>
+                                <option value="#babbf1">Lavender - #babbf1</option>
+                                <option value="#ca9ee6" selected>Mauve - #ca9ee6</option>
+                                <option value="#f4b8e4">Pink - #f4b8e4</option>
+                            </select>
+                        </div>
+
+                        <button onclick="resetColors()" class="w-full bg-surface0 hover:bg-surface1 text-text font-bold py-3 px-6 rounded-lg transition-colors">
+                            Reset to Default
+                        </button>
+                    </div>
+
+                    <!-- Live Preview -->
+                    <div>
+                        <label class="text-white font-bold mb-3 block">Live Preview</label>
+                        <div class="bg-base rounded-lg border border-surface0 p-8 flex items-center justify-center grid-bg">
+                            <svg id="previewLogo" viewBox="0 0 100 100" class="w-40 h-40 drop-shadow-2xl">
+                                <use href="#logo-g" fill="#8caaee"/>
+                                <use href="#logo-j" fill="#ca9ee6"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2B: TYPOGRAPHY -->
+        <section class="py-16 border-b border-surface0">
+            <h2 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                <span class="text-subtext0">02B.</span> Typography
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Sans Serif -->
+                <div class="p-8 border border-surface0 rounded-2xl bg-surface0/10">
+                    <span class="text-xs font-mono text-blue tracking-widest uppercase mb-4 block">Headings & UI</span>
+                    <h3 class="text-4xl font-sans font-bold text-white mb-2">Inter</h3>
+                    <p class="font-sans text-subtext0 text-lg">The quick brown fox jumps over the lazy dog.</p>
+                    <div class="mt-6 flex gap-4 text-sm text-subtext0 font-mono">
+                        <span>400 Regular</span>
+                        <span class="font-bold text-white">700 Bold</span>
+                    </div>
+                </div>
+
+                <!-- Monospace -->
+                <div class="p-8 border border-surface0 rounded-2xl bg-surface0/10">
+                    <span class="text-xs font-mono text-mauve tracking-widest uppercase mb-4 block">Code & Data</span>
+                    <h3 class="text-4xl font-mono text-white mb-2">JetBrains Mono</h3>
+                    <p class="font-mono text-subtext0 text-lg">const identity = "Nerd";</p>
+                    <div class="mt-6 flex gap-4 text-sm text-subtext0 font-mono">
+                        <span>400 Regular</span>
+                        <span class="font-bold text-white">700 Bold</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 03: USAGE GUIDELINES -->
+        <section class="py-16">
+            <h2 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                <span class="text-green">03.</span> Usage Guidelines
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- DO: Proper Grid Alignment -->
+                <div class="border-2 do-card rounded-2xl p-6 bg-surface0/10">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-6 h-6 bg-green rounded-full flex items-center justify-center text-base font-bold text-xs">✓</div>
+                        <h3 class="font-bold text-green uppercase tracking-wide text-sm">DO</h3>
+                    </div>
+                    <div class="bg-base rounded-lg border border-surface0 p-6 mb-4 grid-bg flex items-center justify-center">
+                        <svg viewBox="0 0 100 100" class="w-32 h-32">
+                            <use href="#logo-master"/>
+                        </svg>
+                    </div>
+                    <p class="text-subtext0 text-sm">Maintain the precise 10×10 pixel grid alignment. Never distort or stretch the logo.</p>
+                </div>
+
+                <!-- DON'T: Distorted Logo -->
+                <div class="border-2 dont-card rounded-2xl p-6 bg-surface0/10">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-6 h-6 bg-[#e78284] rounded-full flex items-center justify-center text-base font-bold text-xs">✗</div>
+                        <h3 class="font-bold text-[#e78284] uppercase tracking-wide text-sm">DON'T</h3>
+                    </div>
+                    <div class="bg-base rounded-lg border border-surface0 p-6 mb-4 flex items-center justify-center">
+                        <svg viewBox="0 0 100 100" class="w-40 h-24" style="opacity: 0.6;">
+                            <use href="#logo-master"/>
+                        </svg>
+                    </div>
+                    <p class="text-subtext0 text-sm">Don't stretch, squash, or alter the aspect ratio. The logo must always be square.</p>
+                </div>
+
+                <!-- DO: Sufficient Contrast -->
+                <div class="border-2 do-card rounded-2xl p-6 bg-surface0/10">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-6 h-6 bg-green rounded-full flex items-center justify-center text-base font-bold text-xs">✓</div>
+                        <h3 class="font-bold text-green uppercase tracking-wide text-sm">DO</h3>
+                    </div>
+                    <div class="bg-base rounded-lg border border-surface0 p-6 mb-4 flex items-center justify-center">
+                        <svg viewBox="0 0 100 100" class="w-32 h-32">
+                            <use href="#logo-master"/>
+                        </svg>
+                    </div>
+                    <p class="text-subtext0 text-sm">Use the color version on dark backgrounds for optimal contrast and brand recognition.</p>
+                </div>
+
+                <!-- DON'T: Poor Color Choices -->
+                <div class="border-2 dont-card rounded-2xl p-6 bg-surface0/10">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-6 h-6 bg-[#e78284] rounded-full flex items-center justify-center text-base font-bold text-xs">✗</div>
+                        <h3 class="font-bold text-[#e78284] uppercase tracking-wide text-sm">DON'T</h3>
+                    </div>
+                    <div class="bg-blue rounded-lg border border-surface0 p-6 mb-4 flex items-center justify-center" style="opacity: 0.6;">
+                        <svg viewBox="0 0 100 100" class="w-32 h-32">
+                            <g fill="#ca9ee6">
+                                <rect x="35" y="20" width="10" height="40"/>
+                                <rect x="25" y="20" width="10" height="10"/>
+                                <rect x="15" y="60" width="30" height="10"/>
+                                <rect x="15" y="50" width="10" height="10"/>
+                                <rect x="60" y="20" width="20" height="10"/>
+                                <rect x="50" y="20" width="10" height="50"/>
+                                <rect x="60" y="60" width="20" height="10"/>
+                                <rect x="70" y="40" width="10" height="20"/>
+                                <rect x="65" y="40" width="5" height="10"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <p class="text-subtext0 text-sm">Don't place the logo on backgrounds that reduce contrast or use conflicting brand colors.</p>
+                </div>
+
+                <!-- DO: Clear Space -->
+                <div class="border-2 do-card rounded-2xl p-6 bg-surface0/10">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-6 h-6 bg-green rounded-full flex items-center justify-center text-base font-bold text-xs">✓</div>
+                        <h3 class="font-bold text-green uppercase tracking-wide text-sm">DO</h3>
+                    </div>
+                    <div class="bg-base rounded-lg border border-surface0 p-8 mb-4 flex items-center justify-center">
+                        <svg viewBox="0 0 100 100" class="w-24 h-24">
+                            <use href="#logo-master"/>
+                        </svg>
+                    </div>
+                    <p class="text-subtext0 text-sm">Provide ample clear space around the logo—minimum 20% of logo width on all sides.</p>
+                </div>
+
+                <!-- DON'T: Custom Colors -->
+                <div class="border-2 dont-card rounded-2xl p-6 bg-surface0/10">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-6 h-6 bg-[#e78284] rounded-full flex items-center justify-center text-base font-bold text-xs">✗</div>
+                        <h3 class="font-bold text-[#e78284] uppercase tracking-wide text-sm">DON'T</h3>
+                    </div>
+                    <div class="bg-base rounded-lg border border-surface0 p-6 mb-4 flex items-center justify-center" style="opacity: 0.6;">
+                        <svg viewBox="0 0 100 100" class="w-32 h-32">
+                            <rect x="35" y="20" width="10" height="40" fill="#ff0000"/>
+                            <rect x="25" y="20" width="10" height="10" fill="#ff0000"/>
+                            <rect x="15" y="60" width="30" height="10" fill="#ff0000"/>
+                            <rect x="15" y="50" width="10" height="10" fill="#ff0000"/>
+                            <rect x="60" y="20" width="20" height="10" fill="#00ff00"/>
+                            <rect x="50" y="20" width="10" height="50" fill="#00ff00"/>
+                            <rect x="60" y="60" width="20" height="10" fill="#00ff00"/>
+                            <rect x="70" y="40" width="10" height="20" fill="#00ff00"/>
+                            <rect x="65" y="40" width="5" height="10" fill="#00ff00"/>
+                        </svg>
+                    </div>
+                    <p class="text-subtext0 text-sm">Don't use custom colors. Stick to the defined palette or use white/black variants only.</p>
+                </div>
+            </div>
+
+            <!-- Quick Reference -->
+            <div class="mt-12 bg-surface0/20 rounded-2xl p-8 border border-surface0">
+                <h3 class="font-bold text-white mb-6 text-xl">Quick Reference</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div>
+                        <h4 class="text-green font-bold mb-2 flex items-center gap-2">
+                            <span class="text-xs">✓</span> Minimum Size
+                        </h4>
+                        <p class="text-subtext0">Never smaller than 32×32 pixels in digital or 0.5 inches in print.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-green font-bold mb-2 flex items-center gap-2">
+                            <span class="text-xs">✓</span> File Formats
+                        </h4>
+                        <p class="text-subtext0">Use SVG for web/digital. PNG for compatibility. Never use JPG.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-green font-bold mb-2 flex items-center gap-2">
+                            <span class="text-xs">✓</span> Accessibility
+                        </h4>
+                        <p class="text-subtext0">Ensure 4.5:1 contrast ratio minimum for WCAG AA compliance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-5xl mx-auto py-12 px-6 border-t border-surface0 text-center">
+        <p class="text-subtext0 text-xs font-mono">
+            &copy; 2026 JOE GORNICK • IDENTITY SYSTEM • GENERATED BY GEMINI
+        </p>
+    </footer>
+
+    <!-- LOGO DATA & SCRIPT -->
+    <script>
+        const LOGO_MASTER = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="35" y="20" width="10" height="40" fill="#ca9ee6"/><rect x="25" y="20" width="10" height="10" fill="#ca9ee6"/><rect x="15" y="60" width="30" height="10" fill="#ca9ee6"/><rect x="15" y="50" width="10" height="10" fill="#ca9ee6"/><rect x="60" y="20" width="20" height="10" fill="#8caaee"/><rect x="50" y="20" width="10" height="50" fill="#8caaee"/><rect x="60" y="60" width="20" height="10" fill="#8caaee"/><rect x="70" y="40" width="10" height="20" fill="#8caaee"/><rect x="65" y="40" width="5" height="10" fill="#8caaee"/></svg>`;
+
+        const LOGO_WHITE = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><g fill="#ffffff"><rect x="35" y="20" width="10" height="40"/><rect x="25" y="20" width="10" height="10"/><rect x="15" y="60" width="30" height="10"/><rect x="15" y="50" width="10" height="10"/><rect x="60" y="20" width="20" height="10"/><rect x="50" y="20" width="10" height="50"/><rect x="60" y="60" width="20" height="10"/><rect x="70" y="40" width="10" height="20"/><rect x="65" y="40" width="5" height="10"/></g></svg>`;
+
+        const LOGO_BLACK = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><g fill="#303446"><rect x="35" y="20" width="10" height="40"/><rect x="25" y="20" width="10" height="10"/><rect x="15" y="60" width="30" height="10"/><rect x="15" y="50" width="10" height="10"/><rect x="60" y="20" width="20" height="10"/><rect x="50" y="20" width="10" height="50"/><rect x="60" y="60" width="20" height="10"/><rect x="70" y="40" width="10" height="20"/><rect x="65" y="40" width="5" height="10"/></g></svg>`;
+
+        const FAVICON_LINK = `<!-- Favicon Links -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">`;
+
+        function copyToClipboard(btnElement, content) {
+            const originalText = btnElement.innerText;
+            const originalHtml = btnElement.innerHTML;
+
+            // Create temporary textarea to copy from
+            const el = document.createElement('textarea');
+            el.value = content;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            // Visual Feedback
+            if(btnElement.classList.contains('swatch-card')) {
+                // For color swatches
+                const hint = btnElement.querySelector('.copy-hint');
+                hint.innerText = "COPIED!";
+                hint.style.backgroundColor = "#a6d189";
+                hint.style.color = "#303446";
+                hint.style.opacity = "1";
+                setTimeout(() => {
+                    hint.innerText = "COPY HEX";
+                    hint.style.backgroundColor = "";
+                    hint.style.color = "";
+                    hint.style.opacity = "";
+                }, 2000);
+            } else {
+                // For Buttons
+                btnElement.innerText = "COPIED!";
+                btnElement.classList.remove('bg-surface0', 'text-text');
+                btnElement.classList.add('bg-green', 'text-base');
+
+                setTimeout(() => {
+                    btnElement.innerText = originalText;
+                    btnElement.classList.add('bg-surface0', 'text-text');
+                    btnElement.classList.remove('bg-green', 'text-base');
+                }, 2000);
+            }
+        }
+
+        // Color Experimenter Functions
+        function updateLogoPreview() {
+            const primaryColor = document.getElementById('primaryColorSelect').value;
+            const secondaryColor = document.getElementById('secondaryColorSelect').value;
+
+            const previewLogo = document.getElementById('previewLogo');
+            const useElements = previewLogo.querySelectorAll('use');
+
+            // First use element is G (primary), second is J (secondary)
+            useElements[0].setAttribute('fill', primaryColor);
+            useElements[1].setAttribute('fill', secondaryColor);
+        }
+
+        function resetColors() {
+            document.getElementById('primaryColorSelect').value = '#8caaee';
+            document.getElementById('secondaryColorSelect').value = '#ca9ee6';
+            updateLogoPreview();
+        }
+    </script>
+</body>
+</html>

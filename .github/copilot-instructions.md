@@ -74,7 +74,7 @@ npx wrangler secret put OAUTH_CLIENT_ID  # Set secrets
 Posts use this frontmatter schema (enforced in `static/admin/config.yml`):
 ```yaml
 title: String (required)
-description: Text (optional) 
+description: Text (optional)
 date: DateTime (YYYY-MM-DDTHH:mm:ssZ)
 tldr: Text (optional)
 draft: Boolean (default: true)

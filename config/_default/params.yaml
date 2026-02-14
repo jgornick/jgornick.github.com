@@ -1,0 +1,107 @@
+# Basic site info with SEO
+description: "Dad, Husband, Nerd from Minnesota"
+keywords: ["Tech", "Blog", "Programming", "Software Engineering"]
+defaultAuthor: "Joe Gornick"
+language: "en-US"
+shortName: "Joe Gornick"
+images:
+  - "/images/og-default.jpg"
+
+# Favicon
+favicon:
+  svg: "/favicon.svg"
+
+# Author info
+author:
+  name: "Joe Gornick"
+  title: "Dad, Husband, Nerd from Minnesota"
+  description: ""
+  avatar: "/img/avatar-square.jpeg"
+  social:
+    - name: "GitHub"
+      url: "https://github.com/jgornick"
+      icon: "github"
+    - name: "Instagram"
+      url: "https://instagram.com/joe.gornick"
+      icon: "instagram"
+
+# Header configuration
+header:
+  sticky: true
+  logo:
+    image: "/img/logo.svg"
+    link: "/"
+  showThemeSwitch: false
+  showDarkModeSwitch: false
+  showLanguageSwitch: false
+  languageSwitchMode: "dropdown"
+
+# Dock display mode
+dock: "scroll"
+
+# Content width
+contentWidth: "56rem"
+
+# TOC (Table of Contents)
+toc:
+  enabled: true
+  position: "card"
+  maxHeight: "80vh"
+
+# Default color scheme - using Catppuccin Frappé
+colorScheme: "frappe"
+themes:
+  frappe:
+    name: "Frappé"
+    order: 1
+
+# Home page configuration
+home:
+  recentPostsCount: 10
+  contentOrder:
+    - author-section
+    - recent-posts
+
+# Post configuration
+post:
+  showRelated: true
+  relatedPostsCount: 3
+  license:
+    show: false
+
+# Comments
+comments:
+  enabled: false
+
+# Analytics
+analytics:
+  enabled: false
+
+# KaTeX
+katex:
+  enabled: false
+
+# Mermaid
+mermaid:
+  enabled: false
+
+# GLightbox
+lightbox:
+  enabled: false
+
+# Code block
+codeblock:
+  collapse:
+    enabled: true
+    defaultState: expanded
+    autoCollapseLines: 30
+    autoCollapseHeight: 400
+    collapsedHeight: 120
+
+# Reading progress
+readingProgress:
+  enabled: true
+  height: 3
+  showOnHomepage: false
+  smoothScroll: true
+  hideOnComplete: false

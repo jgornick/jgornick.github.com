@@ -1,0 +1,136 @@
+/* Catppuccin Frappé Color Scheme for Hugo Narrow */
+/*
+ * Official Frappé Palette: https://github.com/catppuccin/catppuccin
+ * Using purple/lavender theme with proper Frappé infrastructure
+ */
+
+[data-theme="frappe"] {
+  /* ============================================ */
+  /* Primary Colors - Purple/Lavender Theme      */
+  /* ============================================ */
+  /* Using Blue (#8caaee) as primary for links and main accents */
+  --color-primary: oklch(0.740 0.107 252.557);
+  --color-primary-foreground: oklch(0.234 0.019 265.326);
+
+  /* Using Mauve (#ca9ee6) for secondary elements */
+  --color-secondary: oklch(0.738 0.132 296.322);
+  --color-secondary-foreground: oklch(0.234 0.019 265.326);
+
+  /* Using Lavender (#babbf1) for accent/hover states */
+  --color-accent: oklch(0.769 0.089 274.151);
+  --color-accent-foreground: oklch(0.234 0.019 265.326);
+
+  /* ============================================ */
+  /* Background Colors - Frappé Base Layers      */
+  /* ============================================ */
+  /* Base (#303446) - Main background */
+  --color-background: oklch(0.288 0.022 265.326);
+
+  /* Text (#c6d0f5) - Main foreground text */
+  --color-foreground: oklch(0.850 0.028 267.935);
+
+  /* ============================================ */
+  /* Muted Colors - Surface and Overlay Layers   */
+  /* ============================================ */
+  /* Surface1 (#51576d) - Muted background */
+  --color-muted: oklch(0.394 0.032 265.326);
+
+  /* Subtext1 (#b5bfe2) - Muted foreground text */
+  --color-muted-foreground: oklch(0.786 0.047 267.935);
+
+  /* ============================================ */
+  /* Border Colors                                */
+  /* ============================================ */
+  /* Overlay0 (#737994) - Borders and dividers */
+  --color-border: oklch(0.532 0.027 265.326);
+
+  /* ============================================ */
+  /* Card Colors                                  */
+  /* ============================================ */
+  /* Mantle (#292c3c) - Card background */
+  --color-card: oklch(0.220 0.017 265.326);
+  --color-card-foreground: oklch(0.850 0.028 267.935);
+
+  /* ============================================ */
+  /* Popover Colors                               */
+  /* ============================================ */
+  /* Crust (#232634) - Popover background */
+  --color-popover: oklch(0.198 0.015 265.326);
+  --color-popover-foreground: oklch(0.850 0.028 267.935);
+
+  /* ============================================ */
+  /* Semantic Colors - Callouts & Alerts         */
+  /* ============================================ */
+  /* Blue (#8caaee) - Notes and informational */
+  --color-note: oklch(0.740 0.107 252.557);
+
+  /* Green (#a6d189) - Tips and success */
+  --color-tip: oklch(0.837 0.117 130.609);
+
+  /* Red (#e78284) - Important and errors */
+  --color-important: oklch(0.705 0.149 12.417);
+
+  /* Yellow (#e5c890) - Warnings */
+  --color-warning: oklch(0.840 0.109 75.768);
+
+  /* Peach (#ef9f76) - Caution */
+  --color-caution: oklch(0.745 0.138 48.835);
+
+  /* ============================================ */
+  /* Additional UI Elements                       */
+  /* ============================================ */
+  /* Selection background - Overlay2 with reduced opacity */
+  --color-selection: oklch(0.642 0.022 265.326);
+
+  /* Cursor - Rosewater (#f2d5cf) */
+  --color-cursor: oklch(0.881 0.039 28.626);
+
+  /* Subtle text - Overlay1 (#838ba7) */
+  --color-subtle: oklch(0.608 0.028 265.326);
+}
+
+[data-theme="frappe"].dark {
+  /* Frappé is inherently a dark theme - same values as base */
+  --color-primary: oklch(0.740 0.107 252.557);
+  --color-primary-foreground: oklch(0.234 0.019 265.326);
+  --color-secondary: oklch(0.738 0.132 296.322);
+  --color-secondary-foreground: oklch(0.234 0.019 265.326);
+  --color-accent: oklch(0.769 0.089 274.151);
+  --color-accent-foreground: oklch(0.234 0.019 265.326);
+  --color-background: oklch(0.288 0.022 265.326);
+  --color-foreground: oklch(0.850 0.028 267.935);
+  --color-muted: oklch(0.394 0.032 265.326);
+  --color-muted-foreground: oklch(0.786 0.047 267.935);
+  --color-border: oklch(0.532 0.027 265.326);
+  --color-card: oklch(0.220 0.017 265.326);
+  --color-card-foreground: oklch(0.850 0.028 267.935);
+  --color-popover: oklch(0.198 0.015 265.326);
+  --color-popover-foreground: oklch(0.850 0.028 267.935);
+  --color-note: oklch(0.740 0.107 252.557);
+  --color-tip: oklch(0.837 0.117 130.609);
+  --color-important: oklch(0.705 0.149 12.417);
+  --color-warning: oklch(0.840 0.109 75.768);
+  --color-caution: oklch(0.745 0.138 48.835);
+  --color-selection: oklch(0.642 0.022 265.326);
+  --color-cursor: oklch(0.881 0.039 28.626);
+  --color-subtle: oklch(0.608 0.028 265.326);
+}
+
+/* ============================================ */
+/* Additional CSS for proper color application  */
+/* ============================================ */
+
+/* Text selection */
+[data-theme="frappe"] ::selection,
+[data-theme="frappe"].dark ::selection {
+  background-color: var(--color-selection);
+  color: var(--color-foreground);
+}
+
+/* Cursor styling where applicable */
+[data-theme="frappe"] input,
+[data-theme="frappe"] textarea,
+[data-theme="frappe"].dark input,
+[data-theme="frappe"].dark textarea {
+  caret-color: var(--color-cursor);
+}
