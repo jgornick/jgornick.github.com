@@ -75,7 +75,10 @@ comments:
 
 # Analytics
 analytics:
-  enabled: false
+  enabled: true
+  google:
+    enabled: true
+    id: "G-CYCL78ZG85"
 
 # KaTeX
 katex:

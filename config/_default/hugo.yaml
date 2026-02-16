@@ -48,7 +48,7 @@ markup:
     lineNos: false
     lineNumbersInTable: false
     noClasses: false
-    style: github
+    style: catppuccin-frappe
     tabWidth: 2
 
 outputs:
