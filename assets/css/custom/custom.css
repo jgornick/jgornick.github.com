@@ -28,7 +28,7 @@
   /* Primary Colors                               */
   /* ============================================ */
   /* Night Sky Blue — lightened to ~62% L for readability on dark background */
-  --color-primary: oklch(0.620 0.148 252);
+  --color-primary: oklch(0.700 0.120 252);
   --color-primary-foreground: oklch(0.185 0.060 252);
 
   /* Water Blue (#52C9E8) — the bright lake color */
@@ -49,7 +49,7 @@
   /* Muted Colors                                 */
   /* ============================================ */
   --color-muted: oklch(0.385 0.050 252);             /* Surface1 */
-  --color-muted-foreground: oklch(0.785 0.035 225);  /* Subtext1 */
+  --color-muted-foreground: oklch(0.860 0.030 225);  /* Subtext1 */
 
   /* ============================================ */
   /* Border Colors                                */
@@ -87,7 +87,7 @@
 
 [data-theme="mn-boundary-waters"].dark {
   /* Boundary Waters is inherently dark — same values as base */
-  --color-primary: oklch(0.620 0.148 252);
+  --color-primary: oklch(0.700 0.120 252);
   --color-primary-foreground: oklch(0.185 0.060 252);
   --color-secondary: oklch(0.770 0.095 212);
   --color-secondary-foreground: oklch(0.185 0.060 252);
@@ -96,7 +96,7 @@
   --color-background: oklch(0.288 0.062 252);
   --color-foreground: oklch(0.920 0.022 212);
   --color-muted: oklch(0.385 0.050 252);
-  --color-muted-foreground: oklch(0.785 0.035 225);
+  --color-muted-foreground: oklch(0.860 0.030 225);
   --color-border: oklch(0.482 0.040 252);
   --color-card: oklch(0.232 0.058 252);
   --color-card-foreground: oklch(0.920 0.022 212);
@@ -141,8 +141,49 @@
     align-items: flex-start;
   }
 
+  .breadcrumb ol li {
+    max-width: 100%;
+  }
+
+  .breadcrumb ol li a,
+  .breadcrumb ol li > span {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* Keep icons at fixed size */
+  .breadcrumb svg {
+    flex-shrink: 0;
+  }
+
+  /* Allow text to truncate */
+  .breadcrumb ol li span.truncate,
+  .breadcrumb ol li span[class*="max-w"] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
   .breadcrumb span[class*="max-w"] {
     max-width: none;
+  }
+
+  /* Indent each breadcrumb level */
+  .breadcrumb ol li:nth-child(2) {
+    padding-left: 1rem;
+  }
+
+  .breadcrumb ol li:nth-child(3) {
+    padding-left: 2rem;
+  }
+
+  .breadcrumb ol li:nth-child(4) {
+    padding-left: 3rem;
+  }
+
+  .breadcrumb ol li:nth-child(n+5) {
+    padding-left: 4rem;
   }
 }
 
@@ -167,4 +208,45 @@
   margin: -2px -4px;
   padding: 2px 4px;
   text-decoration-color: transparent;
+}
+
+/* Boost contrast for dimmed text utilities */
+.text-muted-foreground\/50,
+.text-muted-foreground\/60 {
+  color: color-mix(in oklab, var(--color-muted-foreground) 80%, transparent);
+}
+
+/* Make hover text fully visible */
+.hover\:text-primary\/80:hover {
+  color: var(--color-primary);
+}
+
+/* Explicit hover text colors to avoid contrast loss */
+.hover\:text-accent-foreground:hover {
+  color: var(--color-accent-foreground);
+}
+
+.hover\:text-foreground:hover {
+  color: var(--color-foreground);
+}
+
+.hover\:text-primary:hover {
+  color: var(--color-primary);
+}
+
+.hover\:text-primary-foreground:hover {
+  color: var(--color-primary-foreground);
+}
+
+.group:hover .group-hover\:text-primary {
+  color: var(--color-primary);
+}
+
+.group:hover .group-hover\:text-white {
+  color: #ffffff;
+}
+
+/* Ensure theme credit link meets contrast */
+a[href$="gohugo.io/"] {
+  color: var(--color-foreground);
 }

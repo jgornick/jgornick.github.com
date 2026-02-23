@@ -15,7 +15,7 @@
  * - Variables: Foreground text (neutral)
  */
 
-[data-theme="mn-boundary-waters"] {
+:root[data-theme="mn-boundary-waters"] {
   /* Base text color for code blocks */
   --chroma-color: oklch(0.920 0.022 212); /* Text - near-white with Water Blue tint */
 
@@ -116,7 +116,7 @@
 }
 
 /* Dark mode variant - same as base since Boundary Waters is inherently dark */
-[data-theme="mn-boundary-waters"].dark {
+:root[data-theme="mn-boundary-waters"].dark {
   --chroma-color: oklch(0.920 0.022 212);
   --chroma-k: oklch(0.720 0.175 15);
   --chroma-kc: oklch(0.720 0.175 15);
