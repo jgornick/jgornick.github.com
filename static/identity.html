@@ -13,20 +13,20 @@
     <!-- Tailwind CSS (via CDN for standalone file) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Config for Tailwind to use Catppuccin Colors -->
+    <!-- Config for Tailwind to use Minnesota State Flag Colors -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        base: '#303446',
-                        surface0: '#414559',
-                        surface1: '#51576d',
-                        text: '#c6d0f5',
-                        subtext0: '#a5adce',
-                        blue: '#8caaee',  /* Primary */
-                        mauve: '#ca9ee6', /* Secondary */
-                        green: '#a6d189',
+                        base: 'oklch(0.288 0.062 252)',
+                        surface0: 'oklch(0.350 0.055 252)',
+                        surface1: 'oklch(0.385 0.050 252)',
+                        text: 'oklch(0.920 0.022 212)',
+                        subtext0: 'oklch(0.785 0.035 225)',
+                        blue: 'oklch(0.620 0.148 252)',  /* Primary — Night Sky Blue */
+                        mauve: 'oklch(0.770 0.095 212)', /* Secondary — Water Blue */
+                        green: 'oklch(0.740 0.130 175)', /* Teal — success/DO */
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -38,16 +38,16 @@
     </script>
 
     <style>
-        body { background-color: #303446; color: #c6d0f5; }
+        body { background-color: oklch(0.288 0.062 252); color: oklch(0.920 0.022 212); }
         .grid-bg {
-            background-image: radial-gradient(#414559 1px, transparent 1px);
+            background-image: radial-gradient(oklch(0.232 0.058 252) 1px, transparent 1px);
             background-size: 10px 10px;
         }
         .swatch-card:hover .copy-hint { opacity: 1; }
 
         /* Do/Don't Cards */
-        .do-card { border-color: #a6d189; }
-        .dont-card { border-color: #e78284; }
+        .do-card { border-color: oklch(0.740 0.130 175); }
+        .dont-card { border-color: oklch(0.620 0.175 15); }
     </style>
 </head>
 <body class="antialiased selection:bg-blue selection:text-base pb-20">
@@ -55,13 +55,13 @@
     <!-- SVG Symbol Definitions -->
     <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
         <symbol id="logo-master" viewBox="0 0 100 100">
-            <g fill="#ca9ee6">
+            <g fill="oklch(0.770 0.095 212)">
               <rect x="35" y="20" width="10" height="40"/>
               <rect x="25" y="20" width="10" height="10"/>
               <rect x="15" y="60" width="30" height="10"/>
               <rect x="15" y="50" width="10" height="10"/>
             </g>
-            <g fill="#8caaee">
+            <g fill="oklch(0.620 0.148 252)">
               <rect x="60" y="20" width="20" height="10"/>
               <rect x="50" y="20" width="10" height="50"/>
               <rect x="60" y="60" width="20" height="10"/>
@@ -85,7 +85,7 @@
         </symbol>
 
         <symbol id="logo-black" viewBox="0 0 100 100">
-            <g fill="#303446">
+            <g fill="oklch(0.280 0.140 252)">
                 <rect x="35" y="20" width="10" height="40"/>
                 <rect x="25" y="20" width="10" height="10"/>
                 <rect x="15" y="60" width="30" height="10"/>
@@ -128,11 +128,11 @@
             </div>
             <div>
                 <h1 class="text-4xl font-extrabold tracking-tight text-white">Joe Gornick</h1>
-                <p class="text-subtext0 font-mono text-sm mt-1">IDENTITY SYSTEM v1.2 • CATPPUCCIN FRAPPÉ</p>
+                <p class="text-subtext0 font-mono text-sm mt-1">IDENTITY SYSTEM v1.3 • MINNESOTA STATE FLAG</p>
             </div>
         </div>
         <p class="text-lg text-subtext0 max-w-2xl leading-relaxed">
-            The complete visual language for a "Nerd from Minnesota." Built on a strict 10×10 pixel grid with interlocking logic gates, utilizing the Catppuccin Frappé palette. Includes logo variations, color alternatives, and comprehensive usage guidelines.
+            The complete visual language for a "Nerd from Minnesota." Built on a strict 10×10 pixel grid with interlocking logic gates, utilizing the 2024 Minnesota State Flag palette. Includes logo variations, color alternatives, and comprehensive usage guidelines.
         </p>
     </header>
 
@@ -186,7 +186,7 @@
 
                 <!-- Solid Black -->
                 <div class="bg-surface0/30 border border-surface0 rounded-2xl p-6 flex flex-col gap-6 group">
-                    <div class="aspect-square bg-[#eff1f5] rounded-lg border border-surface0 flex items-center justify-center">
+                    <div class="aspect-square rounded-lg border border-surface0 flex items-center justify-center" style="background-color: oklch(0.850 0.070 212);">
                          <svg viewBox="0 0 100 100" class="w-32 h-32">
                             <use href="#logo-black"/>
                         </svg>
@@ -255,38 +255,38 @@
             </h2>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <!-- Blue -->
-                <button onclick="copyToClipboard(this, '#8caaee')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-blue transition-all group relative">
+                <!-- Night Sky Blue -->
+                <button onclick="copyToClipboard(this, 'oklch(0.620 0.148 252)')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-blue transition-all group relative">
                     <div class="h-16 w-full bg-blue rounded-lg mb-3 shadow-lg"></div>
-                    <p class="text-white font-bold">Blue</p>
-                    <p class="text-subtext0 font-mono text-xs mt-1">#8caaee</p>
+                    <p class="text-white font-bold">Night Sky Blue</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.620 0.148 252)</p>
                     <p class="text-xs text-blue mt-2 opacity-60">Primary Brand</p>
                     <div class="copy-hint absolute top-4 right-4 bg-base text-white text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
                 </button>
 
-                <!-- Mauve -->
-                <button onclick="copyToClipboard(this, '#ca9ee6')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-mauve transition-all group relative">
+                <!-- Water Blue -->
+                <button onclick="copyToClipboard(this, 'oklch(0.770 0.095 212)')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-mauve transition-all group relative">
                     <div class="h-16 w-full bg-mauve rounded-lg mb-3 shadow-lg"></div>
-                    <p class="text-white font-bold">Mauve</p>
-                    <p class="text-subtext0 font-mono text-xs mt-1">#ca9ee6</p>
+                    <p class="text-white font-bold">Water Blue</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.770 0.095 212)</p>
                     <p class="text-xs text-mauve mt-2 opacity-60">Secondary Brand</p>
                     <div class="copy-hint absolute top-4 right-4 bg-base text-white text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
                 </button>
 
-                <!-- Base -->
-                <button onclick="copyToClipboard(this, '#303446')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-white transition-all group relative">
+                <!-- Night Sky Dark -->
+                <button onclick="copyToClipboard(this, 'oklch(0.288 0.062 252)')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-white transition-all group relative">
                     <div class="h-16 w-full bg-base rounded-lg mb-3 shadow-lg border border-surface1"></div>
-                    <p class="text-white font-bold">Base</p>
-                    <p class="text-subtext0 font-mono text-xs mt-1">#303446</p>
+                    <p class="text-white font-bold">Night Sky Dark</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.288 0.062 252)</p>
                     <p class="text-xs text-subtext0 mt-2 opacity-60">Background</p>
                     <div class="copy-hint absolute top-4 right-4 bg-white text-base text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
                 </button>
 
-                <!-- Text -->
-                <button onclick="copyToClipboard(this, '#c6d0f5')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-text transition-all group relative">
+                <!-- Starlight -->
+                <button onclick="copyToClipboard(this, 'oklch(0.920 0.022 212)')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-text transition-all group relative">
                     <div class="h-16 w-full bg-text rounded-lg mb-3 shadow-lg"></div>
-                    <p class="text-white font-bold">Text</p>
-                    <p class="text-subtext0 font-mono text-xs mt-1">#c6d0f5</p>
+                    <p class="text-white font-bold">Starlight</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.920 0.022 212)</p>
                     <p class="text-xs text-text mt-2 opacity-60">Body Copy</p>
                     <div class="copy-hint absolute top-4 right-4 bg-base text-white text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
                 </button>
@@ -298,7 +298,7 @@
                     <span class="text-mauve">⚗️</span> Color Experimenter
                 </h3>
                 <p class="text-subtext0 mb-6">
-                    Try different Catppuccin Frappé color combinations to see how they work with the logo.
+                    Try different Minnesota State Flag color combinations to see how they work with the logo.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -308,16 +308,14 @@
                         <div>
                             <label class="text-white font-bold mb-3 block">Primary Color (G)</label>
                             <select id="primaryColorSelect" onchange="updateLogoPreview()" class="w-full bg-surface0 text-text border border-surface1 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue">
-                                <option value="#e78284">Red - #e78284</option>
-                                <option value="#ef9f76">Peach - #ef9f76</option>
-                                <option value="#e5c890">Yellow - #e5c890</option>
-                                <option value="#a6d189">Green - #a6d189</option>
-                                <option value="#81c8be">Teal - #81c8be</option>
-                                <option value="#99d1db">Sky - #99d1db</option>
-                                <option value="#8caaee" selected>Blue - #8caaee</option>
-                                <option value="#babbf1">Lavender - #babbf1</option>
-                                <option value="#ca9ee6">Mauve - #ca9ee6</option>
-                                <option value="#f4b8e4">Pink - #f4b8e4</option>
+                                <option value="oklch(0.280 0.140 252)">Night Sky Dark - oklch(0.280 0.140 252)</option>
+                                <option value="oklch(0.620 0.148 252)" selected>Night Sky Blue - oklch(0.620 0.148 252)</option>
+                                <option value="oklch(0.770 0.095 212)">Water Blue - oklch(0.770 0.095 212)</option>
+                                <option value="#FFFFFF">North Star White - #FFFFFF</option>
+                                <option value="oklch(0.740 0.130 175)">Teal - oklch(0.740 0.130 175)</option>
+                                <option value="oklch(0.620 0.110 245)">Steel Blue - oklch(0.620 0.110 245)</option>
+                                <option value="oklch(0.780 0.080 210)">Ice Blue - oklch(0.780 0.080 210)</option>
+                                <option value="oklch(0.840 0.128 78)">Gold - oklch(0.840 0.128 78)</option>
                             </select>
                         </div>
 
@@ -325,16 +323,14 @@
                         <div>
                             <label class="text-white font-bold mb-3 block">Secondary Color (J)</label>
                             <select id="secondaryColorSelect" onchange="updateLogoPreview()" class="w-full bg-surface0 text-text border border-surface1 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-mauve">
-                                <option value="#e78284">Red - #e78284</option>
-                                <option value="#ef9f76">Peach - #ef9f76</option>
-                                <option value="#e5c890">Yellow - #e5c890</option>
-                                <option value="#a6d189">Green - #a6d189</option>
-                                <option value="#81c8be">Teal - #81c8be</option>
-                                <option value="#99d1db">Sky - #99d1db</option>
-                                <option value="#8caaee">Blue - #8caaee</option>
-                                <option value="#babbf1">Lavender - #babbf1</option>
-                                <option value="#ca9ee6" selected>Mauve - #ca9ee6</option>
-                                <option value="#f4b8e4">Pink - #f4b8e4</option>
+                                <option value="oklch(0.280 0.140 252)">Night Sky Dark - oklch(0.280 0.140 252)</option>
+                                <option value="oklch(0.620 0.148 252)">Night Sky Blue - oklch(0.620 0.148 252)</option>
+                                <option value="oklch(0.770 0.095 212)" selected>Water Blue - oklch(0.770 0.095 212)</option>
+                                <option value="#FFFFFF">North Star White - #FFFFFF</option>
+                                <option value="oklch(0.740 0.130 175)">Teal - oklch(0.740 0.130 175)</option>
+                                <option value="oklch(0.620 0.110 245)">Steel Blue - oklch(0.620 0.110 245)</option>
+                                <option value="oklch(0.780 0.080 210)">Ice Blue - oklch(0.780 0.080 210)</option>
+                                <option value="oklch(0.840 0.128 78)">Gold - oklch(0.840 0.128 78)</option>
                             </select>
                         </div>
 
@@ -443,9 +439,9 @@
                         <div class="w-6 h-6 bg-[#e78284] rounded-full flex items-center justify-center text-base font-bold text-xs">✗</div>
                         <h3 class="font-bold text-[#e78284] uppercase tracking-wide text-sm">DON'T</h3>
                     </div>
-                    <div class="bg-blue rounded-lg border border-surface0 p-6 mb-4 flex items-center justify-center" style="opacity: 0.6;">
+                    <div class="bg-mauve rounded-lg border border-surface0 p-6 mb-4 flex items-center justify-center" style="opacity: 0.6;">
                         <svg viewBox="0 0 100 100" class="w-32 h-32">
-                            <g fill="#ca9ee6">
+                            <g fill="#3A7BD5">
                                 <rect x="35" y="20" width="10" height="40"/>
                                 <rect x="25" y="20" width="10" height="10"/>
                                 <rect x="15" y="60" width="30" height="10"/>
@@ -529,17 +525,17 @@
     <!-- Footer -->
     <footer class="max-w-5xl mx-auto py-12 px-6 border-t border-surface0 text-center">
         <p class="text-subtext0 text-xs font-mono">
-            &copy; 2026 JOE GORNICK • IDENTITY SYSTEM • GENERATED BY GEMINI
+            &copy; 2026 JOE GORNICK • IDENTITY SYSTEM • MINNESOTA STATE FLAG EDITION
         </p>
     </footer>
 
     <!-- LOGO DATA & SCRIPT -->
     <script>
-        const LOGO_MASTER = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="35" y="20" width="10" height="40" fill="#ca9ee6"/><rect x="25" y="20" width="10" height="10" fill="#ca9ee6"/><rect x="15" y="60" width="30" height="10" fill="#ca9ee6"/><rect x="15" y="50" width="10" height="10" fill="#ca9ee6"/><rect x="60" y="20" width="20" height="10" fill="#8caaee"/><rect x="50" y="20" width="10" height="50" fill="#8caaee"/><rect x="60" y="60" width="20" height="10" fill="#8caaee"/><rect x="70" y="40" width="10" height="20" fill="#8caaee"/><rect x="65" y="40" width="5" height="10" fill="#8caaee"/></svg>`;
+        const LOGO_MASTER = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="35" y="20" width="10" height="40" fill="oklch(0.770 0.095 212)"/><rect x="25" y="20" width="10" height="10" fill="oklch(0.770 0.095 212)"/><rect x="15" y="60" width="30" height="10" fill="oklch(0.770 0.095 212)"/><rect x="15" y="50" width="10" height="10" fill="oklch(0.770 0.095 212)"/><rect x="60" y="20" width="20" height="10" fill="oklch(0.620 0.148 252)"/><rect x="50" y="20" width="10" height="50" fill="oklch(0.620 0.148 252)"/><rect x="60" y="60" width="20" height="10" fill="oklch(0.620 0.148 252)"/><rect x="70" y="40" width="10" height="20" fill="oklch(0.620 0.148 252)"/><rect x="65" y="40" width="5" height="10" fill="oklch(0.620 0.148 252)"/></svg>`;
 
         const LOGO_WHITE = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><g fill="#ffffff"><rect x="35" y="20" width="10" height="40"/><rect x="25" y="20" width="10" height="10"/><rect x="15" y="60" width="30" height="10"/><rect x="15" y="50" width="10" height="10"/><rect x="60" y="20" width="20" height="10"/><rect x="50" y="20" width="10" height="50"/><rect x="60" y="60" width="20" height="10"/><rect x="70" y="40" width="10" height="20"/><rect x="65" y="40" width="5" height="10"/></g></svg>`;
 
-        const LOGO_BLACK = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><g fill="#303446"><rect x="35" y="20" width="10" height="40"/><rect x="25" y="20" width="10" height="10"/><rect x="15" y="60" width="30" height="10"/><rect x="15" y="50" width="10" height="10"/><rect x="60" y="20" width="20" height="10"/><rect x="50" y="20" width="10" height="50"/><rect x="60" y="60" width="20" height="10"/><rect x="70" y="40" width="10" height="20"/><rect x="65" y="40" width="5" height="10"/></g></svg>`;
+        const LOGO_BLACK = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><g fill="oklch(0.280 0.140 252)"><rect x="35" y="20" width="10" height="40"/><rect x="25" y="20" width="10" height="10"/><rect x="15" y="60" width="30" height="10"/><rect x="15" y="50" width="10" height="10"/><rect x="60" y="20" width="20" height="10"/><rect x="50" y="20" width="10" height="50"/><rect x="60" y="60" width="20" height="10"/><rect x="70" y="40" width="10" height="20"/><rect x="65" y="40" width="5" height="10"/></g></svg>`;
 
         const FAVICON_LINK = `<!-- Favicon Links -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -564,8 +560,8 @@
                 // For color swatches
                 const hint = btnElement.querySelector('.copy-hint');
                 hint.innerText = "COPIED!";
-                hint.style.backgroundColor = "#a6d189";
-                hint.style.color = "#303446";
+                hint.style.backgroundColor = "oklch(0.740 0.130 175)";
+                hint.style.color = "oklch(0.288 0.062 252)";
                 hint.style.opacity = "1";
                 setTimeout(() => {
                     hint.innerText = "COPY HEX";
@@ -601,8 +597,8 @@
         }
 
         function resetColors() {
-            document.getElementById('primaryColorSelect').value = '#8caaee';
-            document.getElementById('secondaryColorSelect').value = '#ca9ee6';
+            document.getElementById('primaryColorSelect').value = 'oklch(0.620 0.148 252)';
+            document.getElementById('secondaryColorSelect').value = 'oklch(0.770 0.095 212)';
             updateLogoPreview();
         }
     </script>

@@ -1,0 +1,201 @@
+/* Chroma Syntax Highlighting — Minnesota Boundary Waters Theme */
+/*
+ * Custom syntax highlighting colors based on the Minnesota Boundary Waters
+ * (Twilight Variant) color scheme. This theme is designed for dark backgrounds
+ * inspired by the hazy indigo of the BWCA at late dusk.
+ *
+ * Color mapping philosophy:
+ * - Keywords: Cranberry red (important, stands out)
+ * - Strings: Pine teal (calming, natural)
+ * - Comments: Subdued text (less prominent)
+ * - Functions: Water Blue (prominent, clear)
+ * - Numbers: Prairie gold (warm, noticeable)
+ * - Operators: Iron Range orange (action-oriented)
+ * - Classes/Types: Night Sky Blue (structural)
+ * - Variables: Foreground text (neutral)
+ */
+
+[data-theme="mn-boundary-waters"] {
+  /* Base text color for code blocks */
+  --chroma-color: oklch(0.920 0.022 212); /* Text - near-white with Water Blue tint */
+
+  /* Keywords (if, else, function, class, etc.) - Cranberry red */
+  --chroma-k: oklch(0.720 0.175 15);
+  --chroma-kc: oklch(0.720 0.175 15);
+  --chroma-kd: oklch(0.720 0.175 15);
+  --chroma-kn: oklch(0.720 0.175 15);
+  --chroma-kp: oklch(0.720 0.175 15);
+  --chroma-kr: oklch(0.720 0.175 15);
+  --chroma-kt: oklch(0.720 0.175 15);
+
+  /* Names - various entities */
+  --chroma-n: oklch(0.920 0.022 212); /* Default name - foreground text */
+  --chroma-na: oklch(0.840 0.128 78); /* Attribute names - Prairie gold */
+  --chroma-nc: oklch(0.620 0.148 252); /* Class names - Night Sky Blue */
+  --chroma-no: oklch(0.620 0.148 252); /* Constants - Night Sky Blue */
+  --chroma-nd: oklch(0.700 0.105 212); /* Decorators - Water Blue mid */
+  --chroma-ni: oklch(0.840 0.128 78); /* Entity names - Prairie gold */
+  --chroma-ne: oklch(0.720 0.175 15); /* Exceptions - Cranberry red */
+  --chroma-nl: oklch(0.770 0.095 212); /* Labels - Water Blue */
+  --chroma-nn: oklch(0.620 0.148 252); /* Namespaces - Night Sky Blue */
+  --chroma-nx: oklch(0.920 0.022 212); /* Other names - foreground text */
+  --chroma-py: oklch(0.920 0.022 212); /* Property - foreground text */
+  --chroma-nt: oklch(0.700 0.105 212); /* Tags (HTML/XML) - Water Blue mid */
+  --chroma-nb: oklch(0.700 0.105 212); /* Built-in names - Water Blue mid */
+  --chroma-bp: oklch(0.785 0.035 225); /* Built-in pseudo - Subtext */
+  --chroma-nv: oklch(0.920 0.022 212); /* Variable names - foreground text */
+  --chroma-nf: oklch(0.770 0.095 212); /* Function names - Water Blue */
+  --chroma-fm: oklch(0.770 0.095 212); /* Magic functions - Water Blue */
+
+  /* Literals */
+  --chroma-l: oklch(0.840 0.128 78); /* General literal - Prairie gold */
+  --chroma-ld: oklch(0.840 0.128 78); /* Date literal - Prairie gold */
+
+  /* Strings - Pine teal (calming, natural) */
+  --chroma-s: oklch(0.740 0.130 175);
+  --chroma-sa: oklch(0.740 0.130 175);
+  --chroma-sb: oklch(0.740 0.130 175);
+  --chroma-sc: oklch(0.740 0.130 175);
+  --chroma-sd: oklch(0.740 0.130 175);
+  --chroma-s2: oklch(0.740 0.130 175);
+  --chroma-se: oklch(0.770 0.095 212); /* String escape - Water Blue */
+  --chroma-sh: oklch(0.740 0.130 175);
+  --chroma-si: oklch(0.770 0.095 212); /* String interpolation - Water Blue */
+  --chroma-sx: oklch(0.740 0.130 175);
+  --chroma-sr: oklch(0.740 0.130 175); /* Regex - Pine teal */
+  --chroma-s1: oklch(0.740 0.130 175);
+  --chroma-ss: oklch(0.840 0.128 78); /* Symbol - Prairie gold */
+  --chroma-dl: oklch(0.740 0.130 175); /* String delimiter */
+
+  /* Numbers - Prairie gold */
+  --chroma-m: oklch(0.840 0.128 78);
+  --chroma-mb: oklch(0.840 0.128 78);
+  --chroma-mf: oklch(0.840 0.128 78);
+  --chroma-mh: oklch(0.840 0.128 78);
+  --chroma-mi: oklch(0.840 0.128 78);
+  --chroma-il: oklch(0.840 0.128 78);
+  --chroma-mo: oklch(0.840 0.128 78);
+
+  /* Operators - Iron Range orange */
+  --chroma-o: oklch(0.700 0.160 47);
+  --chroma-ow: oklch(0.700 0.160 47);
+
+  /* Punctuation - subtle */
+  --chroma-p: oklch(0.785 0.035 225);
+
+  /* Comments - subdued, less prominent */
+  --chroma-c: oklch(0.582 0.036 252);
+  --chroma-ch: oklch(0.582 0.036 252);
+  --chroma-cm: oklch(0.582 0.036 252);
+  --chroma-c1: oklch(0.582 0.036 252);
+  --chroma-cs: oklch(0.620 0.040 252); /* Comment special - slightly brighter */
+  --chroma-cp: oklch(0.620 0.040 252); /* Preprocessor comment */
+  --chroma-cpf: oklch(0.620 0.040 252);
+
+  /* Errors and highlighting */
+  --chroma-err: oklch(0.720 0.175 15); /* Error text - Cranberry red */
+  --chroma-err-bg: oklch(0.232 0.058 252); /* Error background - Mantle */
+  --chroma-hl: oklch(0.350 0.055 252); /* Highlight background - Surface0 */
+  --chroma-ln: oklch(0.582 0.036 252); /* Line numbers - subtle */
+
+  /* Generic/Diff colors */
+  --chroma-gd: oklch(0.720 0.175 15); /* Deleted - Cranberry red */
+  --chroma-gd-bg: oklch(0.232 0.058 252); /* Deleted background - Mantle */
+  --chroma-ge: inherit; /* Emphasis (italic handled by CSS) */
+  --chroma-gr: oklch(0.720 0.175 15); /* Error - Cranberry red */
+  --chroma-gh: oklch(0.770 0.095 212); /* Heading - Water Blue */
+  --chroma-gi: oklch(0.740 0.130 175); /* Inserted - Pine teal */
+  --chroma-gi-bg: oklch(0.232 0.058 252); /* Inserted background - Mantle */
+  --chroma-go: oklch(0.785 0.035 225); /* Output - Subtext */
+  --chroma-gp: oklch(0.785 0.035 225); /* Prompt - Subtext */
+  --chroma-gs: inherit; /* Strong (bold handled by CSS) */
+  --chroma-gu: oklch(0.700 0.105 212); /* Subheading - Water Blue mid */
+  --chroma-gt: oklch(0.700 0.160 47); /* Traceback - Iron Range orange */
+  --chroma-gl: inherit; /* Link (underline handled by CSS) */
+  --chroma-w: oklch(0.482 0.040 252); /* Whitespace - Border color */
+}
+
+/* Dark mode variant - same as base since Boundary Waters is inherently dark */
+[data-theme="mn-boundary-waters"].dark {
+  --chroma-color: oklch(0.920 0.022 212);
+  --chroma-k: oklch(0.720 0.175 15);
+  --chroma-kc: oklch(0.720 0.175 15);
+  --chroma-kd: oklch(0.720 0.175 15);
+  --chroma-kn: oklch(0.720 0.175 15);
+  --chroma-kp: oklch(0.720 0.175 15);
+  --chroma-kr: oklch(0.720 0.175 15);
+  --chroma-kt: oklch(0.720 0.175 15);
+  --chroma-n: oklch(0.920 0.022 212);
+  --chroma-na: oklch(0.840 0.128 78);
+  --chroma-nc: oklch(0.620 0.148 252);
+  --chroma-no: oklch(0.620 0.148 252);
+  --chroma-nd: oklch(0.700 0.105 212);
+  --chroma-ni: oklch(0.840 0.128 78);
+  --chroma-ne: oklch(0.720 0.175 15);
+  --chroma-nl: oklch(0.770 0.095 212);
+  --chroma-nn: oklch(0.620 0.148 252);
+  --chroma-nx: oklch(0.920 0.022 212);
+  --chroma-py: oklch(0.920 0.022 212);
+  --chroma-nt: oklch(0.700 0.105 212);
+  --chroma-nb: oklch(0.700 0.105 212);
+  --chroma-bp: oklch(0.785 0.035 225);
+  --chroma-nv: oklch(0.920 0.022 212);
+  --chroma-nf: oklch(0.770 0.095 212);
+  --chroma-fm: oklch(0.770 0.095 212);
+  --chroma-l: oklch(0.840 0.128 78);
+  --chroma-ld: oklch(0.840 0.128 78);
+  --chroma-s: oklch(0.740 0.130 175);
+  --chroma-sa: oklch(0.740 0.130 175);
+  --chroma-sb: oklch(0.740 0.130 175);
+  --chroma-sc: oklch(0.740 0.130 175);
+  --chroma-sd: oklch(0.740 0.130 175);
+  --chroma-s2: oklch(0.740 0.130 175);
+  --chroma-se: oklch(0.770 0.095 212);
+  --chroma-sh: oklch(0.740 0.130 175);
+  --chroma-si: oklch(0.770 0.095 212);
+  --chroma-sx: oklch(0.740 0.130 175);
+  --chroma-sr: oklch(0.740 0.130 175);
+  --chroma-s1: oklch(0.740 0.130 175);
+  --chroma-ss: oklch(0.840 0.128 78);
+  --chroma-dl: oklch(0.740 0.130 175);
+  --chroma-m: oklch(0.840 0.128 78);
+  --chroma-mb: oklch(0.840 0.128 78);
+  --chroma-mf: oklch(0.840 0.128 78);
+  --chroma-mh: oklch(0.840 0.128 78);
+  --chroma-mi: oklch(0.840 0.128 78);
+  --chroma-il: oklch(0.840 0.128 78);
+  --chroma-mo: oklch(0.840 0.128 78);
+  --chroma-o: oklch(0.700 0.160 47);
+  --chroma-ow: oklch(0.700 0.160 47);
+  --chroma-p: oklch(0.785 0.035 225);
+  --chroma-c: oklch(0.582 0.036 252);
+  --chroma-ch: oklch(0.582 0.036 252);
+  --chroma-cm: oklch(0.582 0.036 252);
+  --chroma-c1: oklch(0.582 0.036 252);
+  --chroma-cs: oklch(0.620 0.040 252);
+  --chroma-cp: oklch(0.620 0.040 252);
+  --chroma-cpf: oklch(0.620 0.040 252);
+  --chroma-err: oklch(0.720 0.175 15);
+  --chroma-err-bg: oklch(0.232 0.058 252);
+  --chroma-hl: oklch(0.350 0.055 252);
+  --chroma-ln: oklch(0.582 0.036 252);
+  --chroma-gd: oklch(0.720 0.175 15);
+  --chroma-gd-bg: oklch(0.232 0.058 252);
+  --chroma-gr: oklch(0.720 0.175 15);
+  --chroma-gh: oklch(0.770 0.095 212);
+  --chroma-gi: oklch(0.740 0.130 175);
+  --chroma-gi-bg: oklch(0.232 0.058 252);
+  --chroma-go: oklch(0.785 0.035 225);
+  --chroma-gp: oklch(0.785 0.035 225);
+  --chroma-gu: oklch(0.700 0.105 212);
+  --chroma-gt: oklch(0.700 0.160 47);
+  --chroma-w: oklch(0.482 0.040 252);
+}
+
+/* ============================================ */
+/* Chroma Class Styles                          */
+/* ============================================ */
+/* Note: The actual class application (`.chroma .k`, etc.) is handled by     */
+/* the main chroma.css file in public/css/. This file only defines the       */
+/* color variables that will be picked up when [data-theme="mn-boundary-waters"] */
+/* is active on the document root.                                           */

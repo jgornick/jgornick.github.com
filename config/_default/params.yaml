@@ -37,7 +37,7 @@ header:
   languageSwitchMode: "dropdown"
 
 # Dock display mode
-dock: "scroll"
+dock: undefined
 
 # Content width
 contentWidth: "56rem"
@@ -48,12 +48,26 @@ toc:
   position: "card"
   maxHeight: "80vh"
 
-# Default color scheme - using Catppuccin Frappé
-colorScheme: "frappe"
+# Default color scheme - using Minnesota State Flag palette (4 variants)
+# Analogous to Catppuccin's 4 flavors: light → twilight → dusk → darkest
+#   mn-lake-superior   = Latte     (light, sun on open water)
+#   mn-boundary-waters = Frappé    (twilight, BWCA at dusk)
+#   mn-north-shore     = Macchiato (dusk, North Shore at nightfall)
+#   mn-night-sky       = Mocha     (dark, the flag's own Night Sky Blue field)
+colorScheme: "mn-boundary-waters"
 themes:
-  frappe:
-    name: "Frappé"
+  mn-lake-superior:
+    name: "Lake Superior"
     order: 1
+  mn-boundary-waters:
+    name: "Boundary Waters"
+    order: 2
+  mn-north-shore:
+    name: "North Shore"
+    order: 3
+  mn-night-sky:
+    name: "Night Sky"
+    order: 4
 
 # Home page configuration
 home:

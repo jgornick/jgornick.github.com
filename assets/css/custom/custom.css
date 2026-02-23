@@ -1,0 +1,170 @@
+/* Minnesota — Boundary Waters (Twilight Variant) */
+/*
+ * Analogous to Catppuccin Frappé: the least dark of the three night variants.
+ * The hazy indigo of the BWCA at late dusk — stars beginning to appear, the
+ * horizon still glowing with the last of the summer light.
+ *
+ * Official 2024 Minnesota State Flag anchor colors:
+ *   Night Sky Blue: #002D5D  (Pantone 648)
+ *   Water Blue:     #52C9E8  (Pantone 305)
+ *   White:          #FFFFFF
+ *
+ * Background monochromatic scale: hue 252° (Night Sky Blue family)
+ * Base lightness: ~28.8% — calibrated to match Catppuccin Frappé.
+ *
+ * Background ladder (oklch, hue 252°):
+ *   Crust    oklch(0.192 0.054 252)  — deepest layer
+ *   Mantle   oklch(0.232 0.058 252)
+ *   Base     oklch(0.288 0.062 252)  — main background
+ *   Surface0 oklch(0.350 0.055 252)
+ *   Surface1 oklch(0.385 0.050 252)
+ *   Overlay0 oklch(0.482 0.040 252)
+ *   Subtext1 oklch(0.785 0.035 225)
+ *   Text     oklch(0.920 0.022 212)  — near-white with Water Blue tint
+ */
+
+[data-theme="mn-boundary-waters"] {
+  /* ============================================ */
+  /* Primary Colors                               */
+  /* ============================================ */
+  /* Night Sky Blue — lightened to ~62% L for readability on dark background */
+  --color-primary: oklch(0.620 0.148 252);
+  --color-primary-foreground: oklch(0.185 0.060 252);
+
+  /* Water Blue (#52C9E8) — the bright lake color */
+  --color-secondary: oklch(0.770 0.095 212);
+  --color-secondary-foreground: oklch(0.185 0.060 252);
+
+  /* Water Blue mid-tone — accent / hover states */
+  --color-accent: oklch(0.700 0.105 212);
+  --color-accent-foreground: oklch(0.185 0.060 252);
+
+  /* ============================================ */
+  /* Background Colors                            */
+  /* ============================================ */
+  --color-background: oklch(0.288 0.062 252);        /* Base */
+  --color-foreground: oklch(0.920 0.022 212);        /* Text — Water Blue-tinted near-white */
+
+  /* ============================================ */
+  /* Muted Colors                                 */
+  /* ============================================ */
+  --color-muted: oklch(0.385 0.050 252);             /* Surface1 */
+  --color-muted-foreground: oklch(0.785 0.035 225);  /* Subtext1 */
+
+  /* ============================================ */
+  /* Border Colors                                */
+  /* ============================================ */
+  --color-border: oklch(0.482 0.040 252);            /* Overlay0 */
+
+  /* ============================================ */
+  /* Card Colors                                  */
+  /* ============================================ */
+  --color-card: oklch(0.232 0.058 252);              /* Mantle */
+  --color-card-foreground: oklch(0.920 0.022 212);
+
+  /* ============================================ */
+  /* Popover Colors                               */
+  /* ============================================ */
+  --color-popover: oklch(0.192 0.054 252);           /* Crust */
+  --color-popover-foreground: oklch(0.920 0.022 212);
+
+  /* ============================================ */
+  /* Semantic Colors                              */
+  /* ============================================ */
+  --color-note: oklch(0.770 0.095 212);              /* Water Blue — informational */
+  --color-tip: oklch(0.740 0.130 175);               /* Pine teal — success/tip */
+  --color-important: oklch(0.620 0.175 15);          /* Cranberry red */
+  --color-warning: oklch(0.840 0.128 78);            /* Prairie gold */
+  --color-caution: oklch(0.700 0.160 47);            /* Iron Range orange */
+
+  /* ============================================ */
+  /* Additional UI Elements                       */
+  /* ============================================ */
+  --color-selection: oklch(0.432 0.046 252);         /* Overlay1 */
+  --color-cursor: oklch(0.770 0.095 212);            /* Water Blue */
+  --color-subtle: oklch(0.532 0.036 252);            /* Overlay1 mid */
+}
+
+[data-theme="mn-boundary-waters"].dark {
+  /* Boundary Waters is inherently dark — same values as base */
+  --color-primary: oklch(0.620 0.148 252);
+  --color-primary-foreground: oklch(0.185 0.060 252);
+  --color-secondary: oklch(0.770 0.095 212);
+  --color-secondary-foreground: oklch(0.185 0.060 252);
+  --color-accent: oklch(0.700 0.105 212);
+  --color-accent-foreground: oklch(0.185 0.060 252);
+  --color-background: oklch(0.288 0.062 252);
+  --color-foreground: oklch(0.920 0.022 212);
+  --color-muted: oklch(0.385 0.050 252);
+  --color-muted-foreground: oklch(0.785 0.035 225);
+  --color-border: oklch(0.482 0.040 252);
+  --color-card: oklch(0.232 0.058 252);
+  --color-card-foreground: oklch(0.920 0.022 212);
+  --color-popover: oklch(0.192 0.054 252);
+  --color-popover-foreground: oklch(0.920 0.022 212);
+  --color-note: oklch(0.770 0.095 212);
+  --color-tip: oklch(0.740 0.130 175);
+  --color-important: oklch(0.620 0.175 15);
+  --color-warning: oklch(0.840 0.128 78);
+  --color-caution: oklch(0.700 0.160 47);
+  --color-selection: oklch(0.432 0.046 252);
+  --color-cursor: oklch(0.770 0.095 212);
+  --color-subtle: oklch(0.532 0.036 252);
+}
+
+/* Text selection */
+[data-theme="mn-boundary-waters"] ::selection,
+[data-theme="mn-boundary-waters"].dark ::selection {
+  background-color: oklch(0.432 0.046 252);
+  color: oklch(0.920 0.022 212);
+}
+
+/* Cursor color */
+[data-theme="mn-boundary-waters"] input,
+[data-theme="mn-boundary-waters"] textarea,
+[data-theme="mn-boundary-waters"].dark input,
+[data-theme="mn-boundary-waters"].dark textarea {
+  caret-color: oklch(0.770 0.095 212);
+}
+
+/* Mobile font size */
+@media (max-width: 40rem) {
+  .prose {
+    font-size: 1.1rem;
+  }
+}
+
+/* Breadcrumb mobile stacking */
+@media (max-width: 48rem) {
+  .breadcrumb ol {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .breadcrumb span[class*="max-w"] {
+    max-width: none;
+  }
+}
+
+.prose a > strong {
+  color: var(--tw-prose-links);
+}
+
+.prose strong > a {
+  color: var(--tw-prose-links);
+  text-decoration: underline;
+  text-decoration-color: var(--tw-prose-links);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: all 0.3s ease;
+}
+
+
+.prose strong > a:hover {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border-radius: 4px;
+  color: var(--tw-prose-links);
+  margin: -2px -4px;
+  padding: 2px 4px;
+  text-decoration-color: transparent;
+}

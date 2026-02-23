@@ -2,8 +2,8 @@
 
 This document tracks all customizations made to the hugo-narrow theme to ensure they can be reapplied after theme upgrades.
 
-**Theme:** `github.com/tom2almighty/hugo-narrow` v1.2.3
-**Last Updated:** February 15, 2026
+**Theme:** `github.com/tom2almighty/hugo-narrow` v1.3.1
+**Last Updated:** February 22, 2026
 
 **Philosophy:** Minimize layout overrides by using CSS where possible. Only override templates when structural HTML changes are required.
 
@@ -23,16 +23,30 @@ This document tracks all customizations made to the hugo-narrow theme to ensure 
 - Line 4: Changed `hidden w-full items-center md:flex` → `flex w-full items-center`
 - Line 9: Removed `rounded-full` class from logo anchor tag
 - Line 25: Changed `mx-8 flex` → `mx-8 hidden md:flex` (nav desktop-only)
+- Line 42: Changed `text-muted-foreground hover:text-primary` → `text-primary` (consistent link colors)
 - Line 56: Desktop controls section
 - Line 70: Mobile controls reorganized with `flex md:hidden ml-auto`
 
-**Note:** This is the ONLY template override needed. Cannot be done with CSS alone due to multiple inline class changes across different elements and structural reorganization.
+**Note:** Cannot be done with CSS alone due to multiple inline class changes across different elements and structural reorganization.
+
+---
+
+### 2. `layouts/_partials/navigation/mobile-menu-toggle.html`
+**Purpose:** Right-align mobile menu dropdown + normalize link colors
+**Why override needed:** Requires structural HTML changes to class attributes
+
+**Changes from theme:**
+- Line 16: Changed `left-0` → `right-0` (align menu to right side below button)
+- Line 16: Changed `w-80` → `w-auto` (let menu width adjust to content)
+- Line 40: Changed `text-muted-foreground hover:text-primary` → `text-primary` (consistent link colors)
+
+**Note:** Mobile menu positioning changed to align with mobile control buttons on the right. Cannot be overridden with CSS due to inline Tailwind utility classes.
 
 ---
 
 ## Files Created (New Assets)
 
-### 2. `assets/icons/instagram.svg`
+### 3. `assets/icons/instagram.svg`
 **Purpose:** Add Instagram icon for social media links
 **Content:** SVG with camera icon (rect, circle, line elements)
 **Why:** Theme had GitHub icon but was missing Instagram icon (showed fallback circle+plus icon)
@@ -45,7 +59,7 @@ All CSS customizations are in: `assets/css/custom/frappe.css`
 
 These CSS rules override theme defaults **without requiring layout file copies**.
 
-### 3. Catppuccin Frappé Color Scheme
+### 4. Catppuccin Frappé Color Scheme
 **Lines 1-90:** Complete color scheme implementation using OKLCH color space
 
 **Key change (Feb 16, 2026):** Updated foreground colors on colored backgrounds
@@ -55,7 +69,7 @@ These CSS rules override theme defaults **without requiring layout file copies**
 
 **Why:** Colored buttons (blue/mauve/lavender backgrounds) need light text for proper contrast. Original dark text on medium-light backgrounds failed readability requirements.
 
-### 4. Mobile Font Size Increase
+### 5. Mobile Font Size Increase
 ```css
 @media (max-width: 40rem) {
   .prose {
@@ -67,7 +81,7 @@ These CSS rules override theme defaults **without requiring layout file copies**
 
 ---
 
-### 5. Link Color Normalization
+### 6. Link Color Normalization
 ```css
 /* Normalize visited link colors */
 a:visited {
@@ -105,7 +119,7 @@ nav a:visited {
 
 ---
 
-### 6. Navigation Link Colors
+### 7. Navigation Link Colors
 ```css
 /* Override nav link default color to use primary color */
 .nav-link {
@@ -132,7 +146,7 @@ nav a:visited {
 
 ---
 
-### 7. Button Contrast Fix
+### 8. Button Contrast Fix
 ```css
 /* Override primary button text to use dark text for better contrast on light blue */
 .bg-primary.text-primary-foreground {
