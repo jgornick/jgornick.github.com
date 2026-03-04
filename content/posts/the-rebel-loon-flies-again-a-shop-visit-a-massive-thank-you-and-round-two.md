@@ -5,11 +5,9 @@ draft: true
 tags: []
 toc: false
 ---
-### Title: The Rebel Loon Flies Again: A Shop Visit, A Massive Thank You, and Round Two
-
 A couple of weeks ago, I shared the story of how [a car ride to a hockey tournament turned into a community movement](https://joegornick.com/2026/02/14/the-rebel-loon-how-a-hockey-drive-turned-into-a-movement/) for the Immigrant Law Center of Minnesota (ILCM). Thanks to this incredible community, we raised a staggering **$17,700**.
 
-![A photo of the donation receipt from the Immigrant Law Center of Minnesota.](/media/rebel-loon-donation.png "Proof of Impact: The official $17,700 donation receipt for the ILCM.")
+![A photo of the donation receipt from the Immigrant Law Center of Minnesota.](/media/rebel-loon-donation.jpg "Proof of Impact: The official $17,700 donation receipt for the ILCM.")
 
 To celebrate that milestone and say a massive thank you, my family and I headed over to the local print shop that made it all possible.
 
@@ -31,8 +29,7 @@ As mentioned earlier, the Rebel Loon is going to fly again. **The store is offic
 
 Here are the details:
 
-* **The Deadline:** The store will remain open until **Sunday, March 15th at 11:59 PM**.
-* **The Mission:** We are keeping the exact same pricing and donation structure: **$10 for every t-shirt** and **$20 for every sweatshirt/hoodie**.
+* **The Deadline:** The store is open now and will remain open until **Sunday, March 15th, 2026 at 11:59 PM**.
 * **The Donation:** Just like last time, all donations will be going directly to the ILCM.
 
 **\[Insert Link to the Afternoon Printing Store Here]**
