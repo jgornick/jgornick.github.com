@@ -3,6 +3,7 @@ title: "The Rebel Loon Flies Again: A Shop Visit, A Massive Thank You, and Round
 date: 2026-03-05T21:44:00-06:00
 draft: false
 tags: []
+cover: /media/rebel-loon-donation.jpg
 toc: false
 ---
 A couple of weeks ago, I shared the story of how [a car ride to a hockey tournament turned into a community movement](https://joegornick.com/2026/02/14/the-rebel-loon-how-a-hockey-drive-turned-into-a-movement/) for the Immigrant Law Center of Minnesota (ILCM). Thanks to this incredible community, we raised a staggering **$17,700**.
