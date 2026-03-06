@@ -32,8 +32,8 @@ Here are the details:
 * **The Deadline:** The store is open now and will remain open until **Sunday, March 15th, 2026 at 11:59 PM CDT**.
 * **The Donation:** Just like last time, all donations will be going directly to the ILCM.
 
-[![An image of a poster promoting the new run of the Rebel Loon fundraiser.](/media/rebel-loon-is-back-post-general.png "The Rebel Loon is Back!")](https://tinyurl.com/rebel-loon)
+![An image of a poster promoting the new run of the Rebel Loon fundraiser.](/media/rebel-loon-is-back-post-general.png "The Rebel Loon is Back!")
 
-[Click here to order!](https://tinyurl.com/rebel-loon)
+[**Click here to order!**](https://tinyurl.com/rebel-loon)
 
 Thank you all again for showing my daughters what it looks like when a community decides to stand up and take action together.
