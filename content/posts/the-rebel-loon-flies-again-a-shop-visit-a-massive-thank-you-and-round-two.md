@@ -1,7 +1,7 @@
 ---
 title: "The Rebel Loon Flies Again: A Shop Visit, A Massive Thank You, and Round Two"
-date: 2026-03-03T21:52:00-06:00
-draft: true
+date: 2026-03-05T21:44:00-06:00
+draft: false
 tags: []
 toc: false
 ---
@@ -13,13 +13,13 @@ To celebrate that milestone and say a massive thank you, my family and I headed 
 
 **Meeting the Heroes Behind the Screens**
 
-To say I am grateful for the team at **Afternoon Printing** in South Minneapolis would be an understatement. A couple of weeks ago, we went into the shop to help out and finally meet Kristen and her crew in person.
+To say I am grateful for the team at **Afternoon Printing** in South Minneapolis would be an understatement. A couple of weeks ago, we went into the shop to finally meet Kristen and her crew in person.
 
-They were all so kind. They mentioned they couldn't believe just how many Rebel Loons had been flying through their shop over the past week. Despite being incredibly busy, Kristen took the time to show my girls the entire screen-printing process—from burning the screens to heating to cure the new ink. I cannot thank her enough for giving them that experience. My girls absolutely loved it!
+They were all so kind. They mentioned they couldn't believe just how many Rebel Loons had been flying through their shop over the past week. Despite being incredibly busy, Kristen took the time to show my girls the entire screen-printing process—from burning the screens to curing the new ink. I cannot thank her enough for giving them that experience. My girls absolutely loved it!
 
 **"Dad, she's here picking up a Rebel Loon!"**
 
-While we were in the shop, there were folks coming in to pick up their local orders. At one point, my youngest, Ellie, saw a lady picking up a Rebel Loon order and whispered to me, *"Dad, she's here picking up a Rebel Loon!"* I let her know that *all* of those people were, and you could just see her face light up by that realization.
+While we were in the shop, there were folks coming in to pick up their orders. At one point, my youngest, Ellie, saw a lady picking up a Rebel Loon order and whispered to me, *"Dad, she's here picking up a Rebel Loon!"* I let her know that *all* of those people were, and you could just see her face light up by that realization.
 
 It was amazing to see complete strangers who felt like they needed to help in some way, and do so by joining Rebel Loon run. I am so incredibly grateful to everyone who ordered.
 
@@ -29,9 +29,11 @@ As mentioned earlier, the Rebel Loon is going to fly again. **The store is offic
 
 Here are the details:
 
-* **The Deadline:** The store is open now and will remain open until **Sunday, March 15th, 2026 at 11:59 PM**.
+* **The Deadline:** The store is open now and will remain open until **Sunday, March 15th, 2026 at 11:59 PM CDT**.
 * **The Donation:** Just like last time, all donations will be going directly to the ILCM.
 
-**\[Insert Link to the Afternoon Printing Store Here]**
+[![An image of a poster promoting the new run of the Rebel Loon fundraiser.](/media/rebel-loon-is-back-post-general.png "The Rebel Loon is Back!")](https://tinyurl.com/rebel-loon)
+
+[Click here to order!](https://tinyurl.com/rebel-loon)
 
 Thank you all again for showing my daughters what it looks like when a community decides to stand up and take action together.
