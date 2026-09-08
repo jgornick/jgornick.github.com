@@ -1,5 +1,5 @@
 baseURL: https://joegornick.com/
-languageCode: en-us
+locale: en-us
 defaultContentLanguage: en
 defaultContentLanguageInSubdir: false
 title: Joe Gornick
@@ -63,6 +63,6 @@ outputFormats:
 module:
   hugoVersion:
     extended: true
-    min: 0.146.0
+    min: 0.158.0
   imports:
     - path: github.com/tom2almighty/hugo-narrow

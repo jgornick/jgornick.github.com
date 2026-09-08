@@ -1,0 +1,90 @@
+{{- /*
+  Override of hugo-narrow's link render hook (theme v1.3.16).
+
+  WHY THIS OVERRIDE EXISTS
+  Upstream puts `inline-flex` on external-link anchors so it can lay out the
+  trailing external-link icon. An inline-flex box is atomic — it cannot break
+  across lines — so a multi-word link becomes one unbreakable unit and jumps to
+  the next line whenever it does not fit in the space left on the current line,
+  leaving a ragged gap mid-paragraph.
+
+  THE FIX
+  The anchor is a normal inline box, so link text wraps like any other text.
+  Only the last word and the icon go inside a `whitespace-nowrap` span, so the
+  icon stays welded to that word and the two wrap together.
+
+  This cannot be done in CSS: there is no "last word" selector, and NBSP glue
+  does not hold across an element boundary, so a CSS-only icon either orphans
+  onto a line of its own or overflows its container.
+
+  Because `.Text` is already-rendered HTML, the split has to avoid cutting
+  through tags. Four cases, in order:
+    1. No spaces          -> whole text + icon in the span (nothing to split).
+    2. Plain text         -> split off the last word.
+    3. One wrapping tag   -> split the last word inside that tag, so markup like
+       (`**bold text**`)     `[**Afternoon Printing**](...)` still wraps.
+    4. Anything else      -> emit text then icon with no span. The icon may then
+                             land on its own line, but the text still wraps,
+                             which is the behaviour that actually matters.
+*/ -}}
+{{- $isExternal := or (strings.HasPrefix .Destination "http://") (strings.HasPrefix .Destination "https://") -}}
+{{- if $isExternal -}}
+  {{- $text := .Text | string -}}
+  {{- $icon := partial "features/icon.html" (dict "name" "external-link" "class" "external-link-icon h-3 w-3 flex-shrink-0" "id" "external-link") -}}
+
+  {{- /* Classify the link text (see cases above). */ -}}
+  {{- $hasSpace := strings.Contains $text " " -}}
+  {{- $hasMarkup := strings.Contains $text "<" -}}
+  {{- $wrapTag := "" -}}
+  {{- $inner := $text -}}
+  {{- if and $hasSpace $hasMarkup -}}
+    {{- /* Exactly one wrapping tag around plain inner text. `code` is excluded:
+           its background would extend behind the icon. */ -}}
+    {{- if findRE `^<(strong|em|b|i|del|mark)>[^<>]+</(strong|em|b|i|del|mark)>$` $text 1 -}}
+      {{- $wrapTag = replaceRE `^<([a-z]+)>.*$` "$1" $text -}}
+      {{- $inner = replaceRE `^<[a-z]+>(.*)</[a-z]+>$` "$1" $text -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Split the splittable text into everything-but-the-last-word + last word. */ -}}
+  {{- $splittable := or (not $hasMarkup) (ne $wrapTag "") -}}
+  {{- $head := "" -}}
+  {{- $tail := $inner -}}
+  {{- if and $hasSpace $splittable -}}
+    {{- $words := split $inner " " -}}
+    {{- $n := len $words -}}
+    {{- $head = delimit (first (sub $n 1) $words) " " -}}
+    {{- $tail = index $words (sub $n 1) -}}
+  {{- end -}}
+
+  <a
+    href="{{ .Destination | safeURL }}"
+    {{- with .Title }}title="{{ . }}"{{ end -}}
+    target="_blank"
+    class="external-link"
+  >
+    {{- if and $hasSpace $hasMarkup (eq $wrapTag "") -}}
+      {{- /* Case 4: unsplittable markup — keep the text wrappable, drop the glue. */ -}}
+      {{- $text | safeHTML }}{{ $icon -}}
+    {{- else if $wrapTag -}}
+      {{- /* Case 3: split inside the single wrapping tag. */ -}}
+      {{- /* Tag names cannot be interpolated inline: html/template's contextual
+             autoescaping would escape the `<`. Build them with printf. */ -}}
+      {{- printf "<%s>" $wrapTag | safeHTML -}}
+      {{- with $head }}{{ . | safeHTML }} {{ end -}}
+      <span class="whitespace-nowrap">{{ $tail | safeHTML }}{{ $icon }}</span>
+      {{- printf "</%s>" $wrapTag | safeHTML -}}
+    {{- else -}}
+      {{- /* Cases 1 and 2. */ -}}
+      {{- with $head }}{{ . | safeHTML }} {{ end -}}
+      <span class="whitespace-nowrap">{{ $tail | safeHTML }}{{ $icon }}</span>
+    {{- end -}}
+  </a>
+{{- else -}}
+  <a
+    href="{{ .Destination | safeURL }}"
+    {{- with .Title }}title="{{ . }}"{{ end -}}
+  >
+    {{- with .Text | safeHTML }}{{ . }}{{ end -}}
+  </a>
+{{- end -}}

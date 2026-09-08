@@ -1,0 +1,39 @@
+{{- /*
+  CUSTOM PARTIAL (not part of hugo-narrow upstream).
+
+  Renders the site logo. Extracted so the overridden header.html can show the
+  same logo in both the desktop and mobile branches without duplicating markup.
+
+  Customization vs. theme: the image logo anchor drops the theme's
+  `rounded-full` class so the avatar renders square with rounded corners
+  instead of as a circle.
+*/ -}}
+{{- $logoSrc := strings.TrimPrefix "/" site.Params.header.logo.image -}}
+<div class="flex items-center">
+  {{ if ne site.Params.header.logo.image "" }}
+    <a
+      href="{{ if and site.Params.header.logo.link (ne site.Params.header.logo.link `/`) }}
+        {{ site.Params.header.logo.link | relLangURL }}
+      {{ else }}
+        {{ site.Home.RelPermalink | relLangURL }}
+      {{ end }}"
+      class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg transition-transform duration-200 hover:scale-105"
+      aria-label="{{ site.Title }}"
+    >
+      <img
+        src="{{ $logoSrc | relURL }}"
+        alt="{{ site.Title }}"
+        class="h-full w-full object-cover"
+      />
+    </a>
+  {{ else }}
+    <!-- 默认 Logo：使用站点标题首字母 -->
+    <a
+      href="{{ site.Home.RelPermalink }}"
+      class="bg-primary text-primary-foreground hover:bg-primary/90 flex h-10 w-10 items-center justify-center rounded-full text-lg font-bold transition-transform duration-200 hover:scale-105"
+      aria-label="{{ site.Title }}"
+    >
+      {{ substr site.Title 0 1 | upper }}
+    </a>
+  {{ end }}
+</div>

@@ -187,6 +187,23 @@
   }
 }
 
+/* External-link icon.
+
+   The wrapping behaviour itself is handled in layouts/_markup/render-link.html,
+   which overrides the theme's `inline-flex` anchor (an atomic box that could not
+   break across lines) with a normal inline anchor plus a nowrap span holding the
+   last word and this icon. See that file for the full explanation.
+
+   currentColor replaces the theme hook's hard-coded #9ca3af so the icon matches
+   the link colour instead of sitting at a lower contrast than the text. */
+.prose a.external-link .external-link-icon {
+  color: currentColor;
+  display: inline-block;
+  margin-left: 0.25em;
+  stroke: currentColor;
+  vertical-align: -0.0625em;
+}
+
 .prose a > strong {
   color: var(--tw-prose-links);
 }
