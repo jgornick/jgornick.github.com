@@ -30,6 +30,12 @@ branch includes a logo. Adding one to the mobile branch is a structural HTML cha
 4. Desktop `<nav>` got `aria-label="{{ T `nav.menu` }}"`. The page has several `<nav>`
    landmarks and only the breadcrumb was labelled, so axe reported `landmark-unique`
    on every page. This clears it everywhere except post pages (see Known Gaps).
+5. Desktop layout restructured so the nav is centred on the **card** rather than on
+   the space left over. Upstream makes the `<nav>` the `flex-1` element between the
+   logo and the controls, so it centres itself in the remainder and drifts whenever
+   those two differ in width. Now both sides are `flex-1` and the nav is its natural
+   width between them. Measured at 768/900/1100/1280/1440/1800px: worst offset from
+   the card centre is 0.01px, against roughly 40px before.
 
 Everything else is verbatim upstream, so `diff` against the theme source stays readable.
 
@@ -187,14 +193,18 @@ if it changes.
 - `module.hugoVersion.min: 0.158.0` — matches the theme's requirement.
 
 ### 12. `config/_default/params.yaml`
-- `header.showThemeSwitch` is **`true`** — visitors pick the flavour. Verified end
-  to end at desktop and mobile widths: the dropdown lists all four, the choice
-  applies immediately and persists across navigation via
-  `localStorage.colorScheme`, and axe is clean with the dropdown open in both a
-  light and a dark scheme.
-- `header.showDarkModeSwitch` is **`true`** — Light / Dark / System. Meaningful
-  as of September 2026, now that each scheme has a real palette per state. It
-  writes `localStorage.theme`; `System` defers to `prefers-color-scheme`.
+- `header.showContentWidthSwitch` is **`false`** — the page-width slider is hidden.
+  `contentWidth: "56rem"` is the reading measure for this site; a slider invited
+  readers to break it.
+- `header.showThemeSwitch` is **`false`** — the site ships one flavour,
+  `mn-boundary-waters`. The other three palettes stay in `custom.css` /
+  `chroma.css` (~36KB unminified, roughly 3KB once minified and gzipped) so re-enabling the
+  picker is a one-word change; nothing exposes them today. Prune them if that
+  stops being worth the weight.
+- `header.showDarkModeSwitch` is **`true`** — Light / Dark / System, the only
+  control left in the header. It writes `localStorage.theme`; `System` defers to
+  `prefers-color-scheme`. Verified after the header cleanup: Light `#eff4fa`,
+  Dark `#1e2c3b`, System following the OS.
 - `header.showLanguageSwitch` is `false` (single-language site).
 - `analytics.google` — hugo-narrow reads analytics from `params.yaml`, not `hugo.yaml`.
 - `lightbox.enabled: false` — as of v1.3.16 the theme only emits gallery/lightbox assets

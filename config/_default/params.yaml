@@ -36,10 +36,13 @@ header:
     # from drifting apart, which is what the symlink was for.
     image: "/favicon.svg"
     link: "/"
-  # Colour-scheme picker: lets visitors choose between the light scheme
-  # (Lake Superior) and the three dark ones. Safe to expose now that all four
-  # schemes are actually implemented in custom.css/chroma.css.
-  showThemeSwitch: true
+  # Page-width chooser: hidden. The 56rem default below is the measured reading
+  # width for this site; exposing a slider invited readers to break it.
+  showContentWidthSwitch: false
+  # Colour-scheme picker: hidden. The site ships one flavour, Boundary Waters.
+  # The other three palettes stay in custom.css/chroma.css so re-enabling this
+  # is a one-word change, but nothing exposes them today.
+  showThemeSwitch: false
   # Light/Dark/System toggle. Meaningful as of September 2026: every scheme now
   # defines a real light palette on [data-theme="x"] and a dark one on
   # [data-theme="x"].dark, so the .dark class the theme applies actually changes

@@ -4,12 +4,19 @@
   >
     <!-- 桌面端布局 -->
     <div class="hidden w-full items-center md:flex md:min-w-0">
+      {{/* Left and right are both flex-1, so they claim equal width and the
+           nav between them sits on the centre of the card. Previously the nav
+           was the flex-1 element and centred itself in whatever space the logo
+           and the controls left over, which shifted it off-centre whenever
+           those two differed in width. */}}
       <!-- 左侧：站点 Logo -->
-      {{ partial "navigation/site-logo.html" . }}
+      <div class="flex min-w-0 flex-1 items-center justify-start">
+        {{ partial "navigation/site-logo.html" . }}
+      </div>
 
       <!-- 中间：桌面端导航 -->
       <nav
-        class="mx-8 flex min-w-0 flex-1 items-center justify-center"
+        class="flex shrink-0 items-center justify-center px-6"
         aria-label="{{ T `nav.menu` }}"
       >
         <div class="flex flex-wrap items-center justify-center space-x-1">
@@ -94,7 +101,7 @@
       </nav>
 
       <!-- 右侧：桌面端控制区域 -->
-      <div class="flex items-center space-x-2">
+      <div class="flex min-w-0 flex-1 items-center justify-end space-x-2">
         <!-- 页面宽度调整（仅桌面端） -->
         {{ partial "ui/content-width-switcher.html" . }}
 
