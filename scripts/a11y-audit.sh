@@ -14,6 +14,7 @@ while IFS= read -r line; do
 done < <(
   python3 - "$BASE_URL" <<'PY'
 import sys
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -26,9 +27,26 @@ with urllib.request.urlopen(url) as resp:
 root = ET.fromstring(data)
 ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 
+# `hugo server` does not always rewrite baseURL in sitemap.xml, so the sitemap
+# can advertise https://joegornick.com/... while you believe you are auditing
+# localhost. Following it verbatim silently audits the LIVE SITE and reports the
+# result as if it were your local build. Force every URL onto the requested base.
+b = urllib.parse.urlsplit(base)
+rewritten = 0
 for loc in root.findall(".//sm:loc", ns):
-    if loc.text:
-        print(loc.text.strip())
+    if not loc.text:
+        continue
+    u = urllib.parse.urlsplit(loc.text.strip())
+    if (u.scheme, u.netloc) != (b.scheme, b.netloc):
+        rewritten += 1
+    print(urllib.parse.urlunsplit((b.scheme, b.netloc, u.path, u.query, "")))
+
+if rewritten:
+    print(
+        f"warning: rewrote {rewritten} sitemap URL(s) onto {base} "
+        f"(sitemap.xml advertised a different host)",
+        file=sys.stderr,
+    )
 PY
 )
 

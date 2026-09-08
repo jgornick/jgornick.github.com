@@ -26,7 +26,28 @@ async function fetchSitemapUrls() {
   if (urls.length === 0) {
     throw new Error("No URLs found in sitemap.");
   }
-  return maxPages > 0 ? urls.slice(0, maxPages) : urls;
+
+  // `hugo server` does not always rewrite baseURL in sitemap.xml, so the sitemap
+  // can advertise https://joegornick.com/... while you believe you are auditing
+  // localhost. Following it verbatim silently audits the LIVE SITE and reports
+  // the result as if it were your local build. Force every URL onto baseUrl.
+  const base = new URL(baseUrl);
+  let rewritten = 0;
+  const normalized = urls.map((u) => {
+    const parsed = new URL(u);
+    if (parsed.origin !== base.origin) {
+      rewritten++;
+    }
+    return new URL(parsed.pathname + parsed.search, base.origin).href;
+  });
+  if (rewritten > 0) {
+    console.warn(
+      `warning: rewrote ${rewritten} sitemap URL(s) onto ${base.origin} ` +
+        `(sitemap.xml advertised a different host)`,
+    );
+  }
+
+  return maxPages > 0 ? normalized.slice(0, maxPages) : normalized;
 }
 
 function safeFilename(url) {

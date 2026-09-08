@@ -308,3 +308,51 @@ outline skips h2. Affects `content/post-list.html` (the `/posts/` and home listi
 
 Note the `<h2 id="search-title">` inside the search modal does *not* fill the gap — it is
 inside an `aria-hidden` subtree and so is absent from the accessibility tree.
+
+## Re-running the audit
+
+```sh
+hugo server --port 1313 --disableFastRender
+./scripts/a11y-audit.sh http://localhost:1313
+node scripts/a11y-hover-audit.js http://localhost:1313
+```
+
+The URL you pass the scripts is authoritative — they force every audited page onto it.
+
+Output goes to `a11y-reports/` and `a11y-hover-reports/`, both **gitignored** — they are
+build artifacts. They used to be committed, which meant a stale February snapshot sat in
+the repo describing a palette that no longer existed.
+
+**Both scripts now pin sitemap URLs to the base URL you pass them.** `hugo server`
+does not reliably rewrite `baseURL` in `sitemap.xml`, and both scripts follow the
+sitemap — so a run could silently audit **joegornick.com** and report it as your local
+result. This actually happened during the September 2026 pass and nearly led to
+reporting a working change as having no effect. If the sitemap advertises a different
+host the scripts now rewrite it and print a `warning:` line rather than quietly
+following it.
+
+**Passing `--baseURL`/`--appendPort=false` to `hugo server` is _not_ a sufficient
+guard.** Measured directly: a server started with exactly those flags was still serving
+`<loc>https://joegornick.com/</loc>` in its sitemap. The flags appear to hold right
+after startup and then stop holding — running a one-shot `hugo` build alongside the
+server is one way to get there, since that rewrites `public/`. Do not rely on them, and
+do not rely on a one-time `curl` spot-check either; the URL rewriting inside the scripts
+is the only thing that actually protects a run. Watch for the `warning:` line — if you
+see it, the sitemap was lying and the scripts corrected it.
+
+### What tooling will and will not catch here
+
+axe alone would pass this site clean on colour — it reported **zero** contrast violations
+both before and after the pass. Everything that actually mattered came from measuring
+rendered pixels:
+
+- **saturation** and **hue collision** are invisible to a contrast checker
+- **focus rings** have no axe rule at all, and computed `outline-color` is misleading for
+  `outline: auto` (Chromium paints a white two-tone ring, not the reported colour) —
+  pixel-diff focused vs. unfocused screenshots instead
+- **backgrounds must be composited**, not read from the first ancestor with a non-zero
+  alpha. Semi-transparent layers (`bg-card/80` and friends) make a naive walk report a
+  much lighter background and invent contrast failures that are not real. Cross-check any
+  such helper against axe's own `bgColor` or a screenshot pixel before trusting it.
+- **palette coverage**: scanning pages only tests the colours those pages happen to use.
+  The failing comment colour was found by enumerating every `--chroma-*` variable.
