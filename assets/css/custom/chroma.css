@@ -15,7 +15,309 @@
  * - Variables: Foreground text (neutral)
  */
 
+/* Lake Superior — light face, then dark face. */
+:root[data-theme="mn-lake-superior"] {
+  /* Base text color for code blocks */
+  --chroma-color: oklch(0.320 0.030 200); /* Text - near-white with Water Blue tint */
+
+  /* Keywords (if, else, function, class, etc.) - Cranberry red */
+  --chroma-k: oklch(0.480 0.170 20);
+  --chroma-kc: oklch(0.480 0.170 20);
+  --chroma-kd: oklch(0.480 0.170 20);
+  --chroma-kn: oklch(0.480 0.170 20);
+  --chroma-kp: oklch(0.480 0.170 20);
+  --chroma-kr: oklch(0.480 0.170 20);
+  --chroma-kt: oklch(0.480 0.170 20);
+
+  /* Names - various entities */
+  --chroma-n: oklch(0.320 0.030 200); /* Default name - foreground text */
+  --chroma-na: oklch(0.468 0.120 70); /* Attribute names - Prairie gold */
+  --chroma-nc: oklch(0.455 0.130 38); /* Class names - Night Sky Blue */
+  --chroma-no: oklch(0.455 0.130 38); /* Constants - Night Sky Blue */
+  --chroma-nd: oklch(0.455 0.100 200); /* Decorators - Water Blue mid */
+  --chroma-ni: oklch(0.468 0.120 70); /* Entity names - Prairie gold */
+  --chroma-ne: oklch(0.480 0.170 20); /* Exceptions - Cranberry red */
+  --chroma-nl: oklch(0.462 0.120 235); /* Labels - Water Blue */
+  --chroma-nn: oklch(0.455 0.130 38); /* Namespaces - Night Sky Blue */
+  --chroma-nx: oklch(0.320 0.030 200); /* Other names - foreground text */
+  --chroma-py: oklch(0.320 0.030 200); /* Property - foreground text */
+  --chroma-nt: oklch(0.455 0.100 200); /* Tags (HTML/XML) - Water Blue mid */
+  --chroma-nb: oklch(0.455 0.100 200); /* Built-in names - Water Blue mid */
+  --chroma-bp: oklch(0.470 0.022 200); /* Built-in pseudo - Subtext */
+  --chroma-nv: oklch(0.320 0.030 200); /* Variable names - foreground text */
+  --chroma-nf: oklch(0.462 0.120 235); /* Function names - Water Blue */
+  --chroma-fm: oklch(0.462 0.120 235); /* Magic functions - Water Blue */
+
+  /* Literals */
+  --chroma-l: oklch(0.468 0.120 70); /* General literal - Prairie gold */
+  --chroma-ld: oklch(0.468 0.120 70); /* Date literal - Prairie gold */
+
+  /* Strings - Pine teal (calming, natural) */
+  --chroma-s: oklch(0.455 0.105 165);
+  --chroma-sa: oklch(0.455 0.105 165);
+  --chroma-sb: oklch(0.455 0.105 165);
+  --chroma-sc: oklch(0.455 0.105 165);
+  --chroma-sd: oklch(0.455 0.105 165);
+  --chroma-s2: oklch(0.455 0.105 165);
+  --chroma-se: oklch(0.462 0.120 235); /* String escape - Water Blue */
+  --chroma-sh: oklch(0.455 0.105 165);
+  --chroma-si: oklch(0.462 0.120 235); /* String interpolation - Water Blue */
+  --chroma-sx: oklch(0.455 0.105 165);
+  --chroma-sr: oklch(0.455 0.105 165); /* Regex - Pine teal */
+  --chroma-s1: oklch(0.455 0.105 165);
+  --chroma-ss: oklch(0.468 0.120 70); /* Symbol - Prairie gold */
+  --chroma-dl: oklch(0.455 0.105 165); /* String delimiter */
+
+  /* Numbers - Prairie gold */
+  --chroma-m: oklch(0.468 0.120 70);
+  --chroma-mb: oklch(0.468 0.120 70);
+  --chroma-mf: oklch(0.468 0.120 70);
+  --chroma-mh: oklch(0.468 0.120 70);
+  --chroma-mi: oklch(0.468 0.120 70);
+  --chroma-il: oklch(0.468 0.120 70);
+  --chroma-mo: oklch(0.468 0.120 70);
+
+  /* Operators - Iron Range orange */
+  --chroma-o: oklch(0.495 0.130 45);
+  --chroma-ow: oklch(0.495 0.130 45);
+
+  /* Punctuation - subtle */
+  --chroma-p: oklch(0.470 0.022 200);
+
+  /* Comments - subdued, less prominent */
+  --chroma-c: oklch(0.468 0.022 200);
+  --chroma-ch: oklch(0.468 0.022 200);
+  --chroma-cm: oklch(0.468 0.022 200);
+  --chroma-c1: oklch(0.468 0.022 200);
+  --chroma-cs: oklch(0.462 0.020 200); /* Comment special - slightly brighter */
+  --chroma-cp: oklch(0.462 0.020 200); /* Preprocessor comment */
+  --chroma-cpf: oklch(0.462 0.020 200);
+
+  /* Errors and highlighting */
+  --chroma-err: oklch(0.480 0.170 20); /* Error text - Cranberry red */
+  --chroma-err-bg: oklch(0.940 0.012 200); /* Error background - Mantle */
+  --chroma-hl: oklch(0.905 0.016 200); /* Highlight background - Surface0 */
+  --chroma-ln: oklch(0.468 0.022 200); /* Line numbers - subtle */
+
+  /* Generic/Diff colors */
+  --chroma-gd: oklch(0.480 0.170 20); /* Deleted - Cranberry red */
+  --chroma-gd-bg: oklch(0.940 0.012 200); /* Deleted background - Mantle */
+  --chroma-ge: inherit; /* Emphasis (italic handled by CSS) */
+  --chroma-gr: oklch(0.480 0.170 20); /* Error - Cranberry red */
+  --chroma-gh: oklch(0.462 0.120 235); /* Heading - Water Blue */
+  --chroma-gi: oklch(0.455 0.105 165); /* Inserted - Pine teal */
+  --chroma-gi-bg: oklch(0.940 0.012 200); /* Inserted background - Mantle */
+  --chroma-go: oklch(0.470 0.022 200); /* Output - Subtext */
+  --chroma-gp: oklch(0.470 0.022 200); /* Prompt - Subtext */
+  --chroma-gs: inherit; /* Strong (bold handled by CSS) */
+  --chroma-gu: oklch(0.455 0.100 200); /* Subheading - Water Blue mid */
+  --chroma-gt: oklch(0.495 0.130 45); /* Traceback - Iron Range orange */
+  --chroma-gl: inherit; /* Link (underline handled by CSS) */
+  --chroma-w: oklch(0.700 0.020 200); /* Whitespace - Border color */
+}
+
+:root[data-theme="mn-lake-superior"].dark {
+  /* Base text color for code blocks */
+  --chroma-color: oklch(0.925 0.012 200); /* Text - near-white with Water Blue tint */
+
+  /* Keywords (if, else, function, class, etc.) - Cranberry red */
+  --chroma-k: oklch(0.740 0.150 20);
+  --chroma-kc: oklch(0.740 0.150 20);
+  --chroma-kd: oklch(0.740 0.150 20);
+  --chroma-kn: oklch(0.740 0.150 20);
+  --chroma-kp: oklch(0.740 0.150 20);
+  --chroma-kr: oklch(0.740 0.150 20);
+  --chroma-kt: oklch(0.740 0.150 20);
+
+  /* Names - various entities */
+  --chroma-n: oklch(0.925 0.012 200); /* Default name - foreground text */
+  --chroma-na: oklch(0.850 0.120 80); /* Attribute names - Prairie gold */
+  --chroma-nc: oklch(0.820 0.110 75); /* Class names - Night Sky Blue */
+  --chroma-no: oklch(0.820 0.110 75); /* Constants - Night Sky Blue */
+  --chroma-nd: oklch(0.740 0.100 195); /* Decorators - Water Blue mid */
+  --chroma-ni: oklch(0.850 0.120 80); /* Entity names - Prairie gold */
+  --chroma-ne: oklch(0.740 0.150 20); /* Exceptions - Cranberry red */
+  --chroma-nl: oklch(0.800 0.095 195); /* Labels - Water Blue */
+  --chroma-nn: oklch(0.820 0.110 75); /* Namespaces - Night Sky Blue */
+  --chroma-nx: oklch(0.925 0.012 200); /* Other names - foreground text */
+  --chroma-py: oklch(0.925 0.012 200); /* Property - foreground text */
+  --chroma-nt: oklch(0.740 0.100 195); /* Tags (HTML/XML) - Water Blue mid */
+  --chroma-nb: oklch(0.740 0.100 195); /* Built-in names - Water Blue mid */
+  --chroma-bp: oklch(0.800 0.028 200); /* Built-in pseudo - Subtext */
+  --chroma-nv: oklch(0.925 0.012 200); /* Variable names - foreground text */
+  --chroma-nf: oklch(0.800 0.095 195); /* Function names - Water Blue */
+  --chroma-fm: oklch(0.800 0.095 195); /* Magic functions - Water Blue */
+
+  /* Literals */
+  --chroma-l: oklch(0.850 0.120 80); /* General literal - Prairie gold */
+  --chroma-ld: oklch(0.850 0.120 80); /* Date literal - Prairie gold */
+
+  /* Strings - Pine teal (calming, natural) */
+  --chroma-s: oklch(0.780 0.120 165);
+  --chroma-sa: oklch(0.780 0.120 165);
+  --chroma-sb: oklch(0.780 0.120 165);
+  --chroma-sc: oklch(0.780 0.120 165);
+  --chroma-sd: oklch(0.780 0.120 165);
+  --chroma-s2: oklch(0.780 0.120 165);
+  --chroma-se: oklch(0.800 0.095 195); /* String escape - Water Blue */
+  --chroma-sh: oklch(0.780 0.120 165);
+  --chroma-si: oklch(0.800 0.095 195); /* String interpolation - Water Blue */
+  --chroma-sx: oklch(0.780 0.120 165);
+  --chroma-sr: oklch(0.780 0.120 165); /* Regex - Pine teal */
+  --chroma-s1: oklch(0.780 0.120 165);
+  --chroma-ss: oklch(0.850 0.120 80); /* Symbol - Prairie gold */
+  --chroma-dl: oklch(0.780 0.120 165); /* String delimiter */
+
+  /* Numbers - Prairie gold */
+  --chroma-m: oklch(0.850 0.120 80);
+  --chroma-mb: oklch(0.850 0.120 80);
+  --chroma-mf: oklch(0.850 0.120 80);
+  --chroma-mh: oklch(0.850 0.120 80);
+  --chroma-mi: oklch(0.850 0.120 80);
+  --chroma-il: oklch(0.850 0.120 80);
+  --chroma-mo: oklch(0.850 0.120 80);
+
+  /* Operators - Iron Range orange */
+  --chroma-o: oklch(0.780 0.130 50);
+  --chroma-ow: oklch(0.780 0.130 50);
+
+  /* Punctuation - subtle */
+  --chroma-p: oklch(0.800 0.028 200);
+
+  /* Comments - subdued, less prominent */
+  --chroma-c: oklch(0.710 0.028 200);
+  --chroma-ch: oklch(0.710 0.028 200);
+  --chroma-cm: oklch(0.710 0.028 200);
+  --chroma-c1: oklch(0.710 0.028 200);
+  --chroma-cs: oklch(0.690 0.026 200); /* Comment special - slightly brighter */
+  --chroma-cp: oklch(0.690 0.026 200); /* Preprocessor comment */
+  --chroma-cpf: oklch(0.690 0.026 200);
+
+  /* Errors and highlighting */
+  --chroma-err: oklch(0.740 0.150 20); /* Error text - Cranberry red */
+  --chroma-err-bg: oklch(0.245 0.028 200); /* Error background - Mantle */
+  --chroma-hl: oklch(0.355 0.030 200); /* Highlight background - Surface0 */
+  --chroma-ln: oklch(0.710 0.028 200); /* Line numbers - subtle */
+
+  /* Generic/Diff colors */
+  --chroma-gd: oklch(0.740 0.150 20); /* Deleted - Cranberry red */
+  --chroma-gd-bg: oklch(0.245 0.028 200); /* Deleted background - Mantle */
+  --chroma-ge: inherit; /* Emphasis (italic handled by CSS) */
+  --chroma-gr: oklch(0.740 0.150 20); /* Error - Cranberry red */
+  --chroma-gh: oklch(0.800 0.095 195); /* Heading - Water Blue */
+  --chroma-gi: oklch(0.780 0.120 165); /* Inserted - Pine teal */
+  --chroma-gi-bg: oklch(0.245 0.028 200); /* Inserted background - Mantle */
+  --chroma-go: oklch(0.800 0.028 200); /* Output - Subtext */
+  --chroma-gp: oklch(0.800 0.028 200); /* Prompt - Subtext */
+  --chroma-gs: inherit; /* Strong (bold handled by CSS) */
+  --chroma-gu: oklch(0.740 0.100 195); /* Subheading - Water Blue mid */
+  --chroma-gt: oklch(0.780 0.130 50); /* Traceback - Iron Range orange */
+  --chroma-gl: inherit; /* Link (underline handled by CSS) */
+  --chroma-w: oklch(0.610 0.028 200); /* Whitespace - Border color */
+}
+
+/* Boundary Waters — light face, then dark face. */
 :root[data-theme="mn-boundary-waters"] {
+  /* Base text color for code blocks */
+  --chroma-color: oklch(0.320 0.030 252); /* Text - near-white with Water Blue tint */
+
+  /* Keywords (if, else, function, class, etc.) - Cranberry red */
+  --chroma-k: oklch(0.480 0.170 20);
+  --chroma-kc: oklch(0.480 0.170 20);
+  --chroma-kd: oklch(0.480 0.170 20);
+  --chroma-kn: oklch(0.480 0.170 20);
+  --chroma-kp: oklch(0.480 0.170 20);
+  --chroma-kr: oklch(0.480 0.170 20);
+  --chroma-kt: oklch(0.480 0.170 20);
+
+  /* Names - various entities */
+  --chroma-n: oklch(0.320 0.030 252); /* Default name - foreground text */
+  --chroma-na: oklch(0.468 0.120 70); /* Attribute names - Prairie gold */
+  --chroma-nc: oklch(0.455 0.130 190); /* Class names - Night Sky Blue */
+  --chroma-no: oklch(0.455 0.130 190); /* Constants - Night Sky Blue */
+  --chroma-nd: oklch(0.455 0.100 252); /* Decorators - Water Blue mid */
+  --chroma-ni: oklch(0.468 0.120 70); /* Entity names - Prairie gold */
+  --chroma-ne: oklch(0.480 0.170 20); /* Exceptions - Cranberry red */
+  --chroma-nl: oklch(0.462 0.120 235); /* Labels - Water Blue */
+  --chroma-nn: oklch(0.455 0.130 190); /* Namespaces - Night Sky Blue */
+  --chroma-nx: oklch(0.320 0.030 252); /* Other names - foreground text */
+  --chroma-py: oklch(0.320 0.030 252); /* Property - foreground text */
+  --chroma-nt: oklch(0.455 0.100 252); /* Tags (HTML/XML) - Water Blue mid */
+  --chroma-nb: oklch(0.455 0.100 252); /* Built-in names - Water Blue mid */
+  --chroma-bp: oklch(0.470 0.022 252); /* Built-in pseudo - Subtext */
+  --chroma-nv: oklch(0.320 0.030 252); /* Variable names - foreground text */
+  --chroma-nf: oklch(0.462 0.120 235); /* Function names - Water Blue */
+  --chroma-fm: oklch(0.462 0.120 235); /* Magic functions - Water Blue */
+
+  /* Literals */
+  --chroma-l: oklch(0.468 0.120 70); /* General literal - Prairie gold */
+  --chroma-ld: oklch(0.468 0.120 70); /* Date literal - Prairie gold */
+
+  /* Strings - Pine teal (calming, natural) */
+  --chroma-s: oklch(0.455 0.105 165);
+  --chroma-sa: oklch(0.455 0.105 165);
+  --chroma-sb: oklch(0.455 0.105 165);
+  --chroma-sc: oklch(0.455 0.105 165);
+  --chroma-sd: oklch(0.455 0.105 165);
+  --chroma-s2: oklch(0.455 0.105 165);
+  --chroma-se: oklch(0.462 0.120 235); /* String escape - Water Blue */
+  --chroma-sh: oklch(0.455 0.105 165);
+  --chroma-si: oklch(0.462 0.120 235); /* String interpolation - Water Blue */
+  --chroma-sx: oklch(0.455 0.105 165);
+  --chroma-sr: oklch(0.455 0.105 165); /* Regex - Pine teal */
+  --chroma-s1: oklch(0.455 0.105 165);
+  --chroma-ss: oklch(0.468 0.120 70); /* Symbol - Prairie gold */
+  --chroma-dl: oklch(0.455 0.105 165); /* String delimiter */
+
+  /* Numbers - Prairie gold */
+  --chroma-m: oklch(0.468 0.120 70);
+  --chroma-mb: oklch(0.468 0.120 70);
+  --chroma-mf: oklch(0.468 0.120 70);
+  --chroma-mh: oklch(0.468 0.120 70);
+  --chroma-mi: oklch(0.468 0.120 70);
+  --chroma-il: oklch(0.468 0.120 70);
+  --chroma-mo: oklch(0.468 0.120 70);
+
+  /* Operators - Iron Range orange */
+  --chroma-o: oklch(0.495 0.130 45);
+  --chroma-ow: oklch(0.495 0.130 45);
+
+  /* Punctuation - subtle */
+  --chroma-p: oklch(0.470 0.022 252);
+
+  /* Comments - subdued, less prominent */
+  --chroma-c: oklch(0.468 0.022 252);
+  --chroma-ch: oklch(0.468 0.022 252);
+  --chroma-cm: oklch(0.468 0.022 252);
+  --chroma-c1: oklch(0.468 0.022 252);
+  --chroma-cs: oklch(0.462 0.020 252); /* Comment special - slightly brighter */
+  --chroma-cp: oklch(0.462 0.020 252); /* Preprocessor comment */
+  --chroma-cpf: oklch(0.462 0.020 252);
+
+  /* Errors and highlighting */
+  --chroma-err: oklch(0.480 0.170 20); /* Error text - Cranberry red */
+  --chroma-err-bg: oklch(0.940 0.012 252); /* Error background - Mantle */
+  --chroma-hl: oklch(0.905 0.016 252); /* Highlight background - Surface0 */
+  --chroma-ln: oklch(0.468 0.022 252); /* Line numbers - subtle */
+
+  /* Generic/Diff colors */
+  --chroma-gd: oklch(0.480 0.170 20); /* Deleted - Cranberry red */
+  --chroma-gd-bg: oklch(0.940 0.012 252); /* Deleted background - Mantle */
+  --chroma-ge: inherit; /* Emphasis (italic handled by CSS) */
+  --chroma-gr: oklch(0.480 0.170 20); /* Error - Cranberry red */
+  --chroma-gh: oklch(0.462 0.120 235); /* Heading - Water Blue */
+  --chroma-gi: oklch(0.455 0.105 165); /* Inserted - Pine teal */
+  --chroma-gi-bg: oklch(0.940 0.012 252); /* Inserted background - Mantle */
+  --chroma-go: oklch(0.470 0.022 252); /* Output - Subtext */
+  --chroma-gp: oklch(0.470 0.022 252); /* Prompt - Subtext */
+  --chroma-gs: inherit; /* Strong (bold handled by CSS) */
+  --chroma-gu: oklch(0.455 0.100 252); /* Subheading - Water Blue mid */
+  --chroma-gt: oklch(0.495 0.130 45); /* Traceback - Iron Range orange */
+  --chroma-gl: inherit; /* Link (underline handled by CSS) */
+  --chroma-w: oklch(0.700 0.020 252); /* Whitespace - Border color */
+}
+
+:root[data-theme="mn-boundary-waters"].dark {
   /* Base text color for code blocks */
   --chroma-color: oklch(0.920 0.014 212); /* Text - near-white with Water Blue tint */
 
@@ -115,101 +417,10 @@
   --chroma-w: oklch(0.600 0.030 252); /* Whitespace - Border color */
 }
 
-/* Dark mode variant - same as base since Boundary Waters is inherently dark */
-:root[data-theme="mn-boundary-waters"].dark {
-  --chroma-color: oklch(0.920 0.014 212);
-  --chroma-k: oklch(0.720 0.175 15);
-  --chroma-kc: oklch(0.720 0.175 15);
-  --chroma-kd: oklch(0.720 0.175 15);
-  --chroma-kn: oklch(0.720 0.175 15);
-  --chroma-kp: oklch(0.720 0.175 15);
-  --chroma-kr: oklch(0.720 0.175 15);
-  --chroma-kt: oklch(0.720 0.175 15);
-  --chroma-n: oklch(0.920 0.014 212);
-  --chroma-na: oklch(0.840 0.128 78);
-  --chroma-nc: oklch(0.780 0.105 252);
-  --chroma-no: oklch(0.780 0.105 252);
-  --chroma-nd: oklch(0.700 0.105 212);
-  --chroma-ni: oklch(0.840 0.128 78);
-  --chroma-ne: oklch(0.720 0.175 15);
-  --chroma-nl: oklch(0.770 0.095 212);
-  --chroma-nn: oklch(0.780 0.105 252);
-  --chroma-nx: oklch(0.920 0.014 212);
-  --chroma-py: oklch(0.920 0.014 212);
-  --chroma-nt: oklch(0.700 0.105 212);
-  --chroma-nb: oklch(0.700 0.105 212);
-  --chroma-bp: oklch(0.785 0.030 225);
-  --chroma-nv: oklch(0.920 0.014 212);
-  --chroma-nf: oklch(0.770 0.095 212);
-  --chroma-fm: oklch(0.770 0.095 212);
-  --chroma-l: oklch(0.840 0.128 78);
-  --chroma-ld: oklch(0.840 0.128 78);
-  --chroma-s: oklch(0.740 0.130 175);
-  --chroma-sa: oklch(0.740 0.130 175);
-  --chroma-sb: oklch(0.740 0.130 175);
-  --chroma-sc: oklch(0.740 0.130 175);
-  --chroma-sd: oklch(0.740 0.130 175);
-  --chroma-s2: oklch(0.740 0.130 175);
-  --chroma-se: oklch(0.770 0.095 212);
-  --chroma-sh: oklch(0.740 0.130 175);
-  --chroma-si: oklch(0.770 0.095 212);
-  --chroma-sx: oklch(0.740 0.130 175);
-  --chroma-sr: oklch(0.740 0.130 175);
-  --chroma-s1: oklch(0.740 0.130 175);
-  --chroma-ss: oklch(0.840 0.128 78);
-  --chroma-dl: oklch(0.740 0.130 175);
-  --chroma-m: oklch(0.840 0.128 78);
-  --chroma-mb: oklch(0.840 0.128 78);
-  --chroma-mf: oklch(0.840 0.128 78);
-  --chroma-mh: oklch(0.840 0.128 78);
-  --chroma-mi: oklch(0.840 0.128 78);
-  --chroma-il: oklch(0.840 0.128 78);
-  --chroma-mo: oklch(0.840 0.128 78);
-  --chroma-o: oklch(0.760 0.140 47);
-  --chroma-ow: oklch(0.760 0.140 47);
-  --chroma-p: oklch(0.785 0.030 225);
-  --chroma-c: oklch(0.700 0.030 252);
-  --chroma-ch: oklch(0.700 0.030 252);
-  --chroma-cm: oklch(0.700 0.030 252);
-  --chroma-c1: oklch(0.700 0.030 252);
-  --chroma-cs: oklch(0.680 0.028 252);
-  --chroma-cp: oklch(0.680 0.028 252);
-  --chroma-cpf: oklch(0.680 0.028 252);
-  --chroma-err: oklch(0.720 0.175 15);
-  --chroma-err-bg: oklch(0.232 0.030 252);
-  --chroma-hl: oklch(0.350 0.034 252);
-  --chroma-ln: oklch(0.700 0.030 252);
-  --chroma-gd: oklch(0.720 0.175 15);
-  --chroma-gd-bg: oklch(0.232 0.030 252);
-  --chroma-gr: oklch(0.720 0.175 15);
-  --chroma-gh: oklch(0.770 0.095 212);
-  --chroma-gi: oklch(0.740 0.130 175);
-  --chroma-gi-bg: oklch(0.232 0.030 252);
-  --chroma-go: oklch(0.785 0.030 225);
-  --chroma-gp: oklch(0.785 0.030 225);
-  --chroma-gu: oklch(0.700 0.105 212);
-  --chroma-gt: oklch(0.760 0.140 47);
-  --chroma-w: oklch(0.600 0.030 252);
-}
-
-/* ============================================ */
-/* Chroma Class Styles                          */
-/* ============================================ */
-/* Note: The actual class application (`.chroma .k`, etc.) is handled by     */
-/* the main chroma.css file in public/css/. This file only defines the       */
-/* color variables that will be picked up when [data-theme="mn-boundary-waters"] */
-/* is active on the document root.                                           */
-
-
-/* Lake Superior (Light) — dark ink on a pale ground.
-
-   Comments and line numbers are held at the same weight as other tokens rather
-   than dimmed. Dimming them is what put comments at 3.45:1 in the original dark
-   palette, below AA, and it went unnoticed because no post's code sample
-   happens to contain a comment. */
-:root[data-theme="mn-lake-superior"] {
+/* North Shore — light face, then dark face. */
+:root[data-theme="mn-north-shore"] {
   /* Base text color for code blocks */
-  --chroma-color: oklch(0.320 0.030 200); /* Text - near-white with Water Blue tint */
+  --chroma-color: oklch(0.320 0.030 155); /* Text - near-white with Water Blue tint */
 
   /* Keywords (if, else, function, class, etc.) - Cranberry red */
   --chroma-k: oklch(0.480 0.170 20);
@@ -221,21 +432,21 @@
   --chroma-kt: oklch(0.480 0.170 20);
 
   /* Names - various entities */
-  --chroma-n: oklch(0.320 0.030 200); /* Default name - foreground text */
+  --chroma-n: oklch(0.320 0.030 155); /* Default name - foreground text */
   --chroma-na: oklch(0.468 0.120 70); /* Attribute names - Prairie gold */
-  --chroma-nc: oklch(0.500 0.130 38); /* Class names - Night Sky Blue */
-  --chroma-no: oklch(0.500 0.130 38); /* Constants - Night Sky Blue */
-  --chroma-nd: oklch(0.455 0.100 200); /* Decorators - Water Blue mid */
+  --chroma-nc: oklch(0.455 0.130 250); /* Class names - Night Sky Blue */
+  --chroma-no: oklch(0.455 0.130 250); /* Constants - Night Sky Blue */
+  --chroma-nd: oklch(0.455 0.100 155); /* Decorators - Water Blue mid */
   --chroma-ni: oklch(0.468 0.120 70); /* Entity names - Prairie gold */
   --chroma-ne: oklch(0.480 0.170 20); /* Exceptions - Cranberry red */
   --chroma-nl: oklch(0.462 0.120 235); /* Labels - Water Blue */
-  --chroma-nn: oklch(0.500 0.130 38); /* Namespaces - Night Sky Blue */
-  --chroma-nx: oklch(0.320 0.030 200); /* Other names - foreground text */
-  --chroma-py: oklch(0.320 0.030 200); /* Property - foreground text */
-  --chroma-nt: oklch(0.455 0.100 200); /* Tags (HTML/XML) - Water Blue mid */
-  --chroma-nb: oklch(0.455 0.100 200); /* Built-in names - Water Blue mid */
-  --chroma-bp: oklch(0.470 0.022 200); /* Built-in pseudo - Subtext */
-  --chroma-nv: oklch(0.320 0.030 200); /* Variable names - foreground text */
+  --chroma-nn: oklch(0.455 0.130 250); /* Namespaces - Night Sky Blue */
+  --chroma-nx: oklch(0.320 0.030 155); /* Other names - foreground text */
+  --chroma-py: oklch(0.320 0.030 155); /* Property - foreground text */
+  --chroma-nt: oklch(0.455 0.100 155); /* Tags (HTML/XML) - Water Blue mid */
+  --chroma-nb: oklch(0.455 0.100 155); /* Built-in names - Water Blue mid */
+  --chroma-bp: oklch(0.470 0.022 155); /* Built-in pseudo - Subtext */
+  --chroma-nv: oklch(0.320 0.030 155); /* Variable names - foreground text */
   --chroma-nf: oklch(0.462 0.120 235); /* Function names - Water Blue */
   --chroma-fm: oklch(0.462 0.120 235); /* Magic functions - Water Blue */
 
@@ -273,46 +484,41 @@
   --chroma-ow: oklch(0.495 0.130 45);
 
   /* Punctuation - subtle */
-  --chroma-p: oklch(0.470 0.022 200);
+  --chroma-p: oklch(0.470 0.022 155);
 
   /* Comments - subdued, less prominent */
-  --chroma-c: oklch(0.468 0.022 200);
-  --chroma-ch: oklch(0.468 0.022 200);
-  --chroma-cm: oklch(0.468 0.022 200);
-  --chroma-c1: oklch(0.468 0.022 200);
-  --chroma-cs: oklch(0.462 0.020 200); /* Comment special - slightly brighter */
-  --chroma-cp: oklch(0.462 0.020 200); /* Preprocessor comment */
-  --chroma-cpf: oklch(0.462 0.020 200);
+  --chroma-c: oklch(0.468 0.022 155);
+  --chroma-ch: oklch(0.468 0.022 155);
+  --chroma-cm: oklch(0.468 0.022 155);
+  --chroma-c1: oklch(0.468 0.022 155);
+  --chroma-cs: oklch(0.462 0.020 155); /* Comment special - slightly brighter */
+  --chroma-cp: oklch(0.462 0.020 155); /* Preprocessor comment */
+  --chroma-cpf: oklch(0.462 0.020 155);
 
   /* Errors and highlighting */
   --chroma-err: oklch(0.480 0.170 20); /* Error text - Cranberry red */
-  --chroma-err-bg: oklch(0.940 0.012 200); /* Error background - Mantle */
-  --chroma-hl: oklch(0.905 0.016 200); /* Highlight background - Surface0 */
-  --chroma-ln: oklch(0.468 0.022 200); /* Line numbers - subtle */
+  --chroma-err-bg: oklch(0.940 0.012 155); /* Error background - Mantle */
+  --chroma-hl: oklch(0.905 0.016 155); /* Highlight background - Surface0 */
+  --chroma-ln: oklch(0.468 0.022 155); /* Line numbers - subtle */
 
   /* Generic/Diff colors */
   --chroma-gd: oklch(0.480 0.170 20); /* Deleted - Cranberry red */
-  --chroma-gd-bg: oklch(0.940 0.012 200); /* Deleted background - Mantle */
+  --chroma-gd-bg: oklch(0.940 0.012 155); /* Deleted background - Mantle */
   --chroma-ge: inherit; /* Emphasis (italic handled by CSS) */
   --chroma-gr: oklch(0.480 0.170 20); /* Error - Cranberry red */
   --chroma-gh: oklch(0.462 0.120 235); /* Heading - Water Blue */
   --chroma-gi: oklch(0.455 0.105 165); /* Inserted - Pine teal */
-  --chroma-gi-bg: oklch(0.940 0.012 200); /* Inserted background - Mantle */
-  --chroma-go: oklch(0.470 0.022 200); /* Output - Subtext */
-  --chroma-gp: oklch(0.470 0.022 200); /* Prompt - Subtext */
+  --chroma-gi-bg: oklch(0.940 0.012 155); /* Inserted background - Mantle */
+  --chroma-go: oklch(0.470 0.022 155); /* Output - Subtext */
+  --chroma-gp: oklch(0.470 0.022 155); /* Prompt - Subtext */
   --chroma-gs: inherit; /* Strong (bold handled by CSS) */
-  --chroma-gu: oklch(0.455 0.100 200); /* Subheading - Water Blue mid */
+  --chroma-gu: oklch(0.455 0.100 155); /* Subheading - Water Blue mid */
   --chroma-gt: oklch(0.495 0.130 45); /* Traceback - Iron Range orange */
   --chroma-gl: inherit; /* Link (underline handled by CSS) */
-  --chroma-w: oklch(0.700 0.020 200); /* Whitespace - Border color */
+  --chroma-w: oklch(0.700 0.020 155); /* Whitespace - Border color */
 }
 
-/* North Shore — basalt, pine and birch.
-   Strings take the birch gold, functions the cold sky blue.
-
-   One block per scheme: the base selector always matches, so no separate
-   .dark variant is needed — these schemes are inherently dark. */
-:root[data-theme="mn-north-shore"] {
+:root[data-theme="mn-north-shore"].dark {
   /* Base text color for code blocks */
   --chroma-color: oklch(0.925 0.012 155); /* Text - near-white with Water Blue tint */
 
@@ -412,13 +618,108 @@
   --chroma-w: oklch(0.605 0.026 155); /* Whitespace - Border color */
 }
 
-/* Night Sky — aurora over a moonless sky.
-   Built a little brighter than the other three because the background
-   sits lower.
-
-   One block per scheme: the base selector always matches, so no separate
-   .dark variant is needed — these schemes are inherently dark. */
+/* Night Sky — light face, then dark face. */
 :root[data-theme="mn-night-sky"] {
+  /* Base text color for code blocks */
+  --chroma-color: oklch(0.320 0.030 285); /* Text - near-white with Water Blue tint */
+
+  /* Keywords (if, else, function, class, etc.) - Cranberry red */
+  --chroma-k: oklch(0.480 0.170 20);
+  --chroma-kc: oklch(0.480 0.170 20);
+  --chroma-kd: oklch(0.480 0.170 20);
+  --chroma-kn: oklch(0.480 0.170 20);
+  --chroma-kp: oklch(0.480 0.170 20);
+  --chroma-kr: oklch(0.480 0.170 20);
+  --chroma-kt: oklch(0.480 0.170 20);
+
+  /* Names - various entities */
+  --chroma-n: oklch(0.320 0.030 285); /* Default name - foreground text */
+  --chroma-na: oklch(0.468 0.120 70); /* Attribute names - Prairie gold */
+  --chroma-nc: oklch(0.455 0.130 150); /* Class names - Night Sky Blue */
+  --chroma-no: oklch(0.455 0.130 150); /* Constants - Night Sky Blue */
+  --chroma-nd: oklch(0.455 0.100 285); /* Decorators - Water Blue mid */
+  --chroma-ni: oklch(0.468 0.120 70); /* Entity names - Prairie gold */
+  --chroma-ne: oklch(0.480 0.170 20); /* Exceptions - Cranberry red */
+  --chroma-nl: oklch(0.462 0.120 235); /* Labels - Water Blue */
+  --chroma-nn: oklch(0.455 0.130 150); /* Namespaces - Night Sky Blue */
+  --chroma-nx: oklch(0.320 0.030 285); /* Other names - foreground text */
+  --chroma-py: oklch(0.320 0.030 285); /* Property - foreground text */
+  --chroma-nt: oklch(0.455 0.100 285); /* Tags (HTML/XML) - Water Blue mid */
+  --chroma-nb: oklch(0.455 0.100 285); /* Built-in names - Water Blue mid */
+  --chroma-bp: oklch(0.470 0.022 285); /* Built-in pseudo - Subtext */
+  --chroma-nv: oklch(0.320 0.030 285); /* Variable names - foreground text */
+  --chroma-nf: oklch(0.462 0.120 235); /* Function names - Water Blue */
+  --chroma-fm: oklch(0.462 0.120 235); /* Magic functions - Water Blue */
+
+  /* Literals */
+  --chroma-l: oklch(0.468 0.120 70); /* General literal - Prairie gold */
+  --chroma-ld: oklch(0.468 0.120 70); /* Date literal - Prairie gold */
+
+  /* Strings - Pine teal (calming, natural) */
+  --chroma-s: oklch(0.455 0.105 165);
+  --chroma-sa: oklch(0.455 0.105 165);
+  --chroma-sb: oklch(0.455 0.105 165);
+  --chroma-sc: oklch(0.455 0.105 165);
+  --chroma-sd: oklch(0.455 0.105 165);
+  --chroma-s2: oklch(0.455 0.105 165);
+  --chroma-se: oklch(0.462 0.120 235); /* String escape - Water Blue */
+  --chroma-sh: oklch(0.455 0.105 165);
+  --chroma-si: oklch(0.462 0.120 235); /* String interpolation - Water Blue */
+  --chroma-sx: oklch(0.455 0.105 165);
+  --chroma-sr: oklch(0.455 0.105 165); /* Regex - Pine teal */
+  --chroma-s1: oklch(0.455 0.105 165);
+  --chroma-ss: oklch(0.468 0.120 70); /* Symbol - Prairie gold */
+  --chroma-dl: oklch(0.455 0.105 165); /* String delimiter */
+
+  /* Numbers - Prairie gold */
+  --chroma-m: oklch(0.468 0.120 70);
+  --chroma-mb: oklch(0.468 0.120 70);
+  --chroma-mf: oklch(0.468 0.120 70);
+  --chroma-mh: oklch(0.468 0.120 70);
+  --chroma-mi: oklch(0.468 0.120 70);
+  --chroma-il: oklch(0.468 0.120 70);
+  --chroma-mo: oklch(0.468 0.120 70);
+
+  /* Operators - Iron Range orange */
+  --chroma-o: oklch(0.495 0.130 45);
+  --chroma-ow: oklch(0.495 0.130 45);
+
+  /* Punctuation - subtle */
+  --chroma-p: oklch(0.470 0.022 285);
+
+  /* Comments - subdued, less prominent */
+  --chroma-c: oklch(0.468 0.022 285);
+  --chroma-ch: oklch(0.468 0.022 285);
+  --chroma-cm: oklch(0.468 0.022 285);
+  --chroma-c1: oklch(0.468 0.022 285);
+  --chroma-cs: oklch(0.462 0.020 285); /* Comment special - slightly brighter */
+  --chroma-cp: oklch(0.462 0.020 285); /* Preprocessor comment */
+  --chroma-cpf: oklch(0.462 0.020 285);
+
+  /* Errors and highlighting */
+  --chroma-err: oklch(0.480 0.170 20); /* Error text - Cranberry red */
+  --chroma-err-bg: oklch(0.940 0.012 285); /* Error background - Mantle */
+  --chroma-hl: oklch(0.905 0.016 285); /* Highlight background - Surface0 */
+  --chroma-ln: oklch(0.468 0.022 285); /* Line numbers - subtle */
+
+  /* Generic/Diff colors */
+  --chroma-gd: oklch(0.480 0.170 20); /* Deleted - Cranberry red */
+  --chroma-gd-bg: oklch(0.940 0.012 285); /* Deleted background - Mantle */
+  --chroma-ge: inherit; /* Emphasis (italic handled by CSS) */
+  --chroma-gr: oklch(0.480 0.170 20); /* Error - Cranberry red */
+  --chroma-gh: oklch(0.462 0.120 235); /* Heading - Water Blue */
+  --chroma-gi: oklch(0.455 0.105 165); /* Inserted - Pine teal */
+  --chroma-gi-bg: oklch(0.940 0.012 285); /* Inserted background - Mantle */
+  --chroma-go: oklch(0.470 0.022 285); /* Output - Subtext */
+  --chroma-gp: oklch(0.470 0.022 285); /* Prompt - Subtext */
+  --chroma-gs: inherit; /* Strong (bold handled by CSS) */
+  --chroma-gu: oklch(0.455 0.100 285); /* Subheading - Water Blue mid */
+  --chroma-gt: oklch(0.495 0.130 45); /* Traceback - Iron Range orange */
+  --chroma-gl: inherit; /* Link (underline handled by CSS) */
+  --chroma-w: oklch(0.700 0.020 285); /* Whitespace - Border color */
+}
+
+:root[data-theme="mn-night-sky"].dark {
   /* Base text color for code blocks */
   --chroma-color: oklch(0.930 0.010 285); /* Text - near-white with Water Blue tint */
 

@@ -90,102 +90,49 @@ All four schemes registered in `params.yaml` under `themes:` are now implemented
 `custom.css` (token set + `::selection` + caret) and `chroma.css` (syntax palette).
 `colorScheme: "mn-boundary-waters"` is active.
 
-| Scheme | Background | Link | Link hue separation |
-|---|---|---|---|
-| `mn-lake-superior` | `#ecf6f6` **light** | `#9f4325` agate rust | 165° |
-| `mn-boundary-waters` | `#1e2c3b` navy | `#77c6d4` ice blue | 22° |
-| `mn-north-shore` | `#213126` basalt/pine | `#7cd1f3` birch blue | 58° |
-| `mn-night-sky` | `#1d1c2b` violet-black | `#83e7a8` aurora green | 102° |
+| Scheme | Light background / link | Dark background / link |
+|---|---|---|
+| `mn-lake-superior` | `#ecf6f6` / `#9f4325` agate rust | `#1b3234` / `#eeba70` agate amber |
+| `mn-boundary-waters` | `#eff4fa` / `#00716c` deep water | `#1e2c3b` / `#77c6d4` ice blue |
+| `mn-north-shore` | `#eef6f0` / `#1666aa` deep lake blue | `#213126` / `#7cd1f3` birch blue |
+| `mn-night-sky` | `#f2f3fa` / `#137738` deep aurora | `#1d1c2b` / `#83e7a8` aurora green |
 
-Lake Superior is the **light** scheme, matching the ladder `params.yaml`
-describes (Latte → Frappé → Macchiato → Mocha). It is light in both states: its
-`.dark` block repeats the same values, exactly as the other three stay dark in
-both. A flavour is one look, and the OS preference selects a flavour rather
-than re-tinting one.
-
-**Previously only Boundary Waters existed.** The other three were registered in
-`params.yaml` but had no CSS at all, so selecting one would have fallen back to the
-theme's stock colors. That was latent rather than visible only because
-`header.showThemeSwitch` is `false` — see Configuration Changes.
+Every scheme now has **both faces**: the light palette on `[data-theme="x"]`
+and the dark one on `[data-theme="x"].dark`. Light faces share a single
+lightness ladder and vary only by hue, so the contrast maths is identical
+across schemes and only the hue-dependent checks differ per scheme.
 
 ### Light and dark mode
 
-**The site does not currently respond to `prefers-color-scheme`.** The theme's
-machinery works — `theme-init.js` defaults to `system` and does add a `.dark`
-class when the OS prefers dark — but for every scheme the `[data-theme="x"]`
-and `[data-theme="x"].dark` blocks hold identical values, so the class changes
-nothing. Measured on the live site: `prefers-color-scheme: light` and `dark`
-both render `#1e2c3b`. A visitor in light mode gets the dark site.
+**The site follows `prefers-color-scheme`.** `theme-init.js` adds a `.dark`
+class from the OS setting (or the visitor's explicit Light/Dark/System choice),
+and every scheme now defines a genuinely different palette for each state, so
+that class actually changes the page.
 
-That is deliberate per scheme (each is one flavour), so light/dark depends on
-*which* scheme is active rather than on the OS setting.
+Before September 2026 it did not. Both blocks held identical values in every
+scheme, so the `.dark` class changed nothing and a light-mode visitor was
+served the dark site. That was measured, not assumed: `prefers-color-scheme:
+light` and `dark` both rendered `#1e2c3b`.
 
-**`showThemeSwitch` is now `true`**, so visitors can choose: Lake Superior for
-light, the other three for dark. That is the site's light/dark story today, and
-it is why the Light/Dark/System toggle stays hidden — see Configuration Changes.
+Both header controls are on:
 
-Still open: giving each scheme a genuine light *and* dark variant would make the
-site follow `prefers-color-scheme` automatically and make the Light/Dark/System
-toggle meaningful. That means authoring four more palettes, and it changes what
-every light-mode visitor sees, so it is a deliberate not-yet rather than an
-oversight. The default scheme is unchanged (`mn-boundary-waters`), so first-time
-visitors still land on the dark site.
+- **Scheme picker** (`showThemeSwitch`) — choose the flavour
+- **Light/Dark/System** (`showDarkModeSwitch`) — override the OS per device
 
-Each scheme is built to the rules this codebase learned in the September 2026
-accessibility pass, and each was verified by measurement, not by eye:
+Verified across all **8 combinations** (4 schemes × light/dark), all 11 pages:
+zero WCAG A/AA violations, weakest text contrast 4.65:1, all 68 syntax colours
+≥ 4.5:1 against the real composited code ground, and the focus ring — which
+keys off `--color-foreground` — inverting with the scheme at 10.0–13.6:1.
 
-- background chroma ≤ 0.030 (large saturated fields are what made the site tiring);
-  Lake Superior's light ground sits at 0.010 for the same reason
-- body text ≥ 7:1 (AAA); links ≥ 4.5:1 **and** ≥ 15° of HSL hue separation from the
-  background — the hue rule is the one a contrast checker will not tell you about
-- `--color-border` ≥ 3:1 for WCAG 1.4.11 (tightest across the four is 3.60:1)
-- all 68 syntax-highlighting colors ≥ 4.5:1 against the real composited code
-  background (tightest is 5.08:1)
+Two bugs surfaced while building the pairs, both of which had been shipping:
 
-**Syntax palette fix applied to all four, including Boundary Waters:** code comments
-were `oklch(0.582 0.036 252)` = **3.45:1** and line numbers `oklch(0.620 0.040 252)` =
-**4.01:1**, both below AA. Comments are prose and need to be readable, so every scheme
-now places them at L ≥ 0.700 (5.46:1). axe never caught this because no post's code
-sample happens to contain a comment — it was found by enumerating the palette rather
-than by scanning a page.
-
-### 6. Mobile font size
-`@media (max-width: 40rem) { .prose { font-size: 1.1rem; } }` — theme default of
-0.9rem (14.4px) was too small on phones.
-
-### 7. Breadcrumb mobile stacking
-`@media (max-width: 48rem)` rules stack `.breadcrumb ol` vertically with per-level indent
-and lift the `max-w` truncation. Theme uses `flex items-center`, which squished the text.
-
-### 8. Link treatment in prose
-Rules for `.prose a > strong` and `.prose strong > a` force link color and underline.
-Needed because the base reset sets `a { text-decoration: inherit; }`, so links wrapped in
-`<strong>` lost both color and underline.
-
-### 9. External-link icon
-`.prose a.external-link .external-link-icon` sets `inline-block`, a small left margin and
-baseline nudge, and `currentColor` in place of the theme hook's hard-coded `#9ca3af`, so
-the icon matches the link colour instead of sitting at lower contrast than the text.
-
-### 10. Contrast boosts
-Explicit colors for `.text-muted-foreground/50|60`, the `hover:text-*` utilities, and the
-Hugo credit link, so dimmed/hover states keep sufficient contrast.
-
-### 10a. Accessibility pass (September 2026)
-Measured with axe-core + Playwright across all 11 sitemap pages at 1280px and 390px, plus
-pixel-diffed screenshots for things axe cannot see (focus rings, real rendered contrast).
-
-**Readability / "too blue".** Every text pair already cleared WCAG AA before this pass —
-the weakest was 5.31:1 — so this was never a luminance problem. Two measured causes:
-
-- *Saturation.* Background `#112c49` was 62% HSL saturation and the card `#051e38` was
-  84%. Background chroma roughly halved (bg `0.062 -> 0.034`, card `0.058 -> 0.030`,
-  popover `0.054 -> 0.028`, muted `0.050 -> 0.030`) and the text tint eased
-  (`0.022 -> 0.014`). **Lightness is untouched, so every contrast ratio is preserved.**
-- *Hue collision.* Links rendered at HSL hue 211.6°; the page background renders at
-  211.1°. Links were the same hue as the page, only lighter — the worst case for edge
-  acuity. `--color-primary` is now Ice Blue `oklch(0.780 0.080 210)`, giving 22° of
-  separation and lifting links from 5.31:1 to 7.30:1 (AAA).
+- `--color-important` in Boundary Waters was `oklch(0.620 0.175 15)` =
+  **3.57:1**, below AA. axe never flagged it because no sampled page renders
+  that token as text; it only appeared when enumerating the token set.
+- `.text-muted-foreground/50`, used for the "No previous / No next post"
+  labels, composited to **3.75:1** on the light grounds even with the existing
+  80% boost. The transparency is gone; the muted token now carries the dimming
+  on its own.
 
 **Non-text contrast (WCAG 1.4.11).** `--color-border` was 2.20:1 against the background,
 below the 3:1 required for meaningful UI boundaries. Raised to 3.62:1
@@ -240,19 +187,14 @@ if it changes.
 - `module.hugoVersion.min: 0.158.0` — matches the theme's requirement.
 
 ### 12. `config/_default/params.yaml`
-- `header.showThemeSwitch` is **`true`** as of September 2026 — visitors can pick any
-  of the four schemes, which is how the site offers a light option (Lake Superior)
-  alongside the three dark ones. Verified end to end at desktop and mobile widths:
-  the dropdown lists all four, the choice applies immediately and persists across
-  navigation via `localStorage.colorScheme`, and axe reports no violations with the
-  dropdown open in either a light or a dark scheme.
-- `header.showDarkModeSwitch` stays **`false`**, deliberately. The Light/Dark/System
-  control itself works — it sets the `.dark` class and persists the choice — but it
-  changes nothing visible, because every scheme defines `[data-theme="x"]` and
-  `[data-theme="x"].dark` with identical values. Measured: background stays `#1e2c3b`
-  in both modes on Boundary Waters and `#ecf6f6` in both on Lake Superior. Turning it
-  on would ship a button that does nothing; it needs a real light/dark variant per
-  scheme first.
+- `header.showThemeSwitch` is **`true`** — visitors pick the flavour. Verified end
+  to end at desktop and mobile widths: the dropdown lists all four, the choice
+  applies immediately and persists across navigation via
+  `localStorage.colorScheme`, and axe is clean with the dropdown open in both a
+  light and a dark scheme.
+- `header.showDarkModeSwitch` is **`true`** — Light / Dark / System. Meaningful
+  as of September 2026, now that each scheme has a real palette per state. It
+  writes `localStorage.theme`; `System` defers to `prefers-color-scheme`.
 - `header.showLanguageSwitch` is `false` (single-language site).
 - `analytics.google` — hugo-narrow reads analytics from `params.yaml`, not `hugo.yaml`.
 - `lightbox.enabled: false` — as of v1.3.16 the theme only emits gallery/lightbox assets

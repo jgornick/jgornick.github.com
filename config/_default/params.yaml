@@ -40,14 +40,12 @@ header:
   # (Lake Superior) and the three dark ones. Safe to expose now that all four
   # schemes are actually implemented in custom.css/chroma.css.
   showThemeSwitch: true
-  # Light/Dark/System toggle stays off deliberately. The control itself works —
-  # it sets the .dark class and persists the choice — but every scheme defines
-  # [data-theme="x"] and [data-theme="x"].dark with identical values, so the
-  # class changes nothing. Measured: background stays #1e2c3b in both modes on
-  # Boundary Waters, #ecf6f6 in both on Lake Superior. Enabling this would ship
-  # a button that visibly does nothing. It needs a real light/dark variant per
-  # scheme first — see CUSTOMIZATIONS.md "Light and dark mode".
-  showDarkModeSwitch: false
+  # Light/Dark/System toggle. Meaningful as of September 2026: every scheme now
+  # defines a real light palette on [data-theme="x"] and a dark one on
+  # [data-theme="x"].dark, so the .dark class the theme applies actually changes
+  # the page. With this on, the site follows the OS by default and visitors can
+  # override per-device.
+  showDarkModeSwitch: true
   showLanguageSwitch: false
   languageSwitchMode: "dropdown"
 

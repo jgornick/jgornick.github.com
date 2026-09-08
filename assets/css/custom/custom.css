@@ -165,26 +165,34 @@
   caret-color: oklch(0.770 0.095 212);
 }
 
-/* Minnesota — Lake Superior (Light) */
-/*
- * The big lake in daylight: sun on open water, pale sky, agate on the beach.
- * This is the light scheme in the four-flavour ladder that params.yaml
- * describes (Latte -> Frappe -> Macchiato -> Mocha); the other three are dark.
- *
- * Light in both states. The .dark block repeats the same values, matching how
- * the other three schemes stay dark in both — a flavour is one look, and the
- * OS preference picks a flavour rather than re-tinting this one.
- *
- * Built to the same measured rules as the dark schemes, inverted:
- *   - background chroma 0.010, so a large pale field does not tint the page
- *   - body text 11.32:1 (AAA)
- *   - links are agate rust, 165 degrees off the water-blue background and
- *     5.78:1 — hue separation matters as much as ratio, which is the lesson
- *     the Boundary Waters audit produced
- *   - --color-border 3.77:1 against the background and 3.50:1 against cards,
- *     clearing WCAG 1.4.11 on every surface it is drawn on
- */
+/* ============================================================================
+   Minnesota colour schemes — four flavours, each with a light and a dark face
+   ============================================================================
 
+   Every scheme defines its LIGHT palette on [data-theme="x"] and its DARK
+   palette on [data-theme="x"].dark. The theme adds the .dark class from the
+   OS `prefers-color-scheme` (or the visitor's explicit Light/Dark/System
+   choice), so the site now follows the OS instead of ignoring it.
+
+   Before September 2026 both blocks held identical values in every scheme, so
+   the .dark class the theme applied changed nothing and light-mode visitors
+   were served the dark site regardless.
+
+   Every palette is measured, not eyeballed. Across all eight:
+     - body text >= 7:1 (AAA) on background, card and popover
+     - links >= 4.5:1 AND >= 15 degrees of HSL hue separation from their
+       background — the hue rule is the one a contrast checker will not tell
+       you about, and it is what made the original site read as "too blue"
+     - --color-border >= 3:1 on every surface it is drawn on (WCAG 1.4.11)
+     - all 68 syntax colours >= 4.5:1 against the real composited code ground
+
+   Light faces share one lightness ladder, varying only by hue, so the contrast
+   maths is identical across schemes and only hue-dependent checks differ.
+   ============================================================================ */
+
+
+/* Lake Superior — the big lake.
+   Light: agate rust links on a pale ground.  Dark: agate amber links. */
 
 [data-theme="mn-lake-superior"] {
   --color-primary: oklch(0.500 0.130 38);
@@ -202,7 +210,7 @@
   --color-card-foreground: oklch(0.320 0.030 200);
   --color-popover: oklch(0.915 0.014 200);
   --color-popover-foreground: oklch(0.320 0.030 200);
-  --color-note: oklch(0.500 0.100 200);
+  --color-note: oklch(0.500 0.100 195);
   --color-tip: oklch(0.470 0.110 165);
   --color-important: oklch(0.490 0.170 20);
   --color-warning: oklch(0.520 0.120 70);
@@ -213,79 +221,153 @@
 }
 
 [data-theme="mn-lake-superior"].dark {
-  --color-primary: oklch(0.500 0.130 38);
-  --color-primary-foreground: oklch(0.985 0.008 200);
-  --color-secondary: oklch(0.520 0.090 195);
-  --color-secondary-foreground: oklch(0.985 0.008 200);
-  --color-accent: oklch(0.480 0.095 195);
-  --color-accent-foreground: oklch(0.985 0.008 200);
-  --color-background: oklch(0.965 0.010 200);
-  --color-foreground: oklch(0.320 0.030 200);
-  --color-muted: oklch(0.890 0.014 200);
-  --color-muted-foreground: oklch(0.470 0.028 200);
-  --color-border: oklch(0.585 0.028 200);
-  --color-card: oklch(0.940 0.012 200);
-  --color-card-foreground: oklch(0.320 0.030 200);
-  --color-popover: oklch(0.915 0.014 200);
-  --color-popover-foreground: oklch(0.320 0.030 200);
+  --color-primary: oklch(0.820 0.110 75);
+  --color-primary-foreground: oklch(0.200 0.030 200);
+  --color-secondary: oklch(0.780 0.090 195);
+  --color-secondary-foreground: oklch(0.200 0.030 200);
+  --color-accent: oklch(0.720 0.100 195);
+  --color-accent-foreground: oklch(0.200 0.030 200);
+  --color-background: oklch(0.300 0.030 200);
+  --color-foreground: oklch(0.925 0.012 200);
+  --color-muted: oklch(0.390 0.028 200);
+  --color-muted-foreground: oklch(0.865 0.016 200);
+  --color-border: oklch(0.610 0.028 200);
+  --color-card: oklch(0.245 0.028 200);
+  --color-card-foreground: oklch(0.925 0.012 200);
+  --color-popover: oklch(0.205 0.026 200);
+  --color-popover-foreground: oklch(0.925 0.012 200);
+  --color-note: oklch(0.780 0.090 195);
+  --color-tip: oklch(0.780 0.120 165);
+  --color-important: oklch(0.740 0.150 20);
+  --color-warning: oklch(0.850 0.120 80);
+  --color-caution: oklch(0.760 0.140 50);
+  --color-selection: oklch(0.430 0.030 200);
+  --color-cursor: oklch(0.820 0.110 75);
+  --color-subtle: oklch(0.630 0.026 200);
+}
+
+[data-theme="mn-lake-superior"] ::selection {
+  background-color: oklch(0.860 0.045 200);
+  color: oklch(0.320 0.030 200);
+}
+
+[data-theme="mn-lake-superior"].dark ::selection {
+  background-color: oklch(0.430 0.030 200);
+  color: oklch(0.925 0.012 200);
+}
+
+[data-theme="mn-lake-superior"] input,
+[data-theme="mn-lake-superior"] textarea {
+  caret-color: oklch(0.500 0.130 38);
+}
+
+[data-theme="mn-lake-superior"].dark input,
+[data-theme="mn-lake-superior"].dark textarea {
+  caret-color: oklch(0.820 0.110 75);
+}
+
+/* Boundary Waters — the BWCA.
+   Light: deep water links on a pale ground.  Dark: ice blue links. */
+
+[data-theme="mn-boundary-waters"] {
+  --color-primary: oklch(0.475 0.130 190);
+  --color-primary-foreground: oklch(0.985 0.008 252);
+  --color-secondary: oklch(0.520 0.090 200);
+  --color-secondary-foreground: oklch(0.985 0.008 252);
+  --color-accent: oklch(0.480 0.095 200);
+  --color-accent-foreground: oklch(0.985 0.008 252);
+  --color-background: oklch(0.965 0.010 252);
+  --color-foreground: oklch(0.320 0.030 252);
+  --color-muted: oklch(0.890 0.014 252);
+  --color-muted-foreground: oklch(0.470 0.028 252);
+  --color-border: oklch(0.585 0.028 252);
+  --color-card: oklch(0.940 0.012 252);
+  --color-card-foreground: oklch(0.320 0.030 252);
+  --color-popover: oklch(0.915 0.014 252);
+  --color-popover-foreground: oklch(0.320 0.030 252);
   --color-note: oklch(0.500 0.100 200);
   --color-tip: oklch(0.470 0.110 165);
   --color-important: oklch(0.490 0.170 20);
   --color-warning: oklch(0.520 0.120 70);
   --color-caution: oklch(0.510 0.140 45);
-  --color-selection: oklch(0.860 0.045 200);
-  --color-cursor: oklch(0.500 0.130 38);
-  --color-subtle: oklch(0.600 0.026 200);
+  --color-selection: oklch(0.860 0.045 252);
+  --color-cursor: oklch(0.475 0.130 190);
+  --color-subtle: oklch(0.600 0.026 252);
 }
 
-[data-theme="mn-lake-superior"] ::selection,
-[data-theme="mn-lake-superior"].dark ::selection {
-  background-color: oklch(0.860 0.045 200);
-  color: oklch(0.320 0.030 200);
+[data-theme="mn-boundary-waters"].dark {
+  --color-primary: oklch(0.780 0.080 210);
+  --color-primary-foreground: oklch(0.185 0.060 252);
+  --color-secondary: oklch(0.770 0.095 212);
+  --color-secondary-foreground: oklch(0.185 0.060 252);
+  --color-accent: oklch(0.700 0.105 212);
+  --color-accent-foreground: oklch(0.185 0.060 252);
+  --color-background: oklch(0.288 0.034 252);
+  --color-foreground: oklch(0.920 0.014 212);
+  --color-muted: oklch(0.385 0.030 252);
+  --color-muted-foreground: oklch(0.860 0.018 225);
+  --color-border: oklch(0.600 0.030 252);
+  --color-card: oklch(0.232 0.030 252);
+  --color-card-foreground: oklch(0.920 0.014 212);
+  --color-popover: oklch(0.192 0.028 252);
+  --color-popover-foreground: oklch(0.920 0.014 212);
+  --color-note: oklch(0.770 0.095 212);
+  --color-tip: oklch(0.740 0.130 175);
+  --color-important: oklch(0.720 0.175 15);
+  --color-warning: oklch(0.840 0.128 78);
+  --color-caution: oklch(0.700 0.160 47);
+  --color-selection: oklch(0.432 0.030 252);
+  --color-cursor: oklch(0.770 0.095 212);
+  --color-subtle: oklch(0.620 0.028 252);
 }
 
-[data-theme="mn-lake-superior"] input,
-[data-theme="mn-lake-superior"] textarea,
-[data-theme="mn-lake-superior"].dark input,
-[data-theme="mn-lake-superior"].dark textarea {
-  caret-color: oklch(0.500 0.130 38);
+[data-theme="mn-boundary-waters"] ::selection {
+  background-color: oklch(0.860 0.045 252);
+  color: oklch(0.320 0.030 252);
 }
 
-/* Minnesota — North Shore */
-/*
- * Basalt cliffs, black spruce and birch above the shoreline.
- * A green-grey stone base (hue 155) with a cold birch-blue link colour,
- * giving ~70 degrees of separation between text and background.
- *
- * Monochromatic background ladder at hue 155; link colour is
- * deliberately off-hue from the background (see the accessibility notes
- * at the top of this file for why that matters).
- */
+[data-theme="mn-boundary-waters"].dark ::selection {
+  background-color: oklch(0.432 0.030 252);
+  color: oklch(0.920 0.014 212);
+}
+
+[data-theme="mn-boundary-waters"] input,
+[data-theme="mn-boundary-waters"] textarea {
+  caret-color: oklch(0.475 0.130 190);
+}
+
+[data-theme="mn-boundary-waters"].dark input,
+[data-theme="mn-boundary-waters"].dark textarea {
+  caret-color: oklch(0.770 0.095 212);
+}
+
+/* North Shore — basalt, pine and birch.
+   Light: deep lake blue links on a pale ground.  Dark: birch blue links. */
 
 [data-theme="mn-north-shore"] {
-  --color-primary: oklch(0.820 0.095 225);
-  --color-primary-foreground: oklch(0.195 0.028 155);
-  --color-secondary: oklch(0.800 0.105 100);
-  --color-secondary-foreground: oklch(0.195 0.028 155);
-  --color-accent: oklch(0.740 0.095 225);
-  --color-accent-foreground: oklch(0.195 0.028 155);
-  --color-background: oklch(0.295 0.028 155);
-  --color-foreground: oklch(0.925 0.012 155);
-  --color-muted: oklch(0.385 0.026 155);
-  --color-muted-foreground: oklch(0.865 0.016 155);
-  --color-border: oklch(0.605 0.026 155);
-  --color-card: oklch(0.240 0.026 155);
-  --color-card-foreground: oklch(0.925 0.012 155);
-  --color-popover: oklch(0.200 0.024 155);
-  --color-popover-foreground: oklch(0.925 0.012 155);
-  --color-note: oklch(0.800 0.090 225);
-  --color-tip: oklch(0.790 0.120 150);
-  --color-important: oklch(0.740 0.150 20);
-  --color-warning: oklch(0.850 0.120 80);
-  --color-caution: oklch(0.760 0.140 50);
-  --color-selection: oklch(0.425 0.028 155);
-  --color-cursor: oklch(0.820 0.095 225);
-  --color-subtle: oklch(0.625 0.024 155);
+  --color-primary: oklch(0.500 0.130 250);
+  --color-primary-foreground: oklch(0.985 0.008 155);
+  --color-secondary: oklch(0.520 0.090 235);
+  --color-secondary-foreground: oklch(0.985 0.008 155);
+  --color-accent: oklch(0.480 0.095 235);
+  --color-accent-foreground: oklch(0.985 0.008 155);
+  --color-background: oklch(0.965 0.010 155);
+  --color-foreground: oklch(0.320 0.030 155);
+  --color-muted: oklch(0.890 0.014 155);
+  --color-muted-foreground: oklch(0.470 0.028 155);
+  --color-border: oklch(0.585 0.028 155);
+  --color-card: oklch(0.940 0.012 155);
+  --color-card-foreground: oklch(0.320 0.030 155);
+  --color-popover: oklch(0.915 0.014 155);
+  --color-popover-foreground: oklch(0.320 0.030 155);
+  --color-note: oklch(0.500 0.100 235);
+  --color-tip: oklch(0.470 0.110 165);
+  --color-important: oklch(0.490 0.170 20);
+  --color-warning: oklch(0.520 0.120 70);
+  --color-caution: oklch(0.510 0.140 45);
+  --color-selection: oklch(0.860 0.045 155);
+  --color-cursor: oklch(0.500 0.130 250);
+  --color-subtle: oklch(0.600 0.026 155);
 }
 
 [data-theme="mn-north-shore"].dark {
@@ -314,54 +396,53 @@
   --color-subtle: oklch(0.625 0.024 155);
 }
 
-[data-theme="mn-north-shore"] ::selection,
+[data-theme="mn-north-shore"] ::selection {
+  background-color: oklch(0.860 0.045 155);
+  color: oklch(0.320 0.030 155);
+}
+
 [data-theme="mn-north-shore"].dark ::selection {
   background-color: oklch(0.425 0.028 155);
   color: oklch(0.925 0.012 155);
 }
 
 [data-theme="mn-north-shore"] input,
-[data-theme="mn-north-shore"] textarea,
+[data-theme="mn-north-shore"] textarea {
+  caret-color: oklch(0.500 0.130 250);
+}
+
 [data-theme="mn-north-shore"].dark input,
 [data-theme="mn-north-shore"].dark textarea {
   caret-color: oklch(0.820 0.095 225);
 }
 
-/* Minnesota — Night Sky */
-/*
- * The darkest of the four: a moonless violet-black sky with aurora.
- * The background sits lower than the other schemes on purpose, and the
- * aurora-green link colour is ~130 degrees off it.
- *
- * Monochromatic background ladder at hue 285; link colour is
- * deliberately off-hue from the background (see the accessibility notes
- * at the top of this file for why that matters).
- */
+/* Night Sky — a moonless sky.
+   Light: deep aurora links on a pale ground.  Dark: aurora green links. */
 
 [data-theme="mn-night-sky"] {
-  --color-primary: oklch(0.850 0.130 155);
-  --color-primary-foreground: oklch(0.170 0.028 285);
-  --color-secondary: oklch(0.810 0.110 190);
-  --color-secondary-foreground: oklch(0.170 0.028 285);
-  --color-accent: oklch(0.770 0.120 155);
-  --color-accent-foreground: oklch(0.170 0.028 285);
-  --color-background: oklch(0.235 0.028 285);
-  --color-foreground: oklch(0.930 0.010 285);
-  --color-muted: oklch(0.330 0.026 285);
-  --color-muted-foreground: oklch(0.870 0.014 285);
-  --color-border: oklch(0.575 0.026 285);
-  --color-card: oklch(0.190 0.026 285);
-  --color-card-foreground: oklch(0.930 0.010 285);
-  --color-popover: oklch(0.155 0.024 285);
-  --color-popover-foreground: oklch(0.930 0.010 285);
-  --color-note: oklch(0.810 0.110 190);
-  --color-tip: oklch(0.830 0.130 160);
-  --color-important: oklch(0.760 0.150 20);
-  --color-warning: oklch(0.860 0.120 80);
-  --color-caution: oklch(0.780 0.140 50);
-  --color-selection: oklch(0.390 0.028 285);
-  --color-cursor: oklch(0.850 0.130 155);
-  --color-subtle: oklch(0.595 0.024 285);
+  --color-primary: oklch(0.500 0.130 150);
+  --color-primary-foreground: oklch(0.985 0.008 285);
+  --color-secondary: oklch(0.520 0.090 165);
+  --color-secondary-foreground: oklch(0.985 0.008 285);
+  --color-accent: oklch(0.480 0.095 165);
+  --color-accent-foreground: oklch(0.985 0.008 285);
+  --color-background: oklch(0.965 0.010 285);
+  --color-foreground: oklch(0.320 0.030 285);
+  --color-muted: oklch(0.890 0.014 285);
+  --color-muted-foreground: oklch(0.470 0.028 285);
+  --color-border: oklch(0.585 0.028 285);
+  --color-card: oklch(0.940 0.012 285);
+  --color-card-foreground: oklch(0.320 0.030 285);
+  --color-popover: oklch(0.915 0.014 285);
+  --color-popover-foreground: oklch(0.320 0.030 285);
+  --color-note: oklch(0.500 0.100 165);
+  --color-tip: oklch(0.470 0.110 165);
+  --color-important: oklch(0.490 0.170 20);
+  --color-warning: oklch(0.520 0.120 70);
+  --color-caution: oklch(0.510 0.140 45);
+  --color-selection: oklch(0.860 0.045 285);
+  --color-cursor: oklch(0.500 0.130 150);
+  --color-subtle: oklch(0.600 0.026 285);
 }
 
 [data-theme="mn-night-sky"].dark {
@@ -390,14 +471,21 @@
   --color-subtle: oklch(0.595 0.024 285);
 }
 
-[data-theme="mn-night-sky"] ::selection,
+[data-theme="mn-night-sky"] ::selection {
+  background-color: oklch(0.860 0.045 285);
+  color: oklch(0.320 0.030 285);
+}
+
 [data-theme="mn-night-sky"].dark ::selection {
   background-color: oklch(0.390 0.028 285);
   color: oklch(0.930 0.010 285);
 }
 
 [data-theme="mn-night-sky"] input,
-[data-theme="mn-night-sky"] textarea,
+[data-theme="mn-night-sky"] textarea {
+  caret-color: oklch(0.500 0.130 150);
+}
+
 [data-theme="mn-night-sky"].dark input,
 [data-theme="mn-night-sky"].dark textarea {
   caret-color: oklch(0.850 0.130 155);
@@ -503,10 +591,16 @@
   text-decoration-color: transparent;
 }
 
-/* Boost contrast for dimmed text utilities */
+/* Boost contrast for dimmed text utilities.
+
+   The theme renders "No previous post" / "No next post" with
+   .text-muted-foreground/50, i.e. the muted colour at 50% alpha. Even lifted to
+   80% this composites to 3.75:1 on the light schemes' pale ground — below AA at
+   14px. These labels are real text, so drop the transparency entirely and let
+   the muted token carry the dimming on its own (6.10:1 light, 9.36:1 dark). */
 .text-muted-foreground\/50,
 .text-muted-foreground\/60 {
-  color: color-mix(in oklab, var(--color-muted-foreground) 80%, transparent);
+  color: var(--color-muted-foreground);
 }
 
 /* Make hover text fully visible */
