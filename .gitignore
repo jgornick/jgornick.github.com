@@ -211,7 +211,6 @@ dist
 
 # Hugo Modules
 _vendor/
-go.sum
 
 # Accessibility audit output (regenerate with scripts/a11y-audit.sh)
 a11y-reports/
