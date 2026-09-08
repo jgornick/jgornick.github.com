@@ -85,10 +85,39 @@ Loaded as standalone stylesheets (not compiled into the theme's Tailwind bundle)
 - `assets/css/custom/custom.css` — color scheme + overrides
 - `assets/css/custom/chroma.css` — syntax highlighting palette
 
-### 5. Minnesota "Boundary Waters" color scheme
-`[data-theme="mn-boundary-waters"]` light/dark blocks define the full token set in OKLCH,
-plus `::selection` and input caret colors. Registered in `params.yaml` under `themes:`
-alongside three other Minnesota schemes, with `colorScheme: "mn-boundary-waters"` active.
+### 5. Minnesota color schemes (four)
+All four schemes registered in `params.yaml` under `themes:` are now implemented in
+`custom.css` (token set + `::selection` + caret) and `chroma.css` (syntax palette).
+`colorScheme: "mn-boundary-waters"` is active.
+
+| Scheme | Background | Link | Link hue separation |
+|---|---|---|---|
+| `mn-boundary-waters` | `#1e2c3b` navy | `#77c6d4` ice blue | 22° |
+| `mn-lake-superior` | `#1b3234` deep water | `#eeba70` agate amber | 150° |
+| `mn-north-shore` | `#213126` basalt/pine | `#7cd1f3` birch blue | 58° |
+| `mn-night-sky` | `#1d1c2b` violet-black | `#83e7a8` aurora green | 102° |
+
+**Previously only Boundary Waters existed.** The other three were registered in
+`params.yaml` but had no CSS at all, so selecting one would have fallen back to the
+theme's stock colors. That was latent rather than visible only because
+`header.showThemeSwitch` is `false` — see Configuration Changes.
+
+Each scheme is built to the rules this codebase learned in the September 2026
+accessibility pass, and each was verified by measurement, not by eye:
+
+- background chroma ≤ 0.030 (large saturated fields are what made the site tiring)
+- body text ≥ 7:1 (AAA); links ≥ 4.5:1 **and** ≥ 15° of HSL hue separation from the
+  background — the hue rule is the one a contrast checker will not tell you about
+- `--color-border` ≥ 3:1 for WCAG 1.4.11 (tightest across the four is 3.60:1)
+- all 68 syntax-highlighting colors ≥ 4.5:1 against the real composited code
+  background (tightest is 5.08:1)
+
+**Syntax palette fix applied to all four, including Boundary Waters:** code comments
+were `oklch(0.582 0.036 252)` = **3.45:1** and line numbers `oklch(0.620 0.040 252)` =
+**4.01:1**, both below AA. Comments are prose and need to be readable, so every scheme
+now places them at L ≥ 0.700 (5.46:1). axe never caught this because no post's code
+sample happens to contain a comment — it was found by enumerating the palette rather
+than by scanning a page.
 
 ### 6. Mobile font size
 `@media (max-width: 40rem) { .prose { font-size: 1.1rem; } }` — theme default of
@@ -182,7 +211,9 @@ if it changes.
 
 ### 12. `config/_default/params.yaml`
 - `header.showThemeSwitch` / `showDarkModeSwitch` / `showLanguageSwitch` are all `false`
-  (deliberate — the header intentionally shows only logo + nav).
+  (deliberate — the header intentionally shows only logo + nav). As of September 2026
+  all four registered schemes are actually implemented, so enabling `showThemeSwitch`
+  is now safe; before that it would have exposed three schemes with no CSS.
 - `analytics.google` — hugo-narrow reads analytics from `params.yaml`, not `hugo.yaml`.
 - `lightbox.enabled: false` — as of v1.3.16 the theme only emits gallery/lightbox assets
   (glightbox, photoswipe, fjGallery, lg fonts) when this is enabled, so the build output

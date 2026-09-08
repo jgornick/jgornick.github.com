@@ -165,6 +165,234 @@
   caret-color: oklch(0.770 0.095 212);
 }
 
+/* Minnesota — Lake Superior */
+/*
+ * The big lake: cold, deep, blue-green water and an agate shoreline.
+ * Colder and greener than Boundary Waters (hue 200 vs 252), so the two
+ * read as clearly different places rather than two blues.
+ *
+ * Monochromatic background ladder at hue 200; link colour is
+ * deliberately off-hue from the background (see the accessibility notes
+ * at the top of this file for why that matters).
+ */
+
+[data-theme="mn-lake-superior"] {
+  --color-primary: oklch(0.820 0.110 75);
+  --color-primary-foreground: oklch(0.200 0.030 200);
+  --color-secondary: oklch(0.780 0.090 195);
+  --color-secondary-foreground: oklch(0.200 0.030 200);
+  --color-accent: oklch(0.720 0.100 195);
+  --color-accent-foreground: oklch(0.200 0.030 200);
+  --color-background: oklch(0.300 0.030 200);
+  --color-foreground: oklch(0.925 0.012 200);
+  --color-muted: oklch(0.390 0.028 200);
+  --color-muted-foreground: oklch(0.865 0.016 200);
+  --color-border: oklch(0.610 0.028 200);
+  --color-card: oklch(0.245 0.028 200);
+  --color-card-foreground: oklch(0.925 0.012 200);
+  --color-popover: oklch(0.205 0.026 200);
+  --color-popover-foreground: oklch(0.925 0.012 200);
+  --color-note: oklch(0.780 0.090 195);
+  --color-tip: oklch(0.780 0.120 165);
+  --color-important: oklch(0.740 0.150 20);
+  --color-warning: oklch(0.850 0.120 80);
+  --color-caution: oklch(0.760 0.140 50);
+  --color-selection: oklch(0.430 0.030 200);
+  --color-cursor: oklch(0.820 0.110 75);
+  --color-subtle: oklch(0.630 0.026 200);
+}
+
+[data-theme="mn-lake-superior"].dark {
+  --color-primary: oklch(0.820 0.110 75);
+  --color-primary-foreground: oklch(0.200 0.030 200);
+  --color-secondary: oklch(0.780 0.090 195);
+  --color-secondary-foreground: oklch(0.200 0.030 200);
+  --color-accent: oklch(0.720 0.100 195);
+  --color-accent-foreground: oklch(0.200 0.030 200);
+  --color-background: oklch(0.300 0.030 200);
+  --color-foreground: oklch(0.925 0.012 200);
+  --color-muted: oklch(0.390 0.028 200);
+  --color-muted-foreground: oklch(0.865 0.016 200);
+  --color-border: oklch(0.610 0.028 200);
+  --color-card: oklch(0.245 0.028 200);
+  --color-card-foreground: oklch(0.925 0.012 200);
+  --color-popover: oklch(0.205 0.026 200);
+  --color-popover-foreground: oklch(0.925 0.012 200);
+  --color-note: oklch(0.780 0.090 195);
+  --color-tip: oklch(0.780 0.120 165);
+  --color-important: oklch(0.740 0.150 20);
+  --color-warning: oklch(0.850 0.120 80);
+  --color-caution: oklch(0.760 0.140 50);
+  --color-selection: oklch(0.430 0.030 200);
+  --color-cursor: oklch(0.820 0.110 75);
+  --color-subtle: oklch(0.630 0.026 200);
+}
+
+[data-theme="mn-lake-superior"] ::selection,
+[data-theme="mn-lake-superior"].dark ::selection {
+  background-color: oklch(0.430 0.030 200);
+  color: oklch(0.925 0.012 200);
+}
+
+[data-theme="mn-lake-superior"] input,
+[data-theme="mn-lake-superior"] textarea,
+[data-theme="mn-lake-superior"].dark input,
+[data-theme="mn-lake-superior"].dark textarea {
+  caret-color: oklch(0.820 0.110 75);
+}
+
+/* Minnesota — North Shore */
+/*
+ * Basalt cliffs, black spruce and birch above the shoreline.
+ * A green-grey stone base (hue 155) with a cold birch-blue link colour,
+ * giving ~70 degrees of separation between text and background.
+ *
+ * Monochromatic background ladder at hue 155; link colour is
+ * deliberately off-hue from the background (see the accessibility notes
+ * at the top of this file for why that matters).
+ */
+
+[data-theme="mn-north-shore"] {
+  --color-primary: oklch(0.820 0.095 225);
+  --color-primary-foreground: oklch(0.195 0.028 155);
+  --color-secondary: oklch(0.800 0.105 100);
+  --color-secondary-foreground: oklch(0.195 0.028 155);
+  --color-accent: oklch(0.740 0.095 225);
+  --color-accent-foreground: oklch(0.195 0.028 155);
+  --color-background: oklch(0.295 0.028 155);
+  --color-foreground: oklch(0.925 0.012 155);
+  --color-muted: oklch(0.385 0.026 155);
+  --color-muted-foreground: oklch(0.865 0.016 155);
+  --color-border: oklch(0.605 0.026 155);
+  --color-card: oklch(0.240 0.026 155);
+  --color-card-foreground: oklch(0.925 0.012 155);
+  --color-popover: oklch(0.200 0.024 155);
+  --color-popover-foreground: oklch(0.925 0.012 155);
+  --color-note: oklch(0.800 0.090 225);
+  --color-tip: oklch(0.790 0.120 150);
+  --color-important: oklch(0.740 0.150 20);
+  --color-warning: oklch(0.850 0.120 80);
+  --color-caution: oklch(0.760 0.140 50);
+  --color-selection: oklch(0.425 0.028 155);
+  --color-cursor: oklch(0.820 0.095 225);
+  --color-subtle: oklch(0.625 0.024 155);
+}
+
+[data-theme="mn-north-shore"].dark {
+  --color-primary: oklch(0.820 0.095 225);
+  --color-primary-foreground: oklch(0.195 0.028 155);
+  --color-secondary: oklch(0.800 0.105 100);
+  --color-secondary-foreground: oklch(0.195 0.028 155);
+  --color-accent: oklch(0.740 0.095 225);
+  --color-accent-foreground: oklch(0.195 0.028 155);
+  --color-background: oklch(0.295 0.028 155);
+  --color-foreground: oklch(0.925 0.012 155);
+  --color-muted: oklch(0.385 0.026 155);
+  --color-muted-foreground: oklch(0.865 0.016 155);
+  --color-border: oklch(0.605 0.026 155);
+  --color-card: oklch(0.240 0.026 155);
+  --color-card-foreground: oklch(0.925 0.012 155);
+  --color-popover: oklch(0.200 0.024 155);
+  --color-popover-foreground: oklch(0.925 0.012 155);
+  --color-note: oklch(0.800 0.090 225);
+  --color-tip: oklch(0.790 0.120 150);
+  --color-important: oklch(0.740 0.150 20);
+  --color-warning: oklch(0.850 0.120 80);
+  --color-caution: oklch(0.760 0.140 50);
+  --color-selection: oklch(0.425 0.028 155);
+  --color-cursor: oklch(0.820 0.095 225);
+  --color-subtle: oklch(0.625 0.024 155);
+}
+
+[data-theme="mn-north-shore"] ::selection,
+[data-theme="mn-north-shore"].dark ::selection {
+  background-color: oklch(0.425 0.028 155);
+  color: oklch(0.925 0.012 155);
+}
+
+[data-theme="mn-north-shore"] input,
+[data-theme="mn-north-shore"] textarea,
+[data-theme="mn-north-shore"].dark input,
+[data-theme="mn-north-shore"].dark textarea {
+  caret-color: oklch(0.820 0.095 225);
+}
+
+/* Minnesota — Night Sky */
+/*
+ * The darkest of the four: a moonless violet-black sky with aurora.
+ * The background sits lower than the other schemes on purpose, and the
+ * aurora-green link colour is ~130 degrees off it.
+ *
+ * Monochromatic background ladder at hue 285; link colour is
+ * deliberately off-hue from the background (see the accessibility notes
+ * at the top of this file for why that matters).
+ */
+
+[data-theme="mn-night-sky"] {
+  --color-primary: oklch(0.850 0.130 155);
+  --color-primary-foreground: oklch(0.170 0.028 285);
+  --color-secondary: oklch(0.810 0.110 190);
+  --color-secondary-foreground: oklch(0.170 0.028 285);
+  --color-accent: oklch(0.770 0.120 155);
+  --color-accent-foreground: oklch(0.170 0.028 285);
+  --color-background: oklch(0.235 0.028 285);
+  --color-foreground: oklch(0.930 0.010 285);
+  --color-muted: oklch(0.330 0.026 285);
+  --color-muted-foreground: oklch(0.870 0.014 285);
+  --color-border: oklch(0.575 0.026 285);
+  --color-card: oklch(0.190 0.026 285);
+  --color-card-foreground: oklch(0.930 0.010 285);
+  --color-popover: oklch(0.155 0.024 285);
+  --color-popover-foreground: oklch(0.930 0.010 285);
+  --color-note: oklch(0.810 0.110 190);
+  --color-tip: oklch(0.830 0.130 160);
+  --color-important: oklch(0.760 0.150 20);
+  --color-warning: oklch(0.860 0.120 80);
+  --color-caution: oklch(0.780 0.140 50);
+  --color-selection: oklch(0.390 0.028 285);
+  --color-cursor: oklch(0.850 0.130 155);
+  --color-subtle: oklch(0.595 0.024 285);
+}
+
+[data-theme="mn-night-sky"].dark {
+  --color-primary: oklch(0.850 0.130 155);
+  --color-primary-foreground: oklch(0.170 0.028 285);
+  --color-secondary: oklch(0.810 0.110 190);
+  --color-secondary-foreground: oklch(0.170 0.028 285);
+  --color-accent: oklch(0.770 0.120 155);
+  --color-accent-foreground: oklch(0.170 0.028 285);
+  --color-background: oklch(0.235 0.028 285);
+  --color-foreground: oklch(0.930 0.010 285);
+  --color-muted: oklch(0.330 0.026 285);
+  --color-muted-foreground: oklch(0.870 0.014 285);
+  --color-border: oklch(0.575 0.026 285);
+  --color-card: oklch(0.190 0.026 285);
+  --color-card-foreground: oklch(0.930 0.010 285);
+  --color-popover: oklch(0.155 0.024 285);
+  --color-popover-foreground: oklch(0.930 0.010 285);
+  --color-note: oklch(0.810 0.110 190);
+  --color-tip: oklch(0.830 0.130 160);
+  --color-important: oklch(0.760 0.150 20);
+  --color-warning: oklch(0.860 0.120 80);
+  --color-caution: oklch(0.780 0.140 50);
+  --color-selection: oklch(0.390 0.028 285);
+  --color-cursor: oklch(0.850 0.130 155);
+  --color-subtle: oklch(0.595 0.024 285);
+}
+
+[data-theme="mn-night-sky"] ::selection,
+[data-theme="mn-night-sky"].dark ::selection {
+  background-color: oklch(0.390 0.028 285);
+  color: oklch(0.930 0.010 285);
+}
+
+[data-theme="mn-night-sky"] input,
+[data-theme="mn-night-sky"] textarea,
+[data-theme="mn-night-sky"].dark input,
+[data-theme="mn-night-sky"].dark textarea {
+  caret-color: oklch(0.850 0.130 155);
+}
+
 /* Mobile font size */
 @media (max-width: 40rem) {
   .prose {
