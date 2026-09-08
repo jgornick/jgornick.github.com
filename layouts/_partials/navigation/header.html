@@ -8,7 +8,10 @@
       {{ partial "navigation/site-logo.html" . }}
 
       <!-- 中间：桌面端导航 -->
-      <nav class="mx-8 flex min-w-0 flex-1 items-center justify-center">
+      <nav
+        class="mx-8 flex min-w-0 flex-1 items-center justify-center"
+        aria-label="{{ T `nav.menu` }}"
+      >
         <div class="flex flex-wrap items-center justify-center space-x-1">
           {{ $currentPage := . }}
           {{ range site.Menus.main }}

@@ -13,22 +13,60 @@
  * Base lightness: ~28.8% — calibrated to match Catppuccin Frappé.
  *
  * Background ladder (oklch, hue 252°):
- *   Crust    oklch(0.192 0.054 252)  — deepest layer
- *   Mantle   oklch(0.232 0.058 252)
- *   Base     oklch(0.288 0.062 252)  — main background
+ *   Crust    oklch(0.192 0.028 252)  — deepest layer
+ *   Mantle   oklch(0.232 0.030 252)
+ *   Base     oklch(0.288 0.034 252)  — main background
  *   Surface0 oklch(0.350 0.055 252)
- *   Surface1 oklch(0.385 0.050 252)
- *   Overlay0 oklch(0.482 0.040 252)
+ *   Surface1 oklch(0.385 0.030 252)
+ *   Overlay0 oklch(0.600 0.030 252)
  *   Subtext1 oklch(0.785 0.035 225)
- *   Text     oklch(0.920 0.022 212)  — near-white with Water Blue tint
+ *   Text     oklch(0.920 0.014 212)  — near-white with Water Blue tint
+ *
+ * ---------------------------------------------------------------------------
+ * Accessibility pass (September 2026)
+ * ---------------------------------------------------------------------------
+ * Every text pair on the site already cleared WCAG AA before this pass (the
+ * weakest was 5.31:1), so the "hard to read" quality was never a luminance
+ * problem. Two measured causes, both fixed here:
+ *
+ * 1. Saturation. The large background areas carried a lot of chroma —
+ *    #112c49 is 62% HSL saturation, and the card colour #051e38 was 84%.
+ *    A big field of saturated blue is tiring to read against even at 11:1.
+ *    Background chroma is now roughly halved (bg 0.062 -> 0.034, card
+ *    0.058 -> 0.030) and the text tint eased (0.022 -> 0.014). Lightness is
+ *    untouched, so every contrast ratio is preserved.
+ *
+ * 2. Hue separation. Links were oklch(0.700 0.120 252), which renders at
+ *    HSL hue 211.6° — the page background renders at 211.1°. Links were
+ *    literally the same hue as the page, only lighter, which is the worst
+ *    case for edge acuity (S-cones are sparse, so blue-on-blue reads soft
+ *    even at a passing ratio). Links now use the Water Blue hue (212 in
+ *    oklch -> ~189° HSL), giving ~21° of separation and lifting contrast
+ *    from 5.31:1 to 7.30:1 (AAA). The value used, oklch(0.780 0.080 210), is
+ *    the "Ice Blue" entry from the identity system's own palette, so this
+ *    stays inside the official colour set.
+ *
+ *    To revert just the link colour while keeping the desaturation, set
+ *    --color-primary back to hue 252 at the new lightness:
+ *    oklch(0.780 0.105 252) — that is 7.14:1 but restores the 0.5° hue clash.
+ *
+ *    Note: identity.html designates Night Sky Blue oklch(0.620 0.148 252) the
+ *    "Primary Brand" colour, but at body size it measures 3.90:1 — below the
+ *    4.5:1 that the same document sets as its accessibility bar. It cannot be
+ *    used for links as-is; Ice Blue oklch(0.780 0.080 210) is the closest
+ *    in-palette colour that clears AA (7.30:1).
+ *
+ * 3. --color-border was 2.20:1 against the background, below the 3:1 that
+ *    WCAG 1.4.11 requires for meaningful UI boundaries. Raised to 3.62:1.
  */
 
 [data-theme="mn-boundary-waters"] {
   /* ============================================ */
   /* Primary Colors                               */
   /* ============================================ */
-  /* Night Sky Blue — lightened to ~62% L for readability on dark background */
-  --color-primary: oklch(0.700 0.120 252);
+  /* Ice Blue — an approved entry in the identity system palette. Replaces the
+     lightened Night Sky Blue, which sat at the same hue as the background. */
+  --color-primary: oklch(0.780 0.080 210);
   --color-primary-foreground: oklch(0.185 0.060 252);
 
   /* Water Blue (#52C9E8) — the bright lake color */
@@ -42,31 +80,31 @@
   /* ============================================ */
   /* Background Colors                            */
   /* ============================================ */
-  --color-background: oklch(0.288 0.062 252);        /* Base */
-  --color-foreground: oklch(0.920 0.022 212);        /* Text — Water Blue-tinted near-white */
+  --color-background: oklch(0.288 0.034 252);        /* Base */
+  --color-foreground: oklch(0.920 0.014 212);        /* Text — Water Blue-tinted near-white */
 
   /* ============================================ */
   /* Muted Colors                                 */
   /* ============================================ */
-  --color-muted: oklch(0.385 0.050 252);             /* Surface1 */
-  --color-muted-foreground: oklch(0.860 0.030 225);  /* Subtext1 */
+  --color-muted: oklch(0.385 0.030 252);             /* Surface1 */
+  --color-muted-foreground: oklch(0.860 0.018 225);  /* Subtext1 */
 
   /* ============================================ */
   /* Border Colors                                */
   /* ============================================ */
-  --color-border: oklch(0.482 0.040 252);            /* Overlay0 */
+  --color-border: oklch(0.600 0.030 252);            /* Overlay0 */
 
   /* ============================================ */
   /* Card Colors                                  */
   /* ============================================ */
-  --color-card: oklch(0.232 0.058 252);              /* Mantle */
-  --color-card-foreground: oklch(0.920 0.022 212);
+  --color-card: oklch(0.232 0.030 252);              /* Mantle */
+  --color-card-foreground: oklch(0.920 0.014 212);
 
   /* ============================================ */
   /* Popover Colors                               */
   /* ============================================ */
-  --color-popover: oklch(0.192 0.054 252);           /* Crust */
-  --color-popover-foreground: oklch(0.920 0.022 212);
+  --color-popover: oklch(0.192 0.028 252);           /* Crust */
+  --color-popover-foreground: oklch(0.920 0.014 212);
 
   /* ============================================ */
   /* Semantic Colors                              */
@@ -80,43 +118,43 @@
   /* ============================================ */
   /* Additional UI Elements                       */
   /* ============================================ */
-  --color-selection: oklch(0.432 0.046 252);         /* Overlay1 */
+  --color-selection: oklch(0.432 0.030 252);         /* Overlay1 */
   --color-cursor: oklch(0.770 0.095 212);            /* Water Blue */
-  --color-subtle: oklch(0.532 0.036 252);            /* Overlay1 mid */
+  --color-subtle: oklch(0.620 0.028 252);            /* Overlay1 mid */
 }
 
 [data-theme="mn-boundary-waters"].dark {
   /* Boundary Waters is inherently dark — same values as base */
-  --color-primary: oklch(0.700 0.120 252);
+  --color-primary: oklch(0.780 0.080 210);
   --color-primary-foreground: oklch(0.185 0.060 252);
   --color-secondary: oklch(0.770 0.095 212);
   --color-secondary-foreground: oklch(0.185 0.060 252);
   --color-accent: oklch(0.700 0.105 212);
   --color-accent-foreground: oklch(0.185 0.060 252);
-  --color-background: oklch(0.288 0.062 252);
-  --color-foreground: oklch(0.920 0.022 212);
-  --color-muted: oklch(0.385 0.050 252);
-  --color-muted-foreground: oklch(0.860 0.030 225);
-  --color-border: oklch(0.482 0.040 252);
-  --color-card: oklch(0.232 0.058 252);
-  --color-card-foreground: oklch(0.920 0.022 212);
-  --color-popover: oklch(0.192 0.054 252);
-  --color-popover-foreground: oklch(0.920 0.022 212);
+  --color-background: oklch(0.288 0.034 252);
+  --color-foreground: oklch(0.920 0.014 212);
+  --color-muted: oklch(0.385 0.030 252);
+  --color-muted-foreground: oklch(0.860 0.018 225);
+  --color-border: oklch(0.600 0.030 252);
+  --color-card: oklch(0.232 0.030 252);
+  --color-card-foreground: oklch(0.920 0.014 212);
+  --color-popover: oklch(0.192 0.028 252);
+  --color-popover-foreground: oklch(0.920 0.014 212);
   --color-note: oklch(0.770 0.095 212);
   --color-tip: oklch(0.740 0.130 175);
   --color-important: oklch(0.620 0.175 15);
   --color-warning: oklch(0.840 0.128 78);
   --color-caution: oklch(0.700 0.160 47);
-  --color-selection: oklch(0.432 0.046 252);
+  --color-selection: oklch(0.432 0.030 252);
   --color-cursor: oklch(0.770 0.095 212);
-  --color-subtle: oklch(0.532 0.036 252);
+  --color-subtle: oklch(0.620 0.028 252);
 }
 
 /* Text selection */
 [data-theme="mn-boundary-waters"] ::selection,
 [data-theme="mn-boundary-waters"].dark ::selection {
-  background-color: oklch(0.432 0.046 252);
-  color: oklch(0.920 0.022 212);
+  background-color: oklch(0.432 0.030 252);
+  color: oklch(0.920 0.014 212);
 }
 
 /* Cursor color */
@@ -266,4 +304,75 @@
 /* Ensure theme credit link meets contrast */
 a[href$="gohugo.io/"] {
   color: var(--color-foreground);
+}
+
+/* ============================================================================
+   Accessibility fixes (September 2026 sweep)
+   ============================================================================ */
+
+/* --- Focus visibility (WCAG 2.4.11 / 2.4.7) --------------------------------
+
+   Measured by pixel-diffing focused vs. unfocused screenshots of every tab
+   stop. Most controls fall back to Chromium's `outline: auto`, which paints a
+   white two-tone ring (~14:1) and is fine. But four controls — the header nav
+   links, the mobile menu button and the code-block Copy button — set their own
+   background on focus and no ring at all, so the only cue was a background
+   tint measuring 1.36–1.39:1. That is invisible in practice.
+
+   Rather than patch those four selectors, guarantee a ring on everything
+   focusable. :focus-visible keeps it keyboard-only, so mouse users see no
+   change. The colour is the foreground token (11.2:1 on the page background),
+   well past the 3:1 that 2.4.11 asks of the indicator itself. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-foreground);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* The header sits in a card with overflow clipping, which would crop a ring
+   drawn outside the element. Pull the offset inside for descendants there. */
+header :where(a, button):focus-visible,
+.dock :where(a, button):focus-visible {
+  outline-offset: -2px;
+}
+
+/* --- Search modal keyboard trap (WCAG 4.1.2 / 2.4.3) -----------------------
+
+   The theme hides the closed search dialog with `opacity-0` +
+   `pointer-events-none` + aria-hidden="true", but never removes it from the
+   tab order. Its input and buttons stay focusable while fully invisible, so a
+   keyboard user tabs into a search box they cannot see. axe flags this as
+   `aria-hidden-focus` on all 11 pages.
+
+   visibility:hidden takes the subtree out of the tab order. The delayed
+   transition on the way out lets the 300ms fade finish before it applies, so
+   the animation is unchanged in both directions. */
+#search-modal[aria-hidden="true"] {
+  visibility: hidden;
+  transition:
+    opacity 0.3s,
+    transform 0.3s,
+    visibility 0s linear 0.3s;
+}
+
+#search-modal[aria-hidden="false"] {
+  visibility: visible;
+  transition:
+    opacity 0.3s,
+    transform 0.3s,
+    visibility 0s;
+}
+
+/* --- Reduced motion (WCAG 2.3.3) -------------------------------------------
+   The theme animates card hovers, translates and fades throughout. Honour the
+   OS setting rather than overriding it per-component. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

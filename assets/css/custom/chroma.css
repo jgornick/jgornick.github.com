@@ -17,7 +17,7 @@
 
 :root[data-theme="mn-boundary-waters"] {
   /* Base text color for code blocks */
-  --chroma-color: oklch(0.920 0.022 212); /* Text - near-white with Water Blue tint */
+  --chroma-color: oklch(0.920 0.014 212); /* Text - near-white with Water Blue tint */
 
   /* Keywords (if, else, function, class, etc.) - Cranberry red */
   --chroma-k: oklch(0.720 0.175 15);
@@ -29,21 +29,21 @@
   --chroma-kt: oklch(0.720 0.175 15);
 
   /* Names - various entities */
-  --chroma-n: oklch(0.920 0.022 212); /* Default name - foreground text */
+  --chroma-n: oklch(0.920 0.014 212); /* Default name - foreground text */
   --chroma-na: oklch(0.840 0.128 78); /* Attribute names - Prairie gold */
-  --chroma-nc: oklch(0.620 0.148 252); /* Class names - Night Sky Blue */
-  --chroma-no: oklch(0.620 0.148 252); /* Constants - Night Sky Blue */
+  --chroma-nc: oklch(0.780 0.105 252); /* Class names - Night Sky Blue */
+  --chroma-no: oklch(0.780 0.105 252); /* Constants - Night Sky Blue */
   --chroma-nd: oklch(0.700 0.105 212); /* Decorators - Water Blue mid */
   --chroma-ni: oklch(0.840 0.128 78); /* Entity names - Prairie gold */
   --chroma-ne: oklch(0.720 0.175 15); /* Exceptions - Cranberry red */
   --chroma-nl: oklch(0.770 0.095 212); /* Labels - Water Blue */
-  --chroma-nn: oklch(0.620 0.148 252); /* Namespaces - Night Sky Blue */
-  --chroma-nx: oklch(0.920 0.022 212); /* Other names - foreground text */
-  --chroma-py: oklch(0.920 0.022 212); /* Property - foreground text */
+  --chroma-nn: oklch(0.780 0.105 252); /* Namespaces - Night Sky Blue */
+  --chroma-nx: oklch(0.920 0.014 212); /* Other names - foreground text */
+  --chroma-py: oklch(0.920 0.014 212); /* Property - foreground text */
   --chroma-nt: oklch(0.700 0.105 212); /* Tags (HTML/XML) - Water Blue mid */
   --chroma-nb: oklch(0.700 0.105 212); /* Built-in names - Water Blue mid */
-  --chroma-bp: oklch(0.785 0.035 225); /* Built-in pseudo - Subtext */
-  --chroma-nv: oklch(0.920 0.022 212); /* Variable names - foreground text */
+  --chroma-bp: oklch(0.785 0.030 225); /* Built-in pseudo - Subtext */
+  --chroma-nv: oklch(0.920 0.014 212); /* Variable names - foreground text */
   --chroma-nf: oklch(0.770 0.095 212); /* Function names - Water Blue */
   --chroma-fm: oklch(0.770 0.095 212); /* Magic functions - Water Blue */
 
@@ -77,47 +77,47 @@
   --chroma-mo: oklch(0.840 0.128 78);
 
   /* Operators - Iron Range orange */
-  --chroma-o: oklch(0.700 0.160 47);
-  --chroma-ow: oklch(0.700 0.160 47);
+  --chroma-o: oklch(0.760 0.140 47);
+  --chroma-ow: oklch(0.760 0.140 47);
 
   /* Punctuation - subtle */
-  --chroma-p: oklch(0.785 0.035 225);
+  --chroma-p: oklch(0.785 0.030 225);
 
   /* Comments - subdued, less prominent */
-  --chroma-c: oklch(0.582 0.036 252);
-  --chroma-ch: oklch(0.582 0.036 252);
-  --chroma-cm: oklch(0.582 0.036 252);
-  --chroma-c1: oklch(0.582 0.036 252);
-  --chroma-cs: oklch(0.620 0.040 252); /* Comment special - slightly brighter */
-  --chroma-cp: oklch(0.620 0.040 252); /* Preprocessor comment */
-  --chroma-cpf: oklch(0.620 0.040 252);
+  --chroma-c: oklch(0.700 0.030 252);
+  --chroma-ch: oklch(0.700 0.030 252);
+  --chroma-cm: oklch(0.700 0.030 252);
+  --chroma-c1: oklch(0.700 0.030 252);
+  --chroma-cs: oklch(0.680 0.028 252); /* Comment special - slightly brighter */
+  --chroma-cp: oklch(0.680 0.028 252); /* Preprocessor comment */
+  --chroma-cpf: oklch(0.680 0.028 252);
 
   /* Errors and highlighting */
   --chroma-err: oklch(0.720 0.175 15); /* Error text - Cranberry red */
-  --chroma-err-bg: oklch(0.232 0.058 252); /* Error background - Mantle */
-  --chroma-hl: oklch(0.350 0.055 252); /* Highlight background - Surface0 */
-  --chroma-ln: oklch(0.582 0.036 252); /* Line numbers - subtle */
+  --chroma-err-bg: oklch(0.232 0.030 252); /* Error background - Mantle */
+  --chroma-hl: oklch(0.350 0.034 252); /* Highlight background - Surface0 */
+  --chroma-ln: oklch(0.700 0.030 252); /* Line numbers - subtle */
 
   /* Generic/Diff colors */
   --chroma-gd: oklch(0.720 0.175 15); /* Deleted - Cranberry red */
-  --chroma-gd-bg: oklch(0.232 0.058 252); /* Deleted background - Mantle */
+  --chroma-gd-bg: oklch(0.232 0.030 252); /* Deleted background - Mantle */
   --chroma-ge: inherit; /* Emphasis (italic handled by CSS) */
   --chroma-gr: oklch(0.720 0.175 15); /* Error - Cranberry red */
   --chroma-gh: oklch(0.770 0.095 212); /* Heading - Water Blue */
   --chroma-gi: oklch(0.740 0.130 175); /* Inserted - Pine teal */
-  --chroma-gi-bg: oklch(0.232 0.058 252); /* Inserted background - Mantle */
-  --chroma-go: oklch(0.785 0.035 225); /* Output - Subtext */
-  --chroma-gp: oklch(0.785 0.035 225); /* Prompt - Subtext */
+  --chroma-gi-bg: oklch(0.232 0.030 252); /* Inserted background - Mantle */
+  --chroma-go: oklch(0.785 0.030 225); /* Output - Subtext */
+  --chroma-gp: oklch(0.785 0.030 225); /* Prompt - Subtext */
   --chroma-gs: inherit; /* Strong (bold handled by CSS) */
   --chroma-gu: oklch(0.700 0.105 212); /* Subheading - Water Blue mid */
-  --chroma-gt: oklch(0.700 0.160 47); /* Traceback - Iron Range orange */
+  --chroma-gt: oklch(0.760 0.140 47); /* Traceback - Iron Range orange */
   --chroma-gl: inherit; /* Link (underline handled by CSS) */
-  --chroma-w: oklch(0.482 0.040 252); /* Whitespace - Border color */
+  --chroma-w: oklch(0.600 0.030 252); /* Whitespace - Border color */
 }
 
 /* Dark mode variant - same as base since Boundary Waters is inherently dark */
 :root[data-theme="mn-boundary-waters"].dark {
-  --chroma-color: oklch(0.920 0.022 212);
+  --chroma-color: oklch(0.920 0.014 212);
   --chroma-k: oklch(0.720 0.175 15);
   --chroma-kc: oklch(0.720 0.175 15);
   --chroma-kd: oklch(0.720 0.175 15);
@@ -125,21 +125,21 @@
   --chroma-kp: oklch(0.720 0.175 15);
   --chroma-kr: oklch(0.720 0.175 15);
   --chroma-kt: oklch(0.720 0.175 15);
-  --chroma-n: oklch(0.920 0.022 212);
+  --chroma-n: oklch(0.920 0.014 212);
   --chroma-na: oklch(0.840 0.128 78);
-  --chroma-nc: oklch(0.620 0.148 252);
-  --chroma-no: oklch(0.620 0.148 252);
+  --chroma-nc: oklch(0.780 0.105 252);
+  --chroma-no: oklch(0.780 0.105 252);
   --chroma-nd: oklch(0.700 0.105 212);
   --chroma-ni: oklch(0.840 0.128 78);
   --chroma-ne: oklch(0.720 0.175 15);
   --chroma-nl: oklch(0.770 0.095 212);
-  --chroma-nn: oklch(0.620 0.148 252);
-  --chroma-nx: oklch(0.920 0.022 212);
-  --chroma-py: oklch(0.920 0.022 212);
+  --chroma-nn: oklch(0.780 0.105 252);
+  --chroma-nx: oklch(0.920 0.014 212);
+  --chroma-py: oklch(0.920 0.014 212);
   --chroma-nt: oklch(0.700 0.105 212);
   --chroma-nb: oklch(0.700 0.105 212);
-  --chroma-bp: oklch(0.785 0.035 225);
-  --chroma-nv: oklch(0.920 0.022 212);
+  --chroma-bp: oklch(0.785 0.030 225);
+  --chroma-nv: oklch(0.920 0.014 212);
   --chroma-nf: oklch(0.770 0.095 212);
   --chroma-fm: oklch(0.770 0.095 212);
   --chroma-l: oklch(0.840 0.128 78);
@@ -165,31 +165,31 @@
   --chroma-mi: oklch(0.840 0.128 78);
   --chroma-il: oklch(0.840 0.128 78);
   --chroma-mo: oklch(0.840 0.128 78);
-  --chroma-o: oklch(0.700 0.160 47);
-  --chroma-ow: oklch(0.700 0.160 47);
-  --chroma-p: oklch(0.785 0.035 225);
-  --chroma-c: oklch(0.582 0.036 252);
-  --chroma-ch: oklch(0.582 0.036 252);
-  --chroma-cm: oklch(0.582 0.036 252);
-  --chroma-c1: oklch(0.582 0.036 252);
-  --chroma-cs: oklch(0.620 0.040 252);
-  --chroma-cp: oklch(0.620 0.040 252);
-  --chroma-cpf: oklch(0.620 0.040 252);
+  --chroma-o: oklch(0.760 0.140 47);
+  --chroma-ow: oklch(0.760 0.140 47);
+  --chroma-p: oklch(0.785 0.030 225);
+  --chroma-c: oklch(0.700 0.030 252);
+  --chroma-ch: oklch(0.700 0.030 252);
+  --chroma-cm: oklch(0.700 0.030 252);
+  --chroma-c1: oklch(0.700 0.030 252);
+  --chroma-cs: oklch(0.680 0.028 252);
+  --chroma-cp: oklch(0.680 0.028 252);
+  --chroma-cpf: oklch(0.680 0.028 252);
   --chroma-err: oklch(0.720 0.175 15);
-  --chroma-err-bg: oklch(0.232 0.058 252);
-  --chroma-hl: oklch(0.350 0.055 252);
-  --chroma-ln: oklch(0.582 0.036 252);
+  --chroma-err-bg: oklch(0.232 0.030 252);
+  --chroma-hl: oklch(0.350 0.034 252);
+  --chroma-ln: oklch(0.700 0.030 252);
   --chroma-gd: oklch(0.720 0.175 15);
-  --chroma-gd-bg: oklch(0.232 0.058 252);
+  --chroma-gd-bg: oklch(0.232 0.030 252);
   --chroma-gr: oklch(0.720 0.175 15);
   --chroma-gh: oklch(0.770 0.095 212);
   --chroma-gi: oklch(0.740 0.130 175);
-  --chroma-gi-bg: oklch(0.232 0.058 252);
-  --chroma-go: oklch(0.785 0.035 225);
-  --chroma-gp: oklch(0.785 0.035 225);
+  --chroma-gi-bg: oklch(0.232 0.030 252);
+  --chroma-go: oklch(0.785 0.030 225);
+  --chroma-gp: oklch(0.785 0.030 225);
   --chroma-gu: oklch(0.700 0.105 212);
-  --chroma-gt: oklch(0.700 0.160 47);
-  --chroma-w: oklch(0.482 0.040 252);
+  --chroma-gt: oklch(0.760 0.140 47);
+  --chroma-w: oklch(0.600 0.030 252);
 }
 
 /* ============================================ */

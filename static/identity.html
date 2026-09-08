@@ -19,12 +19,13 @@
             theme: {
                 extend: {
                     colors: {
-                        base: 'oklch(0.288 0.062 252)',
-                        surface0: 'oklch(0.350 0.055 252)',
-                        surface1: 'oklch(0.385 0.050 252)',
-                        text: 'oklch(0.920 0.022 212)',
+                        base: 'oklch(0.288 0.034 252)',
+                        surface0: 'oklch(0.350 0.034 252)',
+                        surface1: 'oklch(0.385 0.030 252)',
+                        text: 'oklch(0.920 0.014 212)',
                         subtext0: 'oklch(0.785 0.035 225)',
-                        blue: 'oklch(0.620 0.148 252)',  /* Primary — Night Sky Blue */
+                        blue: 'oklch(0.620 0.148 252)',  /* Primary — Night Sky Blue (logo only: 3.90:1) */
+                        blueText: 'oklch(0.780 0.105 252)', /* Night Sky Blue lightened for text — 7.14:1 */
                         mauve: 'oklch(0.770 0.095 212)', /* Secondary — Water Blue */
                         green: 'oklch(0.740 0.130 175)', /* Teal — success/DO */
                     },
@@ -38,9 +39,9 @@
     </script>
 
     <style>
-        body { background-color: oklch(0.288 0.062 252); color: oklch(0.920 0.022 212); }
+        body { background-color: oklch(0.288 0.034 252); color: oklch(0.920 0.014 212); }
         .grid-bg {
-            background-image: radial-gradient(oklch(0.232 0.058 252) 1px, transparent 1px);
+            background-image: radial-gradient(oklch(0.232 0.030 252) 1px, transparent 1px);
             background-size: 10px 10px;
         }
         .swatch-card:hover .copy-hint { opacity: 1; }
@@ -128,7 +129,7 @@
             </div>
             <div>
                 <h1 class="text-4xl font-extrabold tracking-tight text-white">Joe Gornick</h1>
-                <p class="text-subtext0 font-mono text-sm mt-1">IDENTITY SYSTEM v1.3 • MINNESOTA STATE FLAG</p>
+                <p class="text-subtext0 font-mono text-sm mt-1">IDENTITY SYSTEM v1.4 • MINNESOTA STATE FLAG</p>
             </div>
         </div>
         <p class="text-lg text-subtext0 max-w-2xl leading-relaxed">
@@ -260,7 +261,7 @@
                     <div class="h-16 w-full bg-blue rounded-lg mb-3 shadow-lg"></div>
                     <p class="text-white font-bold">Night Sky Blue</p>
                     <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.620 0.148 252)</p>
-                    <p class="text-xs text-blue mt-2 opacity-60">Primary Brand</p>
+                    <p class="text-xs text-subtext0 mt-2">Primary Brand</p>
                     <div class="copy-hint absolute top-4 right-4 bg-base text-white text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
                 </button>
 
@@ -269,25 +270,25 @@
                     <div class="h-16 w-full bg-mauve rounded-lg mb-3 shadow-lg"></div>
                     <p class="text-white font-bold">Water Blue</p>
                     <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.770 0.095 212)</p>
-                    <p class="text-xs text-mauve mt-2 opacity-60">Secondary Brand</p>
+                    <p class="text-xs text-subtext0 mt-2">Secondary Brand</p>
                     <div class="copy-hint absolute top-4 right-4 bg-base text-white text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
                 </button>
 
                 <!-- Night Sky Dark -->
-                <button onclick="copyToClipboard(this, 'oklch(0.288 0.062 252)')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-white transition-all group relative">
+                <button onclick="copyToClipboard(this, 'oklch(0.288 0.034 252)')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-white transition-all group relative">
                     <div class="h-16 w-full bg-base rounded-lg mb-3 shadow-lg border border-surface1"></div>
                     <p class="text-white font-bold">Night Sky Dark</p>
-                    <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.288 0.062 252)</p>
-                    <p class="text-xs text-subtext0 mt-2 opacity-60">Background</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.288 0.034 252)</p>
+                    <p class="text-xs text-subtext0 mt-2">Background</p>
                     <div class="copy-hint absolute top-4 right-4 bg-white text-base text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
                 </button>
 
                 <!-- Starlight -->
-                <button onclick="copyToClipboard(this, 'oklch(0.920 0.022 212)')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-text transition-all group relative">
+                <button onclick="copyToClipboard(this, 'oklch(0.920 0.014 212)')" class="swatch-card text-left bg-surface0/20 rounded-xl p-4 border border-surface0 hover:border-text transition-all group relative">
                     <div class="h-16 w-full bg-text rounded-lg mb-3 shadow-lg"></div>
                     <p class="text-white font-bold">Starlight</p>
-                    <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.920 0.022 212)</p>
-                    <p class="text-xs text-text mt-2 opacity-60">Body Copy</p>
+                    <p class="text-subtext0 font-mono text-xs mt-1">oklch(0.920 0.014 212)</p>
+                    <p class="text-xs text-subtext0 mt-2">Body Copy</p>
                     <div class="copy-hint absolute top-4 right-4 bg-base text-white text-[10px] px-2 py-1 rounded opacity-0 transition-opacity">COPY HEX</div>
                 </button>
             </div>
@@ -306,7 +307,7 @@
                     <div class="space-y-6">
                         <!-- Primary Color Selector -->
                         <div>
-                            <label class="text-white font-bold mb-3 block">Primary Color (G)</label>
+                            <label for="primaryColorSelect" class="text-white font-bold mb-3 block">Primary Color (G)</label>
                             <select id="primaryColorSelect" onchange="updateLogoPreview()" class="w-full bg-surface0 text-text border border-surface1 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue">
                                 <option value="oklch(0.280 0.140 252)">Night Sky Dark - oklch(0.280 0.140 252)</option>
                                 <option value="oklch(0.620 0.148 252)" selected>Night Sky Blue - oklch(0.620 0.148 252)</option>
@@ -321,7 +322,7 @@
 
                         <!-- Secondary Color Selector -->
                         <div>
-                            <label class="text-white font-bold mb-3 block">Secondary Color (J)</label>
+                            <label for="secondaryColorSelect" class="text-white font-bold mb-3 block">Secondary Color (J)</label>
                             <select id="secondaryColorSelect" onchange="updateLogoPreview()" class="w-full bg-surface0 text-text border border-surface1 rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-mauve">
                                 <option value="oklch(0.280 0.140 252)">Night Sky Dark - oklch(0.280 0.140 252)</option>
                                 <option value="oklch(0.620 0.148 252)">Night Sky Blue - oklch(0.620 0.148 252)</option>
@@ -362,7 +363,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Sans Serif -->
                 <div class="p-8 border border-surface0 rounded-2xl bg-surface0/10">
-                    <span class="text-xs font-mono text-blue tracking-widest uppercase mb-4 block">Headings & UI</span>
+                    <span class="text-xs font-mono text-blueText tracking-widest uppercase mb-4 block">Headings & UI</span>
                     <h3 class="text-4xl font-sans font-bold text-white mb-2">Inter</h3>
                     <p class="font-sans text-subtext0 text-lg">The quick brown fox jumps over the lazy dog.</p>
                     <div class="mt-6 flex gap-4 text-sm text-subtext0 font-mono">
@@ -514,7 +515,7 @@
                         <h4 class="text-green font-bold mb-2 flex items-center gap-2">
                             <span class="text-xs">✓</span> Accessibility
                         </h4>
-                        <p class="text-subtext0">Ensure 4.5:1 contrast ratio minimum for WCAG AA compliance.</p>
+                        <p class="text-subtext0">4.5:1 minimum for body text (WCAG AA); 3:1 for borders and focus rings (1.4.11). Ratio alone is not enough — keep at least 15° of hue separation between text and its background. Night Sky Blue is 3.90:1 on Night Sky Dark and is a logo colour only; use Ice Blue <span class="font-mono">oklch(0.780 0.080 210)</span> for links (7.30:1).</p>
                     </div>
                 </div>
             </div>
@@ -561,7 +562,7 @@
                 const hint = btnElement.querySelector('.copy-hint');
                 hint.innerText = "COPIED!";
                 hint.style.backgroundColor = "oklch(0.740 0.130 175)";
-                hint.style.color = "oklch(0.288 0.062 252)";
+                hint.style.color = "oklch(0.288 0.034 252)";
                 hint.style.opacity = "1";
                 setTimeout(() => {
                     hint.innerText = "COPY HEX";

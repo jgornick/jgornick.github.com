@@ -15,7 +15,7 @@ templates when structural HTML changes are required.
 ## Layout Overrides
 
 ### 1. `layouts/_partials/navigation/header.html`
-**Purpose:** Show the site logo on mobile as well as desktop.
+**Purpose:** Show the site logo on mobile as well as desktop; label the nav landmark.
 
 **Why an override is needed:** The theme renders two separate header branches — a desktop
 branch (`hidden … md:flex`) and a mobile branch (`flex … md:hidden`). Only the desktop
@@ -27,6 +27,9 @@ branch includes a logo. Adding one to the mobile branch is a structural HTML cha
    `{{ partial "navigation/site-logo.html" . }}`.
 3. Mobile branch: wrapped the menu toggle in a flex row and added
    `{{ partial "navigation/site-logo.html" . }}` to its left.
+4. Desktop `<nav>` got `aria-label="{{ T `nav.menu` }}"`. The page has several `<nav>`
+   landmarks and only the breadcrumb was labelled, so axe reported `landmark-unique`
+   on every page. This clears it everywhere except post pages (see Known Gaps).
 
 Everything else is verbatim upstream, so `diff` against the theme source stays readable.
 
@@ -88,7 +91,7 @@ plus `::selection` and input caret colors. Registered in `params.yaml` under `th
 alongside three other Minnesota schemes, with `colorScheme: "mn-boundary-waters"` active.
 
 ### 6. Mobile font size
-`@media (max-width: 40rem) { .prose { font-size: 1rem !important; } }` — theme default of
+`@media (max-width: 40rem) { .prose { font-size: 1.1rem; } }` — theme default of
 0.9rem (14.4px) was too small on phones.
 
 ### 7. Breadcrumb mobile stacking
@@ -108,6 +111,64 @@ the icon matches the link colour instead of sitting at lower contrast than the t
 ### 10. Contrast boosts
 Explicit colors for `.text-muted-foreground/50|60`, the `hover:text-*` utilities, and the
 Hugo credit link, so dimmed/hover states keep sufficient contrast.
+
+### 10a. Accessibility pass (September 2026)
+Measured with axe-core + Playwright across all 11 sitemap pages at 1280px and 390px, plus
+pixel-diffed screenshots for things axe cannot see (focus rings, real rendered contrast).
+
+**Readability / "too blue".** Every text pair already cleared WCAG AA before this pass —
+the weakest was 5.31:1 — so this was never a luminance problem. Two measured causes:
+
+- *Saturation.* Background `#112c49` was 62% HSL saturation and the card `#051e38` was
+  84%. Background chroma roughly halved (bg `0.062 -> 0.034`, card `0.058 -> 0.030`,
+  popover `0.054 -> 0.028`, muted `0.050 -> 0.030`) and the text tint eased
+  (`0.022 -> 0.014`). **Lightness is untouched, so every contrast ratio is preserved.**
+- *Hue collision.* Links rendered at HSL hue 211.6°; the page background renders at
+  211.1°. Links were the same hue as the page, only lighter — the worst case for edge
+  acuity. `--color-primary` is now Ice Blue `oklch(0.780 0.080 210)`, giving 22° of
+  separation and lifting links from 5.31:1 to 7.30:1 (AAA).
+
+**Non-text contrast (WCAG 1.4.11).** `--color-border` was 2.20:1 against the background,
+below the 3:1 required for meaningful UI boundaries. Raised to 3.62:1
+(`0.482 0.040 252 -> 0.600 0.030 252`). `--color-subtle` likewise raised.
+
+**Focus visibility (WCAG 2.4.11).** Verified by pixel-diffing focused vs. unfocused
+screenshots of every tab stop. Most controls fall back to Chromium's `outline: auto`,
+which paints a white two-tone ring (~14:1) and is fine — note the *computed*
+`outline-color` reads `rgb(0,95,204)` there, which is misleading; the painted ring is
+not that colour. But four controls (header nav links, mobile menu button, code-block
+Copy button) set only a background tint on focus, measuring **1.36-1.39:1**. A global
+`:focus-visible` ring now guarantees an indicator; all 11 tab stops measure 10.9-13.0:1.
+
+**Search modal keyboard trap (WCAG 4.1.2 / 2.4.3).** The theme hides the closed dialog
+with `opacity-0` + `pointer-events-none` + `aria-hidden="true"` but never removes it from
+the tab order, so its input and buttons stayed focusable while invisible. axe flagged
+`aria-hidden-focus` on all 11 pages. Fixed in CSS with `visibility: hidden` plus a
+delayed transition so the 300ms fade still plays. Verified: 3 focusable descendants,
+0 reachable when closed; Ctrl+K still opens and focuses the input.
+
+**Reduced motion (WCAG 2.3.3).** Added a `prefers-reduced-motion` block.
+
+**Relationship to `identity.html`.** The identity system pinned Night Sky Dark
+`oklch(0.288 0.062 252)` as "Background" and Starlight `oklch(0.920 0.022 212)` as
+"Body Copy". The desaturation changes both (lightness preserved, chroma reduced).
+**Decided September 2026: keep the desaturation and update the identity system to
+match.** `static/identity.html` is now v1.4 — its `base`, `surface0`, `surface1` and
+`text` tokens, the two affected swatches, and the accessibility guidance were updated
+so the document and the site agree. **Logo colours were deliberately left alone**:
+Night Sky Blue and Water Blue remain the brand/logo pair.
+
+The link colour never departed from the palette — Ice Blue is an approved entry in it.
+
+Also worth recording: identity.html designated Night Sky Blue `oklch(0.620 0.148 252)`
+the "Primary Brand" colour, but at body text size it measures **3.90:1** — below the
+4.5:1 bar the same document sets. It cannot be used for links as-is, which is why the
+theme had already lightened it. v1.4 now states this explicitly: Night Sky Blue is a
+logo colour, and Ice Blue is the link colour.
+
+`static/identity.html` is a public page (`/identity.html`) but is a static file, so it
+is not in `sitemap.xml` and the audit scripts do **not** cover it. Audit it explicitly
+if it changes.
 
 ---
 
@@ -191,3 +252,28 @@ Comment documenting recommended cover image dimensions.
 - [ ] Instagram + GitHub icons render in the author card and footer
 - [ ] `gtag/js?id=G-CYCL78ZG85` requested in `<head>`
 - [ ] Build emits no deprecation warnings
+
+
+---
+
+## Known Gaps
+
+Two axe findings remain, both `moderate` and both classified by axe as *best-practice*
+rather than WCAG failures. Each needs a new template override, which trades against the
+"minimize layout overrides" philosophy above — left as a deliberate decision, not an
+oversight.
+
+### `landmark-unique` — 6 post pages
+`layouts/_partials/content/post-navigation.html` renders `<nav class="post-navigation">`
+with no accessible name, colliding with the mobile nav panel's unlabelled `<nav>`.
+**Fix:** override the partial and add `aria-label="{{ T `nav.prev` }} / {{ T `nav.next` }}"`
+(or a dedicated i18n key).
+
+### `heading-order` — 6 pages
+Card titles are `<h3>` while the only preceding heading is the page `<h1>`, so the
+outline skips h2. Affects `content/post-list.html` (the `/posts/` and home listings) and
+`content/post-navigation.html` (prev/next cards).
+**Fix:** override both partials and change those `<h3>` to `<h2>`.
+
+Note the `<h2 id="search-title">` inside the search modal does *not* fill the gap — it is
+inside an `aria-hidden` subtree and so is absent from the accessibility tree.
