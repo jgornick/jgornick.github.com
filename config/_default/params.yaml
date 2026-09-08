@@ -36,7 +36,17 @@ header:
     # from drifting apart, which is what the symlink was for.
     image: "/favicon.svg"
     link: "/"
-  showThemeSwitch: false
+  # Colour-scheme picker: lets visitors choose between the light scheme
+  # (Lake Superior) and the three dark ones. Safe to expose now that all four
+  # schemes are actually implemented in custom.css/chroma.css.
+  showThemeSwitch: true
+  # Light/Dark/System toggle stays off deliberately. The control itself works —
+  # it sets the .dark class and persists the choice — but every scheme defines
+  # [data-theme="x"] and [data-theme="x"].dark with identical values, so the
+  # class changes nothing. Measured: background stays #1e2c3b in both modes on
+  # Boundary Waters, #ecf6f6 in both on Lake Superior. Enabling this would ship
+  # a button that visibly does nothing. It needs a real light/dark variant per
+  # scheme first — see CUSTOMIZATIONS.md "Light and dark mode".
   showDarkModeSwitch: false
   showLanguageSwitch: false
   languageSwitchMode: "dropdown"

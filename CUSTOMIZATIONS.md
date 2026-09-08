@@ -117,16 +117,19 @@ and `[data-theme="x"].dark` blocks hold identical values, so the class changes
 nothing. Measured on the live site: `prefers-color-scheme: light` and `dark`
 both render `#1e2c3b`. A visitor in light mode gets the dark site.
 
-That is deliberate per scheme (each is one flavour), but it means light/dark
-support depends on *which* scheme is active, and with `showThemeSwitch: false`
-visitors cannot choose. Two ways to give the site real light/dark:
+That is deliberate per scheme (each is one flavour), so light/dark depends on
+*which* scheme is active rather than on the OS setting.
 
-- set `colorScheme: "mn-lake-superior"` to serve the light scheme instead, or
-- enable `showThemeSwitch` so visitors can pick Lake Superior themselves.
+**`showThemeSwitch` is now `true`**, so visitors can choose: Lake Superior for
+light, the other three for dark. That is the site's light/dark story today, and
+it is why the Light/Dark/System toggle stays hidden — see Configuration Changes.
 
-A third option — giving each scheme a genuine light variant in its non-`.dark`
-block — would make the site follow the OS automatically, but means authoring
-four more palettes and changes what every light-mode visitor sees today.
+Still open: giving each scheme a genuine light *and* dark variant would make the
+site follow `prefers-color-scheme` automatically and make the Light/Dark/System
+toggle meaningful. That means authoring four more palettes, and it changes what
+every light-mode visitor sees, so it is a deliberate not-yet rather than an
+oversight. The default scheme is unchanged (`mn-boundary-waters`), so first-time
+visitors still land on the dark site.
 
 Each scheme is built to the rules this codebase learned in the September 2026
 accessibility pass, and each was verified by measurement, not by eye:
@@ -237,10 +240,20 @@ if it changes.
 - `module.hugoVersion.min: 0.158.0` — matches the theme's requirement.
 
 ### 12. `config/_default/params.yaml`
-- `header.showThemeSwitch` / `showDarkModeSwitch` / `showLanguageSwitch` are all `false`
-  (deliberate — the header intentionally shows only logo + nav). As of September 2026
-  all four registered schemes are actually implemented, so enabling `showThemeSwitch`
-  is now safe; before that it would have exposed three schemes with no CSS.
+- `header.showThemeSwitch` is **`true`** as of September 2026 — visitors can pick any
+  of the four schemes, which is how the site offers a light option (Lake Superior)
+  alongside the three dark ones. Verified end to end at desktop and mobile widths:
+  the dropdown lists all four, the choice applies immediately and persists across
+  navigation via `localStorage.colorScheme`, and axe reports no violations with the
+  dropdown open in either a light or a dark scheme.
+- `header.showDarkModeSwitch` stays **`false`**, deliberately. The Light/Dark/System
+  control itself works — it sets the `.dark` class and persists the choice — but it
+  changes nothing visible, because every scheme defines `[data-theme="x"]` and
+  `[data-theme="x"].dark` with identical values. Measured: background stays `#1e2c3b`
+  in both modes on Boundary Waters and `#ecf6f6` in both on Lake Superior. Turning it
+  on would ship a button that does nothing; it needs a real light/dark variant per
+  scheme first.
+- `header.showLanguageSwitch` is `false` (single-language site).
 - `analytics.google` — hugo-narrow reads analytics from `params.yaml`, not `hugo.yaml`.
 - `lightbox.enabled: false` — as of v1.3.16 the theme only emits gallery/lightbox assets
   (glightbox, photoswipe, fjGallery, lg fonts) when this is enabled, so the build output
