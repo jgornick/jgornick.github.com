@@ -29,7 +29,12 @@ author:
 header:
   sticky: true
   logo:
-    image: "/img/logo.svg"
+    # Points at the real favicon.svg rather than static/img/logo.svg, which was
+    # a symlink to it. Hugo silently skips symlinked files in static/ — no
+    # warning, no build error, the file simply never lands in public/ — so the
+    # header logo 404'd. Keeping one real file also keeps the logo and favicon
+    # from drifting apart, which is what the symlink was for.
+    image: "/favicon.svg"
     link: "/"
   showThemeSwitch: false
   showDarkModeSwitch: false
