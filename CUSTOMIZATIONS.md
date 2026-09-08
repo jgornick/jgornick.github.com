@@ -92,20 +92,47 @@ All four schemes registered in `params.yaml` under `themes:` are now implemented
 
 | Scheme | Background | Link | Link hue separation |
 |---|---|---|---|
+| `mn-lake-superior` | `#ecf6f6` **light** | `#9f4325` agate rust | 165° |
 | `mn-boundary-waters` | `#1e2c3b` navy | `#77c6d4` ice blue | 22° |
-| `mn-lake-superior` | `#1b3234` deep water | `#eeba70` agate amber | 150° |
 | `mn-north-shore` | `#213126` basalt/pine | `#7cd1f3` birch blue | 58° |
 | `mn-night-sky` | `#1d1c2b` violet-black | `#83e7a8` aurora green | 102° |
+
+Lake Superior is the **light** scheme, matching the ladder `params.yaml`
+describes (Latte → Frappé → Macchiato → Mocha). It is light in both states: its
+`.dark` block repeats the same values, exactly as the other three stay dark in
+both. A flavour is one look, and the OS preference selects a flavour rather
+than re-tinting one.
 
 **Previously only Boundary Waters existed.** The other three were registered in
 `params.yaml` but had no CSS at all, so selecting one would have fallen back to the
 theme's stock colors. That was latent rather than visible only because
 `header.showThemeSwitch` is `false` — see Configuration Changes.
 
+### Light and dark mode
+
+**The site does not currently respond to `prefers-color-scheme`.** The theme's
+machinery works — `theme-init.js` defaults to `system` and does add a `.dark`
+class when the OS prefers dark — but for every scheme the `[data-theme="x"]`
+and `[data-theme="x"].dark` blocks hold identical values, so the class changes
+nothing. Measured on the live site: `prefers-color-scheme: light` and `dark`
+both render `#1e2c3b`. A visitor in light mode gets the dark site.
+
+That is deliberate per scheme (each is one flavour), but it means light/dark
+support depends on *which* scheme is active, and with `showThemeSwitch: false`
+visitors cannot choose. Two ways to give the site real light/dark:
+
+- set `colorScheme: "mn-lake-superior"` to serve the light scheme instead, or
+- enable `showThemeSwitch` so visitors can pick Lake Superior themselves.
+
+A third option — giving each scheme a genuine light variant in its non-`.dark`
+block — would make the site follow the OS automatically, but means authoring
+four more palettes and changes what every light-mode visitor sees today.
+
 Each scheme is built to the rules this codebase learned in the September 2026
 accessibility pass, and each was verified by measurement, not by eye:
 
-- background chroma ≤ 0.030 (large saturated fields are what made the site tiring)
+- background chroma ≤ 0.030 (large saturated fields are what made the site tiring);
+  Lake Superior's light ground sits at 0.010 for the same reason
 - body text ≥ 7:1 (AAA); links ≥ 4.5:1 **and** ≥ 15° of HSL hue separation from the
   background — the hue rule is the one a contrast checker will not tell you about
 - `--color-border` ≥ 3:1 for WCAG 1.4.11 (tightest across the four is 3.60:1)

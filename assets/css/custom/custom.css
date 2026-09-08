@@ -165,80 +165,90 @@
   caret-color: oklch(0.770 0.095 212);
 }
 
-/* Minnesota — Lake Superior */
+/* Minnesota — Lake Superior (Light) */
 /*
- * The big lake: cold, deep, blue-green water and an agate shoreline.
- * Colder and greener than Boundary Waters (hue 200 vs 252), so the two
- * read as clearly different places rather than two blues.
+ * The big lake in daylight: sun on open water, pale sky, agate on the beach.
+ * This is the light scheme in the four-flavour ladder that params.yaml
+ * describes (Latte -> Frappe -> Macchiato -> Mocha); the other three are dark.
  *
- * Monochromatic background ladder at hue 200; link colour is
- * deliberately off-hue from the background (see the accessibility notes
- * at the top of this file for why that matters).
+ * Light in both states. The .dark block repeats the same values, matching how
+ * the other three schemes stay dark in both — a flavour is one look, and the
+ * OS preference picks a flavour rather than re-tinting this one.
+ *
+ * Built to the same measured rules as the dark schemes, inverted:
+ *   - background chroma 0.010, so a large pale field does not tint the page
+ *   - body text 11.32:1 (AAA)
+ *   - links are agate rust, 165 degrees off the water-blue background and
+ *     5.78:1 — hue separation matters as much as ratio, which is the lesson
+ *     the Boundary Waters audit produced
+ *   - --color-border 3.77:1 against the background and 3.50:1 against cards,
+ *     clearing WCAG 1.4.11 on every surface it is drawn on
  */
 
+
 [data-theme="mn-lake-superior"] {
-  --color-primary: oklch(0.820 0.110 75);
-  --color-primary-foreground: oklch(0.200 0.030 200);
-  --color-secondary: oklch(0.780 0.090 195);
-  --color-secondary-foreground: oklch(0.200 0.030 200);
-  --color-accent: oklch(0.720 0.100 195);
-  --color-accent-foreground: oklch(0.200 0.030 200);
-  --color-background: oklch(0.300 0.030 200);
-  --color-foreground: oklch(0.925 0.012 200);
-  --color-muted: oklch(0.390 0.028 200);
-  --color-muted-foreground: oklch(0.865 0.016 200);
-  --color-border: oklch(0.610 0.028 200);
-  --color-card: oklch(0.245 0.028 200);
-  --color-card-foreground: oklch(0.925 0.012 200);
-  --color-popover: oklch(0.205 0.026 200);
-  --color-popover-foreground: oklch(0.925 0.012 200);
-  --color-note: oklch(0.780 0.090 195);
-  --color-tip: oklch(0.780 0.120 165);
-  --color-important: oklch(0.740 0.150 20);
-  --color-warning: oklch(0.850 0.120 80);
-  --color-caution: oklch(0.760 0.140 50);
-  --color-selection: oklch(0.430 0.030 200);
-  --color-cursor: oklch(0.820 0.110 75);
-  --color-subtle: oklch(0.630 0.026 200);
+  --color-primary: oklch(0.500 0.130 38);
+  --color-primary-foreground: oklch(0.985 0.008 200);
+  --color-secondary: oklch(0.520 0.090 195);
+  --color-secondary-foreground: oklch(0.985 0.008 200);
+  --color-accent: oklch(0.480 0.095 195);
+  --color-accent-foreground: oklch(0.985 0.008 200);
+  --color-background: oklch(0.965 0.010 200);
+  --color-foreground: oklch(0.320 0.030 200);
+  --color-muted: oklch(0.890 0.014 200);
+  --color-muted-foreground: oklch(0.470 0.028 200);
+  --color-border: oklch(0.585 0.028 200);
+  --color-card: oklch(0.940 0.012 200);
+  --color-card-foreground: oklch(0.320 0.030 200);
+  --color-popover: oklch(0.915 0.014 200);
+  --color-popover-foreground: oklch(0.320 0.030 200);
+  --color-note: oklch(0.500 0.100 200);
+  --color-tip: oklch(0.470 0.110 165);
+  --color-important: oklch(0.490 0.170 20);
+  --color-warning: oklch(0.520 0.120 70);
+  --color-caution: oklch(0.510 0.140 45);
+  --color-selection: oklch(0.860 0.045 200);
+  --color-cursor: oklch(0.500 0.130 38);
+  --color-subtle: oklch(0.600 0.026 200);
 }
 
 [data-theme="mn-lake-superior"].dark {
-  --color-primary: oklch(0.820 0.110 75);
-  --color-primary-foreground: oklch(0.200 0.030 200);
-  --color-secondary: oklch(0.780 0.090 195);
-  --color-secondary-foreground: oklch(0.200 0.030 200);
-  --color-accent: oklch(0.720 0.100 195);
-  --color-accent-foreground: oklch(0.200 0.030 200);
-  --color-background: oklch(0.300 0.030 200);
-  --color-foreground: oklch(0.925 0.012 200);
-  --color-muted: oklch(0.390 0.028 200);
-  --color-muted-foreground: oklch(0.865 0.016 200);
-  --color-border: oklch(0.610 0.028 200);
-  --color-card: oklch(0.245 0.028 200);
-  --color-card-foreground: oklch(0.925 0.012 200);
-  --color-popover: oklch(0.205 0.026 200);
-  --color-popover-foreground: oklch(0.925 0.012 200);
-  --color-note: oklch(0.780 0.090 195);
-  --color-tip: oklch(0.780 0.120 165);
-  --color-important: oklch(0.740 0.150 20);
-  --color-warning: oklch(0.850 0.120 80);
-  --color-caution: oklch(0.760 0.140 50);
-  --color-selection: oklch(0.430 0.030 200);
-  --color-cursor: oklch(0.820 0.110 75);
-  --color-subtle: oklch(0.630 0.026 200);
+  --color-primary: oklch(0.500 0.130 38);
+  --color-primary-foreground: oklch(0.985 0.008 200);
+  --color-secondary: oklch(0.520 0.090 195);
+  --color-secondary-foreground: oklch(0.985 0.008 200);
+  --color-accent: oklch(0.480 0.095 195);
+  --color-accent-foreground: oklch(0.985 0.008 200);
+  --color-background: oklch(0.965 0.010 200);
+  --color-foreground: oklch(0.320 0.030 200);
+  --color-muted: oklch(0.890 0.014 200);
+  --color-muted-foreground: oklch(0.470 0.028 200);
+  --color-border: oklch(0.585 0.028 200);
+  --color-card: oklch(0.940 0.012 200);
+  --color-card-foreground: oklch(0.320 0.030 200);
+  --color-popover: oklch(0.915 0.014 200);
+  --color-popover-foreground: oklch(0.320 0.030 200);
+  --color-note: oklch(0.500 0.100 200);
+  --color-tip: oklch(0.470 0.110 165);
+  --color-important: oklch(0.490 0.170 20);
+  --color-warning: oklch(0.520 0.120 70);
+  --color-caution: oklch(0.510 0.140 45);
+  --color-selection: oklch(0.860 0.045 200);
+  --color-cursor: oklch(0.500 0.130 38);
+  --color-subtle: oklch(0.600 0.026 200);
 }
 
 [data-theme="mn-lake-superior"] ::selection,
 [data-theme="mn-lake-superior"].dark ::selection {
-  background-color: oklch(0.430 0.030 200);
-  color: oklch(0.925 0.012 200);
+  background-color: oklch(0.860 0.045 200);
+  color: oklch(0.320 0.030 200);
 }
 
 [data-theme="mn-lake-superior"] input,
 [data-theme="mn-lake-superior"] textarea,
 [data-theme="mn-lake-superior"].dark input,
 [data-theme="mn-lake-superior"].dark textarea {
-  caret-color: oklch(0.820 0.110 75);
+  caret-color: oklch(0.500 0.130 38);
 }
 
 /* Minnesota — North Shore */
