@@ -256,33 +256,46 @@ Comment documenting recommended cover image dimensions.
 
 ## Decap CMS
 
-### 15. `static/admin/index.html` — self-hosted, pinned bundle
+### 15. `static/admin/index.html` — exact version pin + SRI
 The admin page loaded `https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js`. unpkg
 resolves that caret **at page load**, not at build time, so the CMS had silently ridden
-from 3.3.3 to 3.16.1 — 13 minor releases, none reviewed — and `cache-control: max-age=60`
-meant unpkg being down took the publishing tool with it.
+from 3.3.3 to 3.16.1 — 13 minor releases, none reviewed.
 
-Now vendored at `static/admin/decap-cms.js` (4.9 MB, v3.16.1) with its
-`decap-cms.js.LICENSE.txt`, served same-origin as `/admin/decap-cms.js`.
+Now pinned to `decap-cms@3.16.1` with `integrity` + `crossorigin`. The exact-version URL
+is strictly better than the range on every axis:
 
-**Why vendoring is safe here:** the bundle fetches no other CDN assets at runtime.
-Verified by grepping every `https://` host in the file — the only live one is
-`api.github.com` for the backend. Verified again in a headless browser: loading
-`/admin/` makes **zero** off-origin requests.
+| | `@^3.3.3` | `@3.16.1` |
+|---|---|---|
+| Version served | whatever is latest, changes under you | fixed, reviewed |
+| Response | 302 redirect | 200 direct |
+| `cache-control` | `max-age=60` | `max-age=31536000` (immutable) |
+| Tamper check | none | SHA-384, browser refuses on mismatch |
 
-**The cost:** 4.9 MB in git, and another 4.9 MB blob on every future version bump, since
-git stores each as a new object. Worth watching if this repo gets bumped often; today it
-is a one-time cost against a tool you publish with.
+**Vendoring was considered and rejected.** A local copy removes the unpkg runtime
+dependency, but the bundle is 4.9 MB and git stores each version bump as a new blob
+forever. Not worth it for a personal blog. (One such blob is already in history from
+commit 610bbfe — see the note at the end of this section.)
 
-**To upgrade:**
+**To upgrade — the version and hash must change in the same edit, or the CMS will not
+load at all:**
 ```sh
 V=3.x.y
-curl -sL -o static/admin/decap-cms.js "https://unpkg.com/decap-cms@$V/dist/decap-cms.js"
-curl -sL -o static/admin/decap-cms.js.LICENSE.txt \
-  "https://unpkg.com/decap-cms@$V/dist/decap-cms.js.LICENSE.txt"
+curl -sL "https://unpkg.com/decap-cms@$V/dist/decap-cms.js" \
+  | openssl dgst -sha384 -binary | openssl base64 -A
 ```
-Then update the version in the `index.html` comment, and load `/admin/` to confirm the
-login screen renders before pushing.
+Then load `/admin/` and confirm the login screen renders before pushing. SRI failure is
+silent to the naked eye — the page just comes up blank — so this check is not optional.
+
+**Verified:** login screen renders with the correct hash; with a deliberately corrupted
+one the browser blocks the script (`Failed to find a valid digest in the 'integrity'
+attribute … The resource has been blocked`) and `#nc-root` never appears. So the guard is
+genuinely enforced, not decorative.
+
+**Note on repo size:** commit 610bbfe briefly vendored the 4.9 MB bundle before this
+commit removed it. Deleting a file does not remove it from git history, so that blob
+still ships to anyone cloning. Harmless, but it is why `git clone` is larger than the
+working tree suggests. Removing it would need a history rewrite and a force-push to
+`main`, which is not worth it for one blob.
 
 ### 16. `static/admin/config.yml` — local backend package name
 The comment read `npx @decaporg/decap-server`. That package does not exist and 404s on

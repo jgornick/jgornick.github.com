@@ -8,19 +8,32 @@
 </head>
 <body>
   <!--
-    Decap CMS, self-hosted and pinned.
+    Decap CMS, pinned to an exact version with an integrity hash.
 
-    This was `https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js`. Two problems
-    with that: unpkg resolves the caret at page load, so the admin UI silently
-    rode from 3.3.3 to 3.16.1 across 13 minor releases nobody reviewed; and with
-    a 60s cache, unpkg being down meant no CMS at all.
+    This was `decap-cms@^3.3.3`. unpkg resolves the caret at page load, not at
+    build time, so the admin UI had silently ridden from 3.3.3 to 3.16.1 across
+    13 minor releases nobody reviewed, and `max-age=60` gave no real buffer if
+    unpkg went down.
 
-    Now vendored at static/admin/decap-cms.js (3.16.1) and served same-origin.
-    The bundle is self-contained — it fetches no other CDN assets at runtime,
-    only api.github.com for the backend.
+    The exact-version URL behaves far better than the range did: it returns 200
+    directly instead of a 302, and `max-age=31536000` (a year, immutable) rather
+    than 60 seconds. `integrity` + `crossorigin` mean the browser refuses the
+    file outright if unpkg ever serves different bytes.
 
-    To upgrade, see CUSTOMIZATIONS.md § Decap CMS.
+    To upgrade, bump the version and recompute the hash together — they must
+    change in the same edit or the CMS will not load:
+
+      V=3.x.y
+      curl -sL "https://unpkg.com/decap-cms@$V/dist/decap-cms.js" \
+        | openssl dgst -sha384 -binary | openssl base64 -A
+
+    Then load /admin/ and confirm the login screen renders before pushing.
+    See CUSTOMIZATIONS.md § Decap CMS.
   -->
-  <script src="/admin/decap-cms.js"></script>
+  <script
+    src="https://unpkg.com/decap-cms@3.16.1/dist/decap-cms.js"
+    integrity="sha384-hhTu9Y4nUnpebdUoT0bRx5lciIW+n97A7RrydmU92mb8EJj2YfInMzFkP2maNZS+"
+    crossorigin="anonymous"
+  ></script>
 </body>
 </html>
