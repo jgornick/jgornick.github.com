@@ -10,6 +10,23 @@
 # out of a commit.
 #
 # Allowlists live in .betterleaks.toml, which betterleaks picks up on its own.
+#
+# What these hooks do NOT cover, so nobody mistakes them for a perimeter:
+#
+#   1. Renames. lefthook skips a hook outright when the push or staged range
+#      has no file diff — it prints "no matching push files" — and a
+#      rename-only commit lands in that bucket. Verified against v2.1.12; no
+#      config key changes it (`skip_empty` is silently dropped, and a `files:`
+#      override at either job or hook level does not help, because the check
+#      runs first). Harmless in practice: a rename moves a blob that was
+#      already scanned when it was added, so no new content reaches the remote.
+#      Worth knowing only because a skipped scan still prints in green.
+#
+#   2. `--no-verify`, which bypasses both hooks by design.
+#
+#   3. Anything Decap CMS writes. Those commits go straight to GitHub over the
+#      API and never touch a local hook. Closing that one needs a server-side
+#      scan — GitHub push protection, or a betterleaks step in deploy.yml.
 
 pre-commit:
   jobs:
@@ -18,7 +35,8 @@ pre-commit:
 
 pre-push:
   jobs:
-    # ~2s over the whole repo, and catches anything that reached history
-    # another way — an amended commit, a hook bypass, a CMS-authored commit.
+    # ~0.2s over the whole repo. Full history rather than the push range, so a
+    # commit that got in via an amend or an earlier bypass is still caught the
+    # next time anything is pushed.
     - name: secrets-history
       run: betterleaks git --redact --no-banner
