@@ -10,8 +10,11 @@ backend:
   auth_endpoint: /auth
 
 # Local development backend
-# Run: npx @decaporg/decap-server
+# Run: ./dev-cms.sh  (starts `npx decap-server` and `hugo server -D` together)
 # Then access: http://localhost:1313/admin/
+#
+# The package is `decap-server`, not `@decaporg/decap-server` — the scoped name
+# does not exist on npm and 404s.
 local_backend: true
 
 # Media files configuration

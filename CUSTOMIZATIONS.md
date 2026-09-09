@@ -254,6 +254,63 @@ Comment documenting recommended cover image dimensions.
 
 ---
 
+## Decap CMS
+
+### 15. `static/admin/index.html` — self-hosted, pinned bundle
+The admin page loaded `https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js`. unpkg
+resolves that caret **at page load**, not at build time, so the CMS had silently ridden
+from 3.3.3 to 3.16.1 — 13 minor releases, none reviewed — and `cache-control: max-age=60`
+meant unpkg being down took the publishing tool with it.
+
+Now vendored at `static/admin/decap-cms.js` (4.9 MB, v3.16.1) with its
+`decap-cms.js.LICENSE.txt`, served same-origin as `/admin/decap-cms.js`.
+
+**Why vendoring is safe here:** the bundle fetches no other CDN assets at runtime.
+Verified by grepping every `https://` host in the file — the only live one is
+`api.github.com` for the backend. Verified again in a headless browser: loading
+`/admin/` makes **zero** off-origin requests.
+
+**The cost:** 4.9 MB in git, and another 4.9 MB blob on every future version bump, since
+git stores each as a new object. Worth watching if this repo gets bumped often; today it
+is a one-time cost against a tool you publish with.
+
+**To upgrade:**
+```sh
+V=3.x.y
+curl -sL -o static/admin/decap-cms.js "https://unpkg.com/decap-cms@$V/dist/decap-cms.js"
+curl -sL -o static/admin/decap-cms.js.LICENSE.txt \
+  "https://unpkg.com/decap-cms@$V/dist/decap-cms.js.LICENSE.txt"
+```
+Then update the version in the `index.html` comment, and load `/admin/` to confirm the
+login screen renders before pushing.
+
+### 16. `static/admin/config.yml` — local backend package name
+The comment read `npx @decaporg/decap-server`. That package does not exist and 404s on
+npm; the real one is unscoped `decap-server`. `dev-cms.sh` always ran the correct one, so
+only the comment was wrong. It now points at `./dev-cms.sh`, which starts `decap-server`
+and `hugo server -D` together.
+
+### 17. `decap-oauth-worker/package.json` — `sharp` override
+`npm audit` reported 3 high-severity advisories through `wrangler → miniflare → sharp`
+(libheif, GHSA-g89c-p67h-r497 / GHSA-2jg2-4ch7-h545). All three are **devDependencies** —
+`wrangler` is the worker's only dependency and nothing in that chain ships in the deployed
+Worker.
+
+`npm audit fix --force` wanted to *downgrade* wrangler 4.130.0 → 4.15.2, which is worse
+than the problem. miniflare pins `sharp` to exactly `0.35.2` and the fix needs `>=0.35.4`,
+so there is no forward fix from upstream yet. Instead:
+
+```json
+"overrides": { "sharp": "^0.35.4" }
+```
+
+0.35.2 → 0.35.4 is a patch bump, and miniflare only uses sharp to emulate image transforms
+in local `wrangler dev` — which this OAuth worker never does. Audit is clean and
+`wrangler deploy --dry-run` builds (4.90 KiB, no bindings). **Drop this override** once
+miniflare pins a patched sharp itself.
+
+---
+
 ## Upgrade Procedure
 
 1. Note the current version in `go.mod`, then check the theme's `theme.toml` `min_version`

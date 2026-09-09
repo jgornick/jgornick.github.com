@@ -7,7 +7,20 @@
   <title>Content Manager</title>
 </head>
 <body>
-  <!-- Include the script that builds the page and powers Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
+  <!--
+    Decap CMS, self-hosted and pinned.
+
+    This was `https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js`. Two problems
+    with that: unpkg resolves the caret at page load, so the admin UI silently
+    rode from 3.3.3 to 3.16.1 across 13 minor releases nobody reviewed; and with
+    a 60s cache, unpkg being down meant no CMS at all.
+
+    Now vendored at static/admin/decap-cms.js (3.16.1) and served same-origin.
+    The bundle is self-contained — it fetches no other CDN assets at runtime,
+    only api.github.com for the backend.
+
+    To upgrade, see CUSTOMIZATIONS.md § Decap CMS.
+  -->
+  <script src="/admin/decap-cms.js"></script>
 </body>
 </html>
