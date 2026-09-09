@@ -3,7 +3,7 @@ title: Not the day off, the noticing
 description: The line was never brains versus hands. It's work versus ownership,
   and the tax code has two sets of rules depending on which side you're on.
 date: 2026-09-08T19:47:00-05:00
-draft: true
+draft: false
 tags: []
 cover: https://www.milwaukeeindependent.com/wp-content/uploads/2022/09/090522_LaborDayHistory_01.jpg
 toc: false
