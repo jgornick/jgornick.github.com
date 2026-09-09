@@ -1,0 +1,24 @@
+# Git hooks, managed by lefthook (https://lefthook.dev).
+#
+# Install once per clone:  npm run hooks
+# Both binaries come from Homebrew:  brew install lefthook betterleaks
+#
+# Skip in an emergency with LEFTHOOK=0 git commit ... , but prefer fixing the
+# finding. This repo publishes a Cloudflare Worker holding a GitHub OAuth
+# client secret (decap-oauth-worker), and Decap CMS commits to main straight
+# from a browser — until now, .gitignore was the only thing keeping .dev.vars
+# out of a commit.
+#
+# Allowlists live in .betterleaks.toml, which betterleaks picks up on its own.
+
+pre-commit:
+  jobs:
+    - name: secrets
+      run: betterleaks git --staged --redact --no-banner
+
+pre-push:
+  jobs:
+    # ~2s over the whole repo, and catches anything that reached history
+    # another way — an amended commit, a hook bypass, a CMS-authored commit.
+    - name: secrets-history
+      run: betterleaks git --redact --no-banner

@@ -1,0 +1,20 @@
+# betterleaks config — extends the default ruleset; only adds allowlists.
+# Run by the lefthook hooks (lefthook.yml) and by hand:
+#   betterleaks git .       # whole history
+#   betterleaks dir .       # working tree
+[extend]
+useDefault = true
+
+# A 2009 Zend Framework tutorial shows an application.ini with the stock
+# placeholder credentials Zend's own docs used — the same block sets
+# username = "user" and dbname = "dbname". generic-password fires on the
+# literal string "password", which is exactly what a placeholder looks like.
+#
+# Matched on that one config line rather than by path: blog posts are prose,
+# but a real token pasted into one is a genuine risk, so content/posts/ stays
+# scanned. The post lives at two paths in history (its Octopress original and
+# the Hugo file it became), and a line match covers both.
+[[allowlists]]
+description = "Zend Framework tutorial placeholder DB credentials"
+regexTarget = "line"
+regexes = ['''resources\.db\.params\.password = "password"''']
