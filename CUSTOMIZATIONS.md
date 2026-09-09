@@ -273,8 +273,7 @@ is strictly better than the range on every axis:
 
 **Vendoring was considered and rejected.** A local copy removes the unpkg runtime
 dependency, but the bundle is 4.9 MB and git stores each version bump as a new blob
-forever. Not worth it for a personal blog. (One such blob is already in history from
-commit 610bbfe — see the note at the end of this section.)
+forever. Not worth it for a personal blog.
 
 **To upgrade — the version and hash must change in the same edit, or the CMS will not
 load at all:**
@@ -291,11 +290,16 @@ one the browser blocks the script (`Failed to find a valid digest in the 'integr
 attribute … The resource has been blocked`) and `#nc-root` never appears. So the guard is
 genuinely enforced, not decorative.
 
-**Note on repo size:** commit 610bbfe briefly vendored the 4.9 MB bundle before this
-commit removed it. Deleting a file does not remove it from git history, so that blob
-still ships to anyone cloning. Harmless, but it is why `git clone` is larger than the
-working tree suggests. Removing it would need a history rewrite and a force-push to
-`main`, which is not worth it for one blob.
+**Note on repo size:** an earlier commit briefly vendored the 4.9 MB bundle. Deleting a
+file does not remove it from history, so it was rewritten out with `git filter-repo`
+(`--invert-paths --path static/admin/decap-cms.js …`). All 664 commits survived, the tip
+tree is byte-identical, and `.git` went 13 MB → 9.9 MB. The pre-rewrite SHAs (`610bbfe`,
+`bdecafb`, `59e712c`) no longer exist; they are `a83f72c`, `cb849f2`, `0b5dd86`.
+
+The real payoff was the secret scan, not the disk: the bundle was third-party minified
+JS, so it produced 35 `generic-password` false positives on every history scan. Removing
+it took `betterleaks git` from 37 findings to 0, and from 1.93s to 174ms. A scan with 35
+standing false positives is one you stop reading.
 
 ### 16. `static/admin/config.yml` — local backend package name
 The comment read `npx @decaporg/decap-server`. That package does not exist and 404s on
