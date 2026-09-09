@@ -76,9 +76,43 @@ inline makes html/template's contextual autoescaping escape the `<`.
 
 ---
 
+### 4. `layouts/_partials/layout/head.html`
+**Purpose:** Stop untagged posts from advertising the site-wide keyword list.
+
+**The bug:** the theme's keywords meta is a two-branch fallback —
+
+```go-html-template
+content="{{- with .Params.tags -}}{{ delimit . `, ` }}
+  {{- else -}}{{- with site.Params.keywords -}}{{ delimit . `, ` }}{{- end -}}{{- end -}}"
+```
+
+`tags: []` is falsy in Go templates, so an empty list takes the `else` branch and every
+untagged post inherited `site.Params.keywords` — "Tech, Blog, Programming, Software
+Engineering". Five of seven posts were untagged, so an essay about labour and the tax
+code shipped claiming to be about software engineering. Site keywords are a *site*
+default; a single page is the one place they can be wrong.
+
+**The fix:** build the value into a variable first, and only reach for the site list when
+the page is not a single page. Home, section and taxonomy pages keep the site-wide list,
+which is where it was always accurate. A post emits its own tags or no keywords meta at
+all — the tag is skipped entirely rather than rendered empty.
+
+Verified across the built site: 5 site-keyword pages (`/`, `/posts/`, `/tags/`,
+`/tags/npm/`, `/tags/yarn/`), 2 posts carrying their own tags, 5 untagged posts with no
+keywords tag.
+
+**Note:** `meta name="keywords"` has been ignored by Google since 2009 and is not a Bing
+ranking signal either, so this is a correctness fix, not an SEO one.
+
+**Diff vs. upstream v1.3.16 — one hunk:** the keywords `<meta>` block, replaced by the
+variable form above. Everything else in the file is verbatim upstream, and the whole
+file must be re-synced on a theme upgrade since a partial override is all-or-nothing.
+
+---
+
 ## New Assets
 
-### 4. `assets/icons/instagram.svg`
+### 5. `assets/icons/instagram.svg`
 Theme ships `github.svg` but still has no Instagram icon (verified in v1.3.16); without
 this file the social link falls back to a generic circle+plus icon.
 
@@ -91,7 +125,7 @@ Loaded as standalone stylesheets (not compiled into the theme's Tailwind bundle)
 - `assets/css/custom/custom.css` — color scheme + overrides
 - `assets/css/custom/chroma.css` — syntax highlighting palette
 
-### 5. Minnesota color schemes (four)
+### 6. Minnesota color schemes (four)
 All four schemes registered in `params.yaml` under `themes:` are now implemented in
 `custom.css` (token set + `::selection` + caret) and `chroma.css` (syntax palette).
 `colorScheme: "mn-boundary-waters"` is active.
@@ -233,10 +267,13 @@ Comment documenting recommended cover image dimensions.
    diff -rq <old>/... <new>/...
    ```
 3. `hugo mod get github.com/tom2almighty/hugo-narrow@<new>`
-4. Re-derive `header.html` and `render-link.html` from the **new** upstream source and
-   re-apply the documented changes, rather than carrying the old overrides forward.
+4. Re-derive `header.html`, `render-link.html` and `head.html` from the **new** upstream
+   source and re-apply the documented changes, rather than carrying the old overrides
+   forward. `head.html` is a whole-file copy for a one-hunk change, so it is the most
+   likely to silently miss new upstream meta tags — diff it first.
    Check whether upstream has stopped using `inline-flex` on external links — if so,
-   `render-link.html` can be dropped entirely.
+   `render-link.html` can be dropped entirely. Likewise check whether upstream now
+   guards the keywords fallback on `.IsPage` — if so, drop `head.html`.
 5. Check whether the theme now ships an Instagram icon (then drop ours).
 6. Build with `hugo --gc --minify` and confirm zero warnings.
 7. Compare built output file lists before/after to catch dropped assets.
