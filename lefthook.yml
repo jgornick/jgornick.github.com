@@ -26,8 +26,9 @@
 #      accepted in a PR review. Those commits are made on GitHub's side and
 #      never touch a local hook. GitHub push protection, on since 2026-10-06,
 #      scans them server-side, but only for secret types GitHub recognizes,
-#      which is a narrower set than betterleaks checks. A betterleaks step in
-#      a workflow would close the rest.
+#      which is a narrower set than betterleaks checks. The rest is caught by
+#      .github/workflows/secret-scan.yml, which runs betterleaks on every
+#      pull request, though by then the branch is already public.
 
 pre-commit:
   jobs:
