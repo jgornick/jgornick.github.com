@@ -267,6 +267,39 @@ was rewritten out with `git filter-repo`, so the pre-rewrite SHAs `610bbfe`, `bd
 
 ---
 
+## `main` takes pull requests only
+
+Since 2026-10-06, ruleset `24605285` ("main: pull requests only") keeps anything from
+reaching `main`, and so the live site, except a pull request merged on GitHub. It has no
+bypass list, so it applies to the repo owner too: `git push origin main` is rejected with
+`GH013: Repository rule violations`. It also blocks deleting `main` and force-pushing to it.
+
+- **0 required approvals.** GitHub does not let you approve your own pull request, so
+  requiring one would make every PR unmergeable. Merging it is the review.
+- **Squash or rebase only.** Merge commits are off in the repo settings and in the
+  ruleset. Merge with `gh pr merge --squash` or `gh pr merge --rebase`.
+- **Editing a file on github.com** offers a new branch and a pull request instead of a
+  commit to `main`.
+- `require_extra_approval_for_unattributed_changes: true` was filled in by GitHub, not
+  asked for. It is a preview setting that, per GitHub's docs, only affects pull requests
+  Copilot opens under its own identity.
+
+Secret scanning and push protection are on too, so GitHub refuses a known secret type at
+push time even when no local hook ran: a commit made on github.com, or `--no-verify`.
+
+Forking cannot be turned off; GitHub only allows that for private repositories owned by an
+organization. A fork can only reach `main` through a pull request, and `deploy.yml` does
+not run on pull requests.
+
+```bash
+# What is enforced on main right now
+gh api repos/jgornick/jgornick.github.com/rules/branches/main
+# Remove the ruleset
+gh api --method DELETE repos/jgornick/jgornick.github.com/rulesets/24605285
+```
+
+---
+
 ## Upgrade Procedure
 
 1. Note the current version in `go.mod`, then check the theme's `theme.toml` `min_version`
