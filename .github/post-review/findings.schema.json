@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "claims_checked", "voice_guide_read", "facts", "voice"],
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "One or two plain sentences for Joe on how the post holds up overall."
+    },
+    "claims_checked": {
+      "type": "integer",
+      "description": "How many checkable claims you looked at, flagged or not."
+    },
+    "voice_guide_read": {
+      "type": "boolean",
+      "description": "True only if you read the voice guide files."
+    },
+    "facts": {
+      "type": "array",
+      "description": "Claims that are wrong, out of date, misattributed, overstated, or not supported by the page they link to.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "line", "quote", "problem", "confidence", "sources"],
+        "properties": {
+          "file": { "type": "string", "description": "Repo-relative path of the post." },
+          "line": { "type": "integer", "description": "1-based line in the post file, front matter included." },
+          "quote": { "type": "string", "description": "The exact words from the post, trimmed to the claim." },
+          "problem": { "type": "string", "description": "What is wrong and what the sources say instead." },
+          "suggestion": { "type": "string", "description": "Optional corrected wording." },
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "sources": {
+            "type": "array",
+            "description": "URLs that back up the finding.",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "voice": {
+      "type": "array",
+      "description": "Passages that do not sound like Joe, judged against his voice guide.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "line", "quote", "problem"],
+        "properties": {
+          "file": { "type": "string", "description": "Repo-relative path of the post." },
+          "line": { "type": "integer", "description": "1-based line in the post file, front matter included." },
+          "quote": { "type": "string", "description": "The exact words from the post." },
+          "problem": { "type": "string", "description": "What is off, with reference to the voice guide." },
+          "suggestion": { "type": "string", "description": "Optional rewrite in his voice, when short." }
+        }
+      }
+    }
+  }
+}
