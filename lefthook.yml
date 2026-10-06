@@ -19,12 +19,15 @@
 #      already scanned when it was added, so no new content reaches the remote.
 #      Worth knowing only because a skipped scan still prints in green.
 #
-#   2. `--no-verify`, which bypasses both hooks by design.
+#   2. `--no-verify`, which bypasses both hooks by design. GitHub push
+#      protection still sees the push (see 3).
 #
 #   3. Anything written on github.com — the web editor, or a suggestion
 #      accepted in a PR review. Those commits are made on GitHub's side and
-#      never touch a local hook. Closing that one needs a server-side scan —
-#      GitHub push protection, or a betterleaks step in a workflow.
+#      never touch a local hook. GitHub push protection, on since 2026-10-06,
+#      scans them server-side, but only for secret types GitHub recognizes,
+#      which is a narrower set than betterleaks checks. A betterleaks step in
+#      a workflow would close the rest.
 
 pre-commit:
   jobs:
