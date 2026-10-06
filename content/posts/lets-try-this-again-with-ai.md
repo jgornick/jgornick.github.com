@@ -15,7 +15,7 @@ I'd rather say so. Some of what you read here was written with help from AI.
 
 This blog is AI-assisted, *not* AI-written. The ideas are mine, and so are the opinions. I review every post before it goes up, and I'm adding guardrails so that step can't get skipped, even by accident.
 
-So, why use it at all? Mostly, it comes down to time. In 2019, I relaunched this blog with a post called [Let's try this again, with Hugo](https://joegornick.com/2019/04/14/lets-try-this-again-with-hugo/) and ended it hoping it wouldn't be another nine years until my next post. I managed three more that year, then went quiet for six and a half. Technically, still better than nine 😀.
+So, why use it at all? Mostly, it comes down to time. In 2018, I relaunched this blog with a post called [Let's try this again, with Hugo](https://joegornick.com/2019/04/14/lets-try-this-again-with-hugo/) and ended it hoping it wouldn't be another nine years until my next post. I managed three more that year, then went quiet for six and a half. Technically, still better than nine 😀.
 
 The reason for the gap hasn't changed. I'm raising a family, working a full-time job, and splitting whatever's left between hobbies, side projects, and a house that always has another project waiting. Most weekends, you'll find us at a cold hockey rink. There just aren't many long, quiet stretches to sit down and write.
 
@@ -40,7 +40,7 @@ My answer is that what makes a post worth reading was never the typing. It's the
 
 A book is still the author's even when an editor helped shape it. The difference here is that my editor also helps with the first draft, which is exactly why I'm telling you about it.
 
-So, back to those guardrails. Most of them are still a plan. Today, this site publishes from the `main` branch of a [public GitHub repo](https://github.com/jgornick/jgornick.github.com), and my CMS commits straight to `main`. That's convenient. It also means nothing technically stops a post from going live before I've reviewed it.
+So, back to those guardrails. Most of them are still a plan. Today, this site publishes from the `main` branch of a [public GitHub repo](https://github.com/jgornick/jgornick-blog-does-not-exist), and my CMS commits straight to `main`. That's convenient. It also means nothing technically stops a post from going live before I've reviewed it.
 
 I'm changing three things:
 
