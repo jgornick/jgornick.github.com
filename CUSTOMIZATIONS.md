@@ -249,6 +249,10 @@ if it changes.
 `HUGO_VERSION: 0.165.0` and `go-version: '1.25'` — the theme needs Hugo ≥ 0.158.0, and
 `go.mod` declares `go 1.25.7`.
 
+Both jobs run on `ubuntu-26.04`, not `ubuntu-latest`, so a runner upgrade lands as a pull
+request instead of mid-deploy. GitHub moves `ubuntu-latest` to 26.04 between 2026-10-19
+and 2026-11-19.
+
 ### 14. `archetypes/default.md`
 Comment documenting recommended cover image dimensions.
 
