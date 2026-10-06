@@ -64,4 +64,4 @@ While I was at it, I turned on GitHub's push protection, which blocks a commit t
 
 The other two are still a plan: AI agents reviewing each post before I merge, then another round of my own review on whatever they flag. I'll update this again when they're real.
 
-And yes, this update went through a [pull request](https://github.com/jgornick/jgornick.github.com/pulls?q=is%3Apr) too.
+And yes, this update went through a [pull request](https://github.com/jgornick/jgornick.github.com/pull/7) too.
