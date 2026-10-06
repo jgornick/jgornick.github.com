@@ -60,8 +60,6 @@ The first guardrail didn't stay a plan for very long. A few hours after this pos
 
 Nothing goes live now unless I merge it. The CMS is gone, and `main` only accepts pull requests, including mine. (I tested that by pushing straight to `main`. GitHub said no.)
 
-While I was at it, I turned on GitHub's push protection, which blocks a commit that contains something that looks like an API key or token. That one has nothing to do with the writing. It's a public repo, though, and I'd rather GitHub catch a leaked key than a stranger.
-
 The other two are still a plan: AI agents reviewing each post before I merge, then another round of my own review on whatever they flag. I'll update this again when they're real.
 
 And yes, this update went through a [pull request](https://github.com/jgornick/jgornick.github.com/pull/7) too.
