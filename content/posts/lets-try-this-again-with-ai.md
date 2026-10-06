@@ -53,3 +53,15 @@ It's a step in the right direction, not a guarantee. I'll still get things wrong
 My intent is *not* to hand this blog over to AI. My intent is to finally get some of these ideas out of my head and in front of someone they might help. The words that end up here are still mine, and I'm still the one who clicks merge.
 
 *Cover photo by [Lauren Mancke](https://unsplash.com/@laurenmancke) on [Unsplash](https://unsplash.com/photos/turned-off-macbook-pro-beside-white-ceramic-mug-filled-with-coffee-aOC7TSLb1o8).*
+
+## Update: October 6, 2026
+
+The first guardrail didn't stay a plan for very long. A few hours after this post went up, it was in place.
+
+Nothing goes live now unless I merge it. The CMS is gone, and `main` only accepts pull requests, including mine. (I tested that by pushing straight to `main`. GitHub said no.)
+
+While I was at it, I turned on GitHub's push protection, which blocks a commit that contains something that looks like an API key or token. That one has nothing to do with the writing. It's a public repo, though, and I'd rather GitHub catch a leaked key than a stranger.
+
+The other two are still a plan: AI agents reviewing each post before I merge, then another round of my own review on whatever they flag. I'll update this again when they're real.
+
+And yes, this update went through a [pull request](https://github.com/jgornick/jgornick.github.com/pulls?q=is%3Apr) too.
