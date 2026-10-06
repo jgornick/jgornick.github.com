@@ -164,15 +164,16 @@ jobs:
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
           # --root-dir resolves /media/... links against static/. Instagram,
-          # LinkedIn and X turn away automated requests, so lychee skips them
-          # rather than reporting them broken every time.
+          # LinkedIn, Unsplash and X turn away automated requests (Unsplash
+          # with a 401), so lychee skips them rather than reporting them
+          # broken every time.
           args: >-
             --no-progress
             --files-from .post-review/link-inputs.txt
             --root-dir ${{ github.workspace }}/static
             --accept 200..=299,429
             --max-retries 2
-            --exclude '^https?://([a-z0-9-]+\.)?(instagram|linkedin|twitter|x)\.com/'
+            --exclude '^https?://([a-z0-9-]+\.)?(instagram|linkedin|twitter|unsplash|x)\.com/'
           format: markdown
           output: .post-review/links.md
           fail: false
