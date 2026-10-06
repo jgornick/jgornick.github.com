@@ -4,10 +4,7 @@
 # Both binaries come from Homebrew:  brew install lefthook betterleaks
 #
 # Skip in an emergency with LEFTHOOK=0 git commit ... , but prefer fixing the
-# finding. This repo publishes a Cloudflare Worker holding a GitHub OAuth
-# client secret (decap-oauth-worker), and Decap CMS commits to main straight
-# from a browser — until now, .gitignore was the only thing keeping .dev.vars
-# out of a commit.
+# finding.
 #
 # Allowlists live in .betterleaks.toml, which betterleaks picks up on its own.
 #
@@ -24,9 +21,10 @@
 #
 #   2. `--no-verify`, which bypasses both hooks by design.
 #
-#   3. Anything Decap CMS writes. Those commits go straight to GitHub over the
-#      API and never touch a local hook. Closing that one needs a server-side
-#      scan — GitHub push protection, or a betterleaks step in deploy.yml.
+#   3. Anything written on github.com — the web editor, or a suggestion
+#      accepted in a PR review. Those commits are made on GitHub's side and
+#      never touch a local hook. Closing that one needs a server-side scan —
+#      GitHub push protection, or a betterleaks step in a workflow.
 
 pre-commit:
   jobs:
