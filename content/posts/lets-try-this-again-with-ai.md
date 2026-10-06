@@ -5,7 +5,8 @@ date: 2026-10-06T10:55:00-05:00
 slug: lets-try-this-again-with-ai
 draft: false
 tags: [ai, writing]
-cover: ""
+cover: /media/laptop-coffee-drafts.jpg
+images: [/media/laptop-coffee-drafts.jpg]
 toc: false
 ---
 It's pretty easy to see that more and more of what we read online was written, at least in part, by AI. Most of the time, nobody says so.
@@ -50,3 +51,5 @@ I'm changing three things:
 It's a step in the right direction, not a guarantee. I'll still get things wrong sometimes, and when I do, the fix goes through a pull request too, out in the open where anyone can see it.
 
 My intent is *not* to hand this blog over to AI. My intent is to finally get some of these ideas out of my head and in front of someone they might help. The words that end up here are still mine, and I'm still the one who clicks merge.
+
+*Cover photo by [Lauren Mancke](https://unsplash.com/@laurenmancke) on [Unsplash](https://unsplash.com/photos/turned-off-macbook-pro-beside-white-ceramic-mug-filled-with-coffee-aOC7TSLb1o8).*
