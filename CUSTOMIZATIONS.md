@@ -254,77 +254,16 @@ Comment documenting recommended cover image dimensions.
 
 ---
 
-## Decap CMS
+## Decap CMS — removed
 
-### 15. `static/admin/index.html` — exact version pin + SRI
-The admin page loaded `https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js`. unpkg
-resolves that caret **at page load**, not at build time, so the CMS had silently ridden
-from 3.3.3 to 3.16.1 — 13 minor releases, none reviewed.
+Removed on 2026-10-06, along with `decap-oauth-worker/` and `dev-cms.sh`. Every CMS save
+committed straight to `main`, and `main` deploys on every push, so nothing sat between an
+edit and the live site. Posts are now plain Markdown in `content/posts/`, written locally
+and previewed with `hugo server -D`.
 
-Now pinned to `decap-cms@3.16.1` with `integrity` + `crossorigin`. The exact-version URL
-is strictly better than the range on every axis:
-
-| | `@^3.3.3` | `@3.16.1` |
-|---|---|---|
-| Version served | whatever is latest, changes under you | fixed, reviewed |
-| Response | 302 redirect | 200 direct |
-| `cache-control` | `max-age=60` | `max-age=31536000` (immutable) |
-| Tamper check | none | SHA-384, browser refuses on mismatch |
-
-**Vendoring was considered and rejected.** A local copy removes the unpkg runtime
-dependency, but the bundle is 4.9 MB and git stores each version bump as a new blob
-forever. Not worth it for a personal blog.
-
-**To upgrade — the version and hash must change in the same edit, or the CMS will not
-load at all:**
-```sh
-V=3.x.y
-curl -sL "https://unpkg.com/decap-cms@$V/dist/decap-cms.js" \
-  | openssl dgst -sha384 -binary | openssl base64 -A
-```
-Then load `/admin/` and confirm the login screen renders before pushing. SRI failure is
-silent to the naked eye — the page just comes up blank — so this check is not optional.
-
-**Verified:** login screen renders with the correct hash; with a deliberately corrupted
-one the browser blocks the script (`Failed to find a valid digest in the 'integrity'
-attribute … The resource has been blocked`) and `#nc-root` never appears. So the guard is
-genuinely enforced, not decorative.
-
-**Note on repo size:** an earlier commit briefly vendored the 4.9 MB bundle. Deleting a
-file does not remove it from history, so it was rewritten out with `git filter-repo`
-(`--invert-paths --path static/admin/decap-cms.js …`). All 664 commits survived, the tip
-tree is byte-identical, and `.git` went 13 MB → 9.9 MB. The pre-rewrite SHAs (`610bbfe`,
-`bdecafb`, `59e712c`) no longer exist; they are `a83f72c`, `cb849f2`, `0b5dd86`.
-
-The real payoff was the secret scan, not the disk: the bundle was third-party minified
-JS, so it produced 35 `generic-password` false positives on every history scan. Removing
-it took `betterleaks git` from 37 findings to 0, and from 1.93s to 174ms. A scan with 35
-standing false positives is one you stop reading.
-
-### 16. `static/admin/config.yml` — local backend package name
-The comment read `npx @decaporg/decap-server`. That package does not exist and 404s on
-npm; the real one is unscoped `decap-server`. `dev-cms.sh` always ran the correct one, so
-only the comment was wrong. It now points at `./dev-cms.sh`, which starts `decap-server`
-and `hugo server -D` together.
-
-### 17. `decap-oauth-worker/package.json` — `sharp` override
-`npm audit` reported 3 high-severity advisories through `wrangler → miniflare → sharp`
-(libheif, GHSA-g89c-p67h-r497 / GHSA-2jg2-4ch7-h545). All three are **devDependencies** —
-`wrangler` is the worker's only dependency and nothing in that chain ships in the deployed
-Worker.
-
-`npm audit fix --force` wanted to *downgrade* wrangler 4.130.0 → 4.15.2, which is worse
-than the problem. miniflare pins `sharp` to exactly `0.35.2` and the fix needs `>=0.35.4`,
-so there is no forward fix from upstream yet. Instead:
-
-```json
-"overrides": { "sharp": "^0.35.4" }
-```
-
-0.35.2 → 0.35.4 is a patch bump, and miniflare only uses sharp to emulate image transforms
-in local `wrangler dev` — which this OAuth worker never does. Audit is clean and
-`wrangler deploy --dry-run` builds (4.90 KiB, no bindings). **Drop this override** once
-miniflare pins a patched sharp itself.
+**History note:** an earlier commit briefly vendored the 4.9 MB `decap-cms.js` bundle. It
+was rewritten out with `git filter-repo`, so the pre-rewrite SHAs `610bbfe`, `bdecafb` and
+`59e712c` no longer exist; they are `a83f72c`, `cb849f2` and `0b5dd86`.
 
 ---
 
