@@ -15,9 +15,10 @@
 #
 # Claude runs on Joe's Claude plan: the CLAUDE_CODE_OAUTH_TOKEN secret, made
 # with `claude setup-token`. ANTHROPIC_API_KEY is the fallback, used only when
-# that secret isn't set. Gemini runs on a free Gemini API key (GEMINI_API_KEY,
-# from Google AI Studio), which only reaches Flash models. A reviewer whose
-# secret isn't set is skipped, and the comment says so.
+# that secret isn't set. Gemini runs on a Gemini API key from Google AI Studio
+# (GEMINI_API_KEY) with billing on: the free tier gives the model the CLI uses
+# 20 requests a day, fewer than one review takes. A reviewer whose secret
+# isn't set is skipped, and the comment says so.
 #
 # Each reviewer job sees only its own credential, and its GitHub token is
 # read-only. Only the report job can comment, and it never sees a key. Both
@@ -47,9 +48,9 @@ permissions: {}
 
 env:
   CLAUDE_MODEL: claude-opus-5-5
-  # A free Gemini API key only reaches Flash models. This is the stable one:
-  # the newest (3.8) answered "high demand" errors for most of a test run.
-  GEMINI_MODEL: gemini-3.5-flash
+  # With an API key, Gemini CLI 0.63 sends every Flash request to its newest
+  # Flash whatever the flag says, so name the model that actually runs.
+  GEMINI_MODEL: gemini-3.8-flash
   GEMINI_CLI_VERSION: 0.63.0
 
 concurrency:
@@ -339,9 +340,7 @@ jobs:
       # Settings and policy live in the home folder, which the pull request
       # can't touch. The policy denies the shell and file writes, and allows
       # web search and fetch, which would otherwise ask for approval and so be
-      # refused in headless mode. On a free key only Gemini 2.5 Flash can use
-      # Google Search, so the web-search alias is pointed at it, and web fetch
-      # moves there too from the preview model it uses by default.
+      # refused in headless mode.
       - name: Configure Gemini CLI
         run: |
           mkdir -p ~/.gemini/policies
@@ -349,19 +348,7 @@ jobs:
           {
             "general": { "enableAutoUpdate": false },
             "privacy": { "usageStatisticsEnabled": false },
-            "model": { "maxSessionTurns": 60 },
-            "modelConfigs": {
-              "customAliases": {
-                "web-search": {
-                  "extends": "gemini-2.5-flash-base",
-                  "modelConfig": { "generateContentConfig": { "tools": [{ "googleSearch": {} }] } }
-                },
-                "web-fetch": {
-                  "extends": "gemini-2.5-flash-base",
-                  "modelConfig": { "generateContentConfig": { "tools": [{ "urlContext": {} }] } }
-                }
-              }
-            }
+            "model": { "maxSessionTurns": 60 }
           }
           EOF
           cat > ~/.gemini/policies/post-review.toml <<'EOF'
@@ -379,18 +366,21 @@ jobs:
       - name: Review with Gemini
         id: gemini
         continue-on-error: true
-        # A healthy run takes a few minutes. An overloaded free tier means
-        # long retries, and an open Gemini CLI bug can leave web search
-        # hanging, so cap it: the comment waits for every reviewer.
+        # A healthy run takes a few minutes. An overloaded model means long
+        # retries, and an open Gemini CLI bug can leave web search hanging,
+        # so cap it: the comment waits for every reviewer.
         timeout-minutes: 10
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           cd "$REVIEW_DIR"
           set +e
+          # A fatal error (a used-up quota, say) goes to stderr as JSON, so
+          # keep a copy for the next step as well as the log.
           npx --yes "@google/gemini-cli@${GEMINI_CLI_VERSION}" \
             --skip-trust --model "$GEMINI_MODEL" --output-format json \
-            --prompt "$(cat "$RUNNER_TEMP/gemini-prompt.md")" > "$RUNNER_TEMP/gemini-output.json"
+            --prompt "$(cat "$RUNNER_TEMP/gemini-prompt.md")" \
+            > "$RUNNER_TEMP/gemini-output.json" 2> >(tee "$RUNNER_TEMP/gemini-stderr.log" >&2)
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           exit "$code"
@@ -402,7 +392,7 @@ jobs:
           EXIT_CODE: ${{ steps.gemini.outputs.exit_code }}
         run: |
           delim="EOF_$(openssl rand -hex 8)"
-          if findings=$(node .github/post-review/extract-findings.js "$RUNNER_TEMP/gemini-output.json" 2> "$RUNNER_TEMP/extract-error.txt"); then
+          if findings=$(node .github/post-review/extract-findings.js "$RUNNER_TEMP/gemini-output.json" "$RUNNER_TEMP/gemini-stderr.log" 2> "$RUNNER_TEMP/extract-error.txt"); then
             { echo "findings<<$delim"; echo "$findings"; echo "$delim"; } >> "$GITHUB_OUTPUT"
             exit 0
           fi
