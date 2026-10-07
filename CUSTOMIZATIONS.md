@@ -142,6 +142,17 @@ and the dark one on `[data-theme="x"].dark`. Light faces share a single
 lightness ladder and vary only by hue, so the contrast maths is identical
 across schemes and only the hue-dependent checks differ per scheme.
 
+Each scheme is defined **once**. Until October 2026, `custom.css` also opened with
+an older dark-only Boundary Waters block (tokens, `::selection` and caret, 105
+lines). It was dead: every selector reappeared later with identical selector text and
+every property, so the later block always won. But it read as the source of truth.
+It showed dark values on the base `[data-theme]` selector, and its `.dark` block still
+carried the old failing `--color-important` (3.57:1). It has been deleted. Its header
+comment, which explains the palette and the September accessibility pass, stays at the
+top of the file, now marked as describing the dark face. Proven safe, not assumed:
+computed `--color-*`, `::selection` and caret colours on `<html>` were identical before
+and after, 232 values across all 4 schemes × light/dark.
+
 ### Light and dark mode
 
 **The site follows `prefers-color-scheme`.** `theme-init.js` adds a `.dark`
