@@ -68,10 +68,12 @@ And yes, this update went through a [pull request](https://github.com/jgornick/j
 
 The other two guardrails are real now, too. That was quicker than I expected.
 
-Every pull request that touches a post now gets an AI review before I merge it. A link checker tests the links. Claude checks the facts, both on the web and against my older posts, and reads the post against the same [writing style guide](https://github.com/jgornick/skills/tree/main/my-writing-style) I use when I draft with it. Everything they find lands in one comment on the pull request, and I read it before I merge. The review can't block anything. I still decide what to fix, and I'm still the one who clicks merge.
+When I open a pull request for a post, or mark a draft as ready, it now gets an AI review. A link checker tests the links (a few sites, like Instagram, turn away automated checks, so it skips those). Claude checks the facts, both on the web and against my older posts, and reads the post against the same [writing style guide](https://github.com/jgornick/skills/tree/main/my-writing-style) I use when I draft with it. For an edit to an older post, the review only looks at what changed.
+
+Everything they find lands in one comment on the pull request, and I read it before I merge. The review doesn't re-run every time I push a fix, so when I change something, I ask for another pass. It can't block anything, either. I still decide what to fix, and I'm still the one who clicks merge.
 
 To test it, I opened a [pull request](https://github.com/jgornick/jgornick.github.com/pull/10) with two mistakes planted on purpose. I changed the 2019 relaunch in this post to 2018, and pointed the link to this site's repo at one that doesn't exist. It caught both. It also pointed out that "three more that year" only works if the year is 2019. I'm not sure I would have caught that one.
 
-Now, the obvious catch: Claude is reviewing posts that Claude helped me draft. That's a bit like grading your own homework, since whatever Claude misses while drafting, it could miss again while reviewing. So I'd like to add a second reviewer from a different AI company.
+The catch is that Claude is reviewing posts that Claude helped me draft. That's a bit like grading your own homework: whatever Claude misses while drafting, it could miss again while reviewing. So I'd like to add a second reviewer from a different AI company.
 
 And yes, this update went through a [pull request](https://github.com/jgornick/jgornick.github.com/pull/11) too, and the agents got their turn with it.
