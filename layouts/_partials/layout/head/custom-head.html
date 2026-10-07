@@ -1,0 +1,35 @@
+{{- /*
+  CUSTOM PARTIAL. Upstream ships this file empty as an extension hook (head.html
+  calls it last), so overriding it carries no upgrade risk.
+
+  Page-specific assets for the identity system page (layouts/identity.html),
+  loaded only there rather than through assets/css/custom/, which the theme
+  loads on every page.
+*/ -}}
+{{- if eq .Layout "identity" }}
+  {{- /* The identity's own typefaces, for the Typography specimens. The rest of
+     the site uses system fonts and does not load these. */}}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" />
+
+  {{- with resources.Get "css/identity.css" }}
+    {{- if hugo.IsDevelopment }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}" />
+    {{- else }}
+      {{- with . | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" />
+      {{- end }}
+    {{- end }}
+  {{- end }}
+
+  {{- with resources.Get "js/identity.js" }}
+    {{- if hugo.IsDevelopment }}
+      <script src="{{ .RelPermalink }}" defer></script>
+    {{- else }}
+      {{- with . | minify | fingerprint }}
+        <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}

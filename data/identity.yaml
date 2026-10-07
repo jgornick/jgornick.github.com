@@ -1,0 +1,68 @@
+# Data for the identity system page (content/identity/_index.md, rendered by
+# layouts/identity.html).
+#
+# Only the logo's own colours live here. The site palette is NOT repeated: the
+# page reads every --color-* token live from assets/css/custom/custom.css, so it
+# cannot drift from what the site actually paints.
+
+version: "1.6"
+
+# Logo colours. Fixed: the logo is the same in light and dark mode; only the
+# ground it sits on changes. static/favicon.svg uses the same two colours.
+brand:
+  nightSkyBlue:
+    name: Night Sky Blue
+    value: oklch(0.620 0.148 252)
+    role: Primary brand · the G
+  waterBlue:
+    name: Water Blue
+    value: oklch(0.770 0.095 212)
+    role: Secondary brand · the J
+  white:
+    name: North Star White
+    value: "#FFFFFF"
+    role: Solid logo, dark grounds
+  solidBlack:
+    name: Solid Black
+    value: oklch(0.280 0.140 252)
+    role: Solid logo, light grounds
+
+# Order the brand swatches are shown in.
+brandOrder: [nightSkyBlue, waterBlue, white, solidBlack]
+
+# Site palette rows, in display order. `token` is the custom property suffix
+# (--color-<token>); values and contrast ratios are read in the browser.
+# `ratio` replaces the contrast ratio with a label, for surfaces where a ratio
+# against the background is not meaningful.
+palette:
+  - { token: background, role: Background, ratio: page }
+  - { token: card, role: Card, ratio: surface }
+  - { token: foreground, role: Body text }
+  - { token: muted-foreground, role: Muted text }
+  - { token: primary, role: Link }
+  - { token: border, role: Border }
+  - { token: tip, role: Tip }
+  - { token: important, role: Important }
+
+# Names for palette tokens, per colour scheme and face. A token without a name
+# shows its role only.
+names:
+  mn-boundary-waters:
+    light:
+      primary: Deep Water
+      tip: Pine
+      important: Cranberry
+    dark:
+      background: Night Sky Dark
+      foreground: Starlight
+      primary: Ice Blue
+      tip: Pine
+      important: Cranberry
+
+# Colour experimenter choices, beyond the brand colours above.
+experimenter:
+  - { name: Teal, value: oklch(0.740 0.130 175) }
+  - { name: Steel Blue, value: oklch(0.620 0.110 245) }
+  - { name: Ice Blue, value: oklch(0.780 0.080 210) }
+  - { name: Deep Water, value: oklch(0.475 0.130 190) }
+  - { name: Gold, value: oklch(0.840 0.128 78) }

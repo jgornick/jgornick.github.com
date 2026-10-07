@@ -1,0 +1,750 @@
+/* Identity system page (layouts/identity.html). Loaded only on that page, from
+   layouts/_partials/layout/head/custom-head.html.
+
+   Every colour is a --color-* token from assets/css/custom/custom.css. An
+   element pinned to a face (data-theme="<scheme>", plus class="dark" for the
+   dark face) gets that face's tokens from the scheme's own selectors, so
+   `var(--color-background)` on a ground is the real light or dark background.
+
+   The theme's compiled Tailwind only contains the utilities the theme itself
+   uses, so this page is styled with its own id- classes rather than utilities. */
+
+.id-page {
+  --id-radius: var(--radius-xl, 0.75rem);
+  --id-mono: var(
+    --default-mono-font-family,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  color: var(--color-foreground);
+}
+
+.id-page [hidden] {
+  display: none !important;
+}
+
+.id-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.id-page h3 {
+  color: var(--color-foreground);
+  font-weight: 700;
+}
+
+.id-page code,
+.id-mono {
+  font-family: var(--id-mono);
+}
+
+.id-muted {
+  color: var(--color-muted-foreground);
+}
+
+.id-small {
+  font-size: 0.75rem;
+}
+
+/* --- Hero --------------------------------------------------------------- */
+
+.id-hero {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.id-hero-tile {
+  width: 4rem;
+  height: 4rem;
+  flex-shrink: 0;
+  border-radius: 20%;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+}
+
+.id-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.id-kicker {
+  margin-top: 0.25rem;
+  font-family: var(--id-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+
+.id-intro p {
+  max-width: 42rem;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--color-muted-foreground);
+}
+
+@media (min-width: 48rem) {
+  .id-title {
+    font-size: 2.25rem;
+  }
+}
+
+/* --- Sections ----------------------------------------------------------- */
+
+.id-section {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--color-muted);
+}
+
+.id-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.id-section h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  /* Clear the sticky site header when jumping to a section anchor. */
+  scroll-margin-top: 6rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.id-num {
+  color: var(--color-primary);
+}
+
+.id-num-2 {
+  color: var(--color-secondary);
+}
+
+.id-num-muted {
+  color: var(--color-muted-foreground);
+}
+
+.id-num-3 {
+  color: var(--color-tip);
+}
+
+.id-chip {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--color-muted);
+  font-family: var(--id-mono);
+  font-size: 0.75rem;
+}
+
+.id-lede {
+  max-width: 42rem;
+  margin-bottom: 2rem;
+  color: var(--color-muted-foreground);
+}
+
+.id-lede strong {
+  color: var(--color-foreground);
+}
+
+.id-subhead {
+  margin: 2.5rem 0 1rem;
+}
+
+.id-subhead small {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-muted-foreground);
+}
+
+.id-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.id-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.id-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+}
+
+/* --- Cards and grounds -------------------------------------------------- */
+
+.id-card {
+  margin: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--id-radius);
+  background: var(--color-card);
+}
+
+.id-pad {
+  padding: 1.5rem;
+}
+
+.id-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.id-card-head p {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+}
+
+/* A ground is a face's page background. Its border uses that face's own
+   border token, so it stays visible on either page mode. */
+.id-ground {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+}
+
+.id-dots {
+  background-image: radial-gradient(
+    color-mix(in oklch, var(--color-foreground) 14%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 10px 10px;
+}
+
+.id-logo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.id-logo-card figcaption {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.id-logo-card figcaption p {
+  flex: 1;
+  font-size: 0.8125rem;
+  color: var(--color-muted-foreground);
+}
+
+.id-specimen {
+  display: grid;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 0.5rem;
+}
+
+.id-specimen > svg {
+  width: 58%;
+  height: auto;
+}
+
+.id-split {
+  position: relative;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.id-split > .id-ground {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.id-split > img {
+  position: absolute;
+  inset: 0;
+  width: 58%;
+  height: auto;
+  margin: auto;
+  border-radius: 20%;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+}
+
+/* Buttons that invert on hover (muted/foreground -> primary/primary-foreground)
+   deliberately have no colour transition. Text and background move in opposite
+   directions, so a crossfade passes through ~1.4:1 on the way, and the hover
+   audit catches those frames. The swap is instant instead. */
+.id-btn {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 0.375rem;
+  background: var(--color-muted);
+  color: var(--color-foreground);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.id-btn:hover {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+.id-btn[data-copied] {
+  background: var(--color-tip);
+  color: var(--color-background);
+}
+
+.id-btn-wide {
+  width: 100%;
+  padding-block: 0.75rem;
+}
+
+/* --- Favicon tab bars --------------------------------------------------- */
+
+.id-tabbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.id-tabbar-label {
+  width: 100%;
+  font-family: var(--id-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+
+.id-size {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--id-mono);
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+}
+
+/* --- Swatches ----------------------------------------------------------- */
+
+.id-swatch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--id-radius);
+  background: var(--color-card);
+  color: var(--color-foreground);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.id-swatch-chip {
+  height: 4rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--color-foreground) 20%, transparent);
+}
+
+.id-swatch-name {
+  font-weight: 700;
+}
+
+.id-swatch code,
+.id-meta {
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+}
+
+.id-copy-hint {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0;
+}
+
+.id-swatch:hover .id-copy-hint,
+.id-swatch:focus-visible .id-copy-hint,
+.id-swatch[data-copied] .id-copy-hint {
+  opacity: 1;
+}
+
+.id-swatch[data-copied] .id-copy-hint {
+  background: var(--color-tip);
+  color: var(--color-background);
+}
+
+/* --- Site palette faces ------------------------------------------------- */
+
+.id-face {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--id-radius);
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.id-face figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding: 1.25rem 1.25rem 0;
+  font-weight: 700;
+}
+
+.id-face figcaption code {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-muted-foreground);
+}
+
+.id-specimen-card {
+  display: grid;
+  gap: 0.25rem;
+  margin: 1.25rem;
+  padding: 1rem;
+  border: 1px solid var(--color-muted);
+  border-radius: 0.75rem;
+  background: var(--color-card);
+  font-size: 0.875rem;
+}
+
+.id-specimen-card a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.id-rows {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0 1.25rem 1.25rem;
+  list-style: none;
+}
+
+.id-row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.id-row:hover {
+  background: var(--color-card);
+}
+
+.id-row-chip {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0.375rem;
+}
+
+.id-row-text {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.id-row-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.id-row code,
+.id-row-ratio {
+  font-size: 0.6875rem;
+  color: var(--color-muted-foreground);
+}
+
+.id-row-ratio {
+  font-family: var(--id-mono);
+  font-size: 0.75rem;
+}
+
+.id-row[data-copied] .id-row-ratio {
+  color: var(--color-tip);
+}
+
+/* --- Experimenter ------------------------------------------------------- */
+
+.id-experimenter {
+  margin-top: 3rem;
+}
+
+.id-experimenter > h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.id-experimenter > p {
+  margin: 0.5rem 0 1.5rem;
+}
+
+.id-exp {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 2rem;
+}
+
+.id-exp-controls {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.id-field label,
+.id-field-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.id-field select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--id-mono);
+  font-size: 0.875rem;
+}
+
+.id-exp-preview {
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.75rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
+
+.id-exp-preview > svg {
+  width: 10rem;
+  height: 10rem;
+}
+
+/* --- Typography --------------------------------------------------------- */
+
+.id-type {
+  padding: 2rem;
+}
+
+.id-type-label {
+  margin-bottom: 1rem;
+  font-family: var(--id-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.id-type-name {
+  margin-bottom: 0.5rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.id-type-sample {
+  font-size: 1.125rem;
+  color: var(--color-muted-foreground);
+}
+
+.id-type-weights {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  font-family: var(--id-mono);
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+}
+
+.id-type-weights strong {
+  color: var(--color-foreground);
+}
+
+.id-font-inter {
+  font-family: Inter, sans-serif;
+}
+
+.id-font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* --- Usage rules -------------------------------------------------------- */
+
+.id-rule {
+  padding: 1.5rem;
+  border: 2px solid var(--color-tip);
+  border-radius: 1rem;
+  background: var(--color-card);
+}
+
+.id-rule-dont {
+  border-color: var(--color-important);
+}
+
+.id-rule h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-tip);
+}
+
+.id-rule-dont h3 {
+  color: var(--color-important);
+}
+
+.id-rule-icon {
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--color-tip);
+  color: var(--color-background);
+  font-size: 0.75rem;
+}
+
+.id-rule-dont .id-rule-icon {
+  background: var(--color-important);
+}
+
+.id-rule-preview {
+  display: grid;
+  min-height: 10rem;
+  place-items: center;
+  margin-bottom: 1rem;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.id-rule-preview > svg {
+  width: 8rem;
+  height: 8rem;
+}
+
+.id-rule-preview > svg[preserveAspectRatio="none"] {
+  width: 10rem;
+  height: 6rem;
+}
+
+.id-rule-roomy {
+  padding: 2rem;
+}
+
+.id-rule-roomy > svg {
+  width: 6rem;
+  height: 6rem;
+}
+
+.id-faded > svg {
+  opacity: 0.6;
+}
+
+.id-rule-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.id-rule-pair > .id-ground {
+  display: grid;
+  min-height: 10rem;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.id-rule-pair > .id-ground:first-child {
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.id-rule-pair > .id-ground:last-child {
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.id-rule-pair svg {
+  width: 6rem;
+  height: 6rem;
+}
+
+.id-rule > p {
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+}
+
+/* --- Quick reference ---------------------------------------------------- */
+
+.id-ref {
+  margin-top: 3rem;
+}
+
+.id-ref > h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.id-ref h4 {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-tip);
+}
+
+.id-ref p {
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+}
