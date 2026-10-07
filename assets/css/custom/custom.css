@@ -1,5 +1,11 @@
-/* Minnesota — Boundary Waters (Twilight Variant) */
+/* Minnesota — Boundary Waters, the scheme the site ships */
 /*
+ * Notes on the Boundary Waters palette. Its rules live further down, in the
+ * "four flavours" section: the light face on [data-theme="mn-boundary-waters"]
+ * and the dark face on [data-theme="mn-boundary-waters"].dark. These notes
+ * describe the dark face, which was the site's only face until September 2026
+ * and where the accessibility pass below began.
+ *
  * Analogous to Catppuccin Frappé: the least dark of the three night variants.
  * The hazy indigo of the BWCA at late dusk — stars beginning to appear, the
  * horizon still glowing with the last of the summer light.
@@ -12,7 +18,7 @@
  * Background monochromatic scale: hue 252° (Night Sky Blue family)
  * Base lightness: ~28.8% — calibrated to match Catppuccin Frappé.
  *
- * Background ladder (oklch, hue 252°):
+ * Dark-face background ladder (oklch, hue 252°):
  *   Crust    oklch(0.192 0.028 252)  — deepest layer
  *   Mantle   oklch(0.232 0.030 252)
  *   Base     oklch(0.288 0.034 252)  — main background
@@ -27,7 +33,7 @@
  * ---------------------------------------------------------------------------
  * Every text pair on the site already cleared WCAG AA before this pass (the
  * weakest was 5.31:1), so the "hard to read" quality was never a luminance
- * problem. Two measured causes, both fixed here:
+ * problem. Two measured causes, both fixed in the dark face:
  *
  * 1. Saturation. The large background areas carried a lot of chroma —
  *    #112c49 is 62% HSL saturation, and the card colour #051e38 was 84%.
@@ -46,124 +52,20 @@
  *    the "Ice Blue" entry from the identity system's own palette, so this
  *    stays inside the official colour set.
  *
- *    To revert just the link colour while keeping the desaturation, set
- *    --color-primary back to hue 252 at the new lightness:
+ *    To revert just the link colour while keeping the desaturation, set the
+ *    dark face's --color-primary back to hue 252 at the new lightness:
  *    oklch(0.780 0.105 252) — that is 7.14:1 but restores the 0.5° hue clash.
  *
  *    Note: identity.html designates Night Sky Blue oklch(0.620 0.148 252) the
  *    "Primary Brand" colour, but at body size it measures 3.90:1 — below the
  *    4.5:1 that the same document sets as its accessibility bar. It cannot be
  *    used for links as-is; Ice Blue oklch(0.780 0.080 210) is the closest
- *    in-palette colour that clears AA (7.30:1).
+ *    in-palette colour that clears AA (7.30:1). identity.html v1.4 and later
+ *    say so: Night Sky Blue is a logo colour only.
  *
  * 3. --color-border was 2.20:1 against the background, below the 3:1 that
  *    WCAG 1.4.11 requires for meaningful UI boundaries. Raised to 3.62:1.
  */
-
-[data-theme="mn-boundary-waters"] {
-  /* ============================================ */
-  /* Primary Colors                               */
-  /* ============================================ */
-  /* Ice Blue — an approved entry in the identity system palette. Replaces the
-     lightened Night Sky Blue, which sat at the same hue as the background. */
-  --color-primary: oklch(0.780 0.080 210);
-  --color-primary-foreground: oklch(0.185 0.060 252);
-
-  /* Water Blue (#52C9E8) — the bright lake color */
-  --color-secondary: oklch(0.770 0.095 212);
-  --color-secondary-foreground: oklch(0.185 0.060 252);
-
-  /* Water Blue mid-tone — accent / hover states */
-  --color-accent: oklch(0.700 0.105 212);
-  --color-accent-foreground: oklch(0.185 0.060 252);
-
-  /* ============================================ */
-  /* Background Colors                            */
-  /* ============================================ */
-  --color-background: oklch(0.288 0.034 252);        /* Base */
-  --color-foreground: oklch(0.920 0.014 212);        /* Text — Water Blue-tinted near-white */
-
-  /* ============================================ */
-  /* Muted Colors                                 */
-  /* ============================================ */
-  --color-muted: oklch(0.385 0.030 252);             /* Surface1 */
-  --color-muted-foreground: oklch(0.860 0.018 225);  /* Subtext1 */
-
-  /* ============================================ */
-  /* Border Colors                                */
-  /* ============================================ */
-  --color-border: oklch(0.600 0.030 252);            /* Overlay0 */
-
-  /* ============================================ */
-  /* Card Colors                                  */
-  /* ============================================ */
-  --color-card: oklch(0.232 0.030 252);              /* Mantle */
-  --color-card-foreground: oklch(0.920 0.014 212);
-
-  /* ============================================ */
-  /* Popover Colors                               */
-  /* ============================================ */
-  --color-popover: oklch(0.192 0.028 252);           /* Crust */
-  --color-popover-foreground: oklch(0.920 0.014 212);
-
-  /* ============================================ */
-  /* Semantic Colors                              */
-  /* ============================================ */
-  --color-note: oklch(0.770 0.095 212);              /* Water Blue — informational */
-  --color-tip: oklch(0.740 0.130 175);               /* Pine teal — success/tip */
-  --color-important: oklch(0.620 0.175 15);          /* Cranberry red */
-  --color-warning: oklch(0.840 0.128 78);            /* Prairie gold */
-  --color-caution: oklch(0.700 0.160 47);            /* Iron Range orange */
-
-  /* ============================================ */
-  /* Additional UI Elements                       */
-  /* ============================================ */
-  --color-selection: oklch(0.432 0.030 252);         /* Overlay1 */
-  --color-cursor: oklch(0.770 0.095 212);            /* Water Blue */
-  --color-subtle: oklch(0.620 0.028 252);            /* Overlay1 mid */
-}
-
-[data-theme="mn-boundary-waters"].dark {
-  /* Boundary Waters is inherently dark — same values as base */
-  --color-primary: oklch(0.780 0.080 210);
-  --color-primary-foreground: oklch(0.185 0.060 252);
-  --color-secondary: oklch(0.770 0.095 212);
-  --color-secondary-foreground: oklch(0.185 0.060 252);
-  --color-accent: oklch(0.700 0.105 212);
-  --color-accent-foreground: oklch(0.185 0.060 252);
-  --color-background: oklch(0.288 0.034 252);
-  --color-foreground: oklch(0.920 0.014 212);
-  --color-muted: oklch(0.385 0.030 252);
-  --color-muted-foreground: oklch(0.860 0.018 225);
-  --color-border: oklch(0.600 0.030 252);
-  --color-card: oklch(0.232 0.030 252);
-  --color-card-foreground: oklch(0.920 0.014 212);
-  --color-popover: oklch(0.192 0.028 252);
-  --color-popover-foreground: oklch(0.920 0.014 212);
-  --color-note: oklch(0.770 0.095 212);
-  --color-tip: oklch(0.740 0.130 175);
-  --color-important: oklch(0.620 0.175 15);
-  --color-warning: oklch(0.840 0.128 78);
-  --color-caution: oklch(0.700 0.160 47);
-  --color-selection: oklch(0.432 0.030 252);
-  --color-cursor: oklch(0.770 0.095 212);
-  --color-subtle: oklch(0.620 0.028 252);
-}
-
-/* Text selection */
-[data-theme="mn-boundary-waters"] ::selection,
-[data-theme="mn-boundary-waters"].dark ::selection {
-  background-color: oklch(0.432 0.030 252);
-  color: oklch(0.920 0.014 212);
-}
-
-/* Cursor color */
-[data-theme="mn-boundary-waters"] input,
-[data-theme="mn-boundary-waters"] textarea,
-[data-theme="mn-boundary-waters"].dark input,
-[data-theme="mn-boundary-waters"].dark textarea {
-  caret-color: oklch(0.770 0.095 212);
-}
 
 /* ============================================================================
    Minnesota colour schemes — four flavours, each with a light and a dark face
