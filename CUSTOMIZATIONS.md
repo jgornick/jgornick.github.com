@@ -5,7 +5,7 @@ reapplied and re-verified after theme upgrades.
 
 **Theme:** `github.com/tom2almighty/hugo-narrow` v1.3.16
 **Requires:** Hugo **extended** ≥ 0.158.0 (theme `min_version`)
-**Last Updated:** September 7, 2026
+**Last Updated:** October 7, 2026
 
 **Philosophy:** Minimize layout overrides by using CSS where possible. Only override
 templates when structural HTML changes are required.
@@ -110,9 +110,29 @@ file must be re-synced on a theme upgrade since a partial override is all-or-not
 
 ---
 
+### 5. `layouts/_partials/layout/footer.html`
+**Purpose:** Link the identity system from every page, as a text link on the credit
+line: "Powered by Hugo & Narrow · Identity".
+
+**Why an override and not the theme's `footer` menu:** the theme can render a
+`site.Menus.footer` from config, but it draws it as a separate centred row of icon
+buttons with a divider, which is a lot of chrome for one link. That row is also an
+unlabelled `<nav>`. The mobile nav panel's `<nav>` is unlabelled too, so the menu made
+axe report `landmark-unique` on every page, undoing the header fix in §1. This was
+measured in October 2026 before switching to the text link. The text link adds no
+landmark at all.
+
+**Diff vs. upstream v1.3.16 — one hunk:** a `·` separator and an `Identity` anchor
+appended to the "Powered by" paragraph, with the same classes as the Narrow link. The
+separator is `aria-hidden`. The link is wrapped in `with site.GetPage "/identity"`, so
+it takes the page's real permalink and disappears if the page is ever removed.
+Everything else is verbatim upstream.
+
+---
+
 ## New Assets
 
-### 5. `assets/icons/instagram.svg`
+### 6. `assets/icons/instagram.svg`
 Theme ships `github.svg` but still has no Instagram icon (verified in v1.3.16); without
 this file the social link falls back to a generic circle+plus icon.
 
@@ -125,7 +145,7 @@ Loaded as standalone stylesheets (not compiled into the theme's Tailwind bundle)
 - `assets/css/custom/custom.css` — color scheme + overrides
 - `assets/css/custom/chroma.css` — syntax highlighting palette
 
-### 6. Minnesota color schemes (four)
+### 7. Minnesota color schemes (four)
 All four schemes registered in `params.yaml` under `themes:` are now implemented in
 `custom.css` (token set + `::selection` + caret) and `chroma.css` (syntax palette).
 `colorScheme: "mn-boundary-waters"` is active.
@@ -221,26 +241,101 @@ Two alternatives were measured and rejected:
 
 **Reduced motion (WCAG 2.3.3).** Added a `prefers-reduced-motion` block.
 
-**Relationship to `identity.html`.** The identity system pinned Night Sky Dark
+**Relationship to the identity system.** The identity system pinned Night Sky Dark
 `oklch(0.288 0.062 252)` as "Background" and Starlight `oklch(0.920 0.022 212)` as
 "Body Copy". The desaturation changes both (lightness preserved, chroma reduced).
 **Decided September 2026: keep the desaturation and update the identity system to
-match.** `static/identity.html` is now v1.4 — its `base`, `surface0`, `surface1` and
-`text` tokens, the two affected swatches, and the accessibility guidance were updated
-so the document and the site agree. **Logo colours were deliberately left alone**:
-Night Sky Blue and Water Blue remain the brand/logo pair.
+match.** **Logo colours were deliberately left alone**: Night Sky Blue and Water Blue
+remain the brand/logo pair.
 
 The link colour never departed from the palette — Ice Blue is an approved entry in it.
 
-Also worth recording: identity.html designated Night Sky Blue `oklch(0.620 0.148 252)`
-the "Primary Brand" colour, but at body text size it measures **3.90:1** — below the
-4.5:1 bar the same document sets. It cannot be used for links as-is, which is why the
-theme had already lightened it. v1.4 now states this explicitly: Night Sky Blue is a
-logo colour, and Ice Blue is the link colour.
+Also worth recording: the identity system designated Night Sky Blue
+`oklch(0.620 0.148 252)` the "Primary Brand" colour, but at body text size it measures
+**3.90:1** — below the 4.5:1 bar the same document sets. It cannot be used for links
+as-is, which is why the theme had already lightened it. Since v1.4 the identity page
+states this explicitly: Night Sky Blue is a logo colour, and Ice Blue is the link
+colour.
 
-`static/identity.html` is a public page (`/identity.html`) but is a static file, so it
-is not in `sitemap.xml` and the audit scripts do **not** cover it. Audit it explicitly
-if it changes.
+The identity page no longer keeps its own copy of these values; it reads them live
+from this file. See [Identity system page](#identity-system-page).
+
+---
+
+## Identity system page
+
+`/identity/` documents the logo, both faces of the palette, typography and usage rules.
+Until October 2026 it was `static/identity.html`, a standalone page with Tailwind from a
+CDN and its own copy of the colour tokens. It is now an ordinary Hugo page in the site's
+layout, with the site's header, footer and Light / Dark / System toggle.
+
+| File | Role |
+|---|---|
+| `content/identity/_index.md` | Front matter and the intro paragraph |
+| `layouts/identity.html` | The page *(our file — no upstream counterpart)* |
+| `layouts/_partials/identity/logo.html` | The JG mark as SVG, from one set of grid coordinates *(ours)* |
+| `data/identity.yaml` | Logo colours, colour names, palette rows, experimenter choices |
+| `assets/css/identity.css` | Page styles |
+| `assets/js/identity.js` | Live values and ratios, copy buttons, colour experimenter |
+| `layouts/_partials/layout/head/custom-head.html` | Loads the page's CSS, JS and fonts, on that page only |
+
+**No colour value is copied.** Logo colours live in `data/identity.yaml`. The site
+palette is read live from `custom.css`, so the page cannot drift from what the site
+paints. That replaces the old rule of editing both files together.
+
+To show a face whatever mode the page is in, an element carries
+`data-theme="mn-boundary-waters"` (light face) or the same plus `class="dark"` (dark
+face). The scheme's own selectors then set that face's tokens on the element, so a
+"dark ground" really is the dark background. This works for two reasons. The scheme
+selectors are not scoped to `:root`. And `[data-theme="x"].dark` (0,2,0) beats the
+theme's bare `.dark` defaults (0,1,0). **After a theme upgrade, check the light-face panel
+still shows `#eff4fa` while the page is dark.** If the theme ever scopes tokens to
+`:root` or `html`, the pinned panels would quietly show the page's face instead.
+
+**Values are filled in by script.** `identity.js` reads each token with
+`getComputedStyle`, and measures hex and contrast from browser-painted pixels (fill a
+canvas, read it back). Without scripts, palette rows show their token names, ratios in
+the prose fall back to wording like "below 3:1", and the copy buttons and colour
+experimenter stay hidden.
+
+**Why a section page.** It is `content/identity/_index.md`, not `content/identity.md`.
+Sections are listed in `sitemap.xml`, so both audit scripts cover the page. They are not
+in the home RSS feed, which lists `site.RegularPages`, or in search, which uses
+`mainSections`. As a regular page it showed up in RSS as if it were a new post. Setting
+`build.list: local` fixed RSS but also dropped the page from the sitemap. `outputs:
+[html]` stops the section from getting a feed of its own.
+
+**Old URL.** `aliases: [/identity.html]` makes Hugo write a redirect page at the old
+address, so existing links keep working.
+
+**Page-only assets.** The page's CSS and JS are *not* in `assets/css/custom/`, because the
+theme loads every file there on every page. Instead `custom-head.html`, which upstream
+ships empty as an extension hook and `head.html` calls last, loads them when
+`.Layout` is `identity`, fingerprinted with SRI in production. The theme's compiled
+Tailwind only contains utilities the theme uses, so the page has its own `id-` classes.
+
+**Typography.** The identity names Inter and JetBrains Mono, but the site has never
+loaded either; it uses system fonts. The page loads both from Google Fonts for its
+specimens only, and says so. Whether the site should adopt them, or the identity should
+drop them, is an open decision.
+
+**Copy SVG** strips page-only attributes and adds `xmlns`. A standalone `.svg` file
+needs it, and Hugo's HTML minifier strips it from inline SVG in production builds.
+
+**What the page taught.** Writing the light face surfaced a real rule: the Master Color
+logo does **not** work on the light background. Water Blue is 1.82:1 and Night Sky Blue
+3.29:1 against `#eff4fa`, so the J nearly vanishes. The page says so: Master Color on dark
+grounds, Solid Black on light, and the App Tile (`favicon.svg`, which carries its own
+ground) when the ground is unknown. That is why the site header can use the same logo
+in both modes. Its first hover audit also caught the COPY buttons crossfading through
+~1.4:1, so they now swap colours instantly.
+
+**Verified October 2026:** axe found zero violations, including best-practice rules,
+in both modes at 1280px and 390px, with no horizontal overflow. All 28 of the page's
+controls were hovered in both modes and passed at 50ms and 300ms. The production build
+was also served and checked: minified JS, live values, valid copied SVG. Note that
+`a11y-hover-audit.js` only hovers elements whose class contains `hover:`, so it does
+**not** exercise this page's own controls. Check them by hand after changing the page.
 
 ---
 
@@ -343,16 +438,20 @@ gh api --method DELETE repos/jgornick/jgornick.github.com/rulesets/24605285
    diff -rq <old>/... <new>/...
    ```
 3. `hugo mod get github.com/tom2almighty/hugo-narrow@<new>`
-4. Re-derive `header.html`, `render-link.html` and `head.html` from the **new** upstream
-   source and re-apply the documented changes, rather than carrying the old overrides
-   forward. `head.html` is a whole-file copy for a one-hunk change, so it is the most
-   likely to silently miss new upstream meta tags — diff it first.
+4. Re-derive `header.html`, `render-link.html`, `head.html` and `footer.html` from the
+   **new** upstream source and re-apply the documented changes, rather than carrying the
+   old overrides forward. `head.html` is a whole-file copy for a one-hunk change, so it is
+   the most likely to silently miss new upstream meta tags — diff it first.
    Check whether upstream has stopped using `inline-flex` on external links — if so,
    `render-link.html` can be dropped entirely. Likewise check whether upstream now
    guards the keywords fallback on `.IsPage` — if so, drop `head.html`.
 5. Check whether the theme now ships an Instagram icon (then drop ours).
-6. Build with `hugo --gc --minify` and confirm zero warnings.
-7. Compare built output file lists before/after to catch dropped assets.
+6. Check the identity page's dependencies on the theme still hold. `head.html` must
+   still call `layout/head/custom-head.html`. The scheme selectors must still work on a
+   nested element: in dark mode, `/identity/`'s light-face palette panel must show
+   `#eff4fa`. See [Identity system page](#identity-system-page).
+7. Build with `hugo --gc --minify` and confirm zero warnings.
+8. Compare built output file lists before/after to catch dropped assets.
 
 ### Upgrade History
 - **v1.3.1 → v1.3.16** (Sep 2026): Mobile nav was re-architected from a dropdown
@@ -374,8 +473,8 @@ gh api --method DELETE repos/jgornick/jgornick.github.com/rulesets/24605285
 - [ ] Body text is 16px
 
 **Desktop:**
-- [ ] Logo square, nav centered, content-width switcher on the right
-- [ ] No theme/dark-mode/language switchers (intentionally disabled)
+- [ ] Logo square, nav centered, Light/Dark/System toggle on the right
+- [ ] No scheme picker, content-width or language switchers (intentionally disabled)
 
 **Links & color:**
 - [ ] External links wrap mid-text with no ragged gap before them, and the icon never
@@ -386,6 +485,10 @@ gh api --method DELETE repos/jgornick/jgornick.github.com/rulesets/24605285
 
 **Other:**
 - [ ] Instagram + GitHub icons render in the author card and footer
+- [ ] Footer credit line reads "Powered by Hugo & Narrow · Identity" and the link opens
+      `/identity/`; the old `/identity.html` redirects there
+- [ ] `/identity/` palette rows show values and ratios (not just `--color-*` names), and
+      Copy SVG yields a file with `xmlns`
 - [ ] `gtag/js?id=G-CYCL78ZG85` requested in `<head>`
 - [ ] Build emits no deprecation warnings
 

@@ -1,0 +1,25 @@
+{{- /*
+  CUSTOM PARTIAL (not part of hugo-narrow upstream).
+
+  The JG mark on its 10×10 grid, as a standalone SVG. Used by the identity page
+  for every logo specimen and for "Copy SVG", so the geometry lives in one place.
+
+  Params (dict):
+    j       fill for the J (secondary shape)
+    g       fill for the G (primary shape)
+    label   accessible name; omit for a decorative copy (aria-hidden)
+    stretch true to ignore the aspect ratio (the "don't stretch" example)
+    parts   true to tag each half with data-part="j|g" for the experimenter
+*/ -}}
+{{- $j := slice (slice 35 20 10 40) (slice 25 20 10 10) (slice 15 60 30 10) (slice 15 50 10 10) -}}
+{{- $g := slice (slice 60 20 20 10) (slice 50 20 10 50) (slice 60 60 20 10) (slice 70 40 10 20) (slice 65 40 5 10) -}}
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+  {{- with .label }} role="img" aria-label="{{ . }}"{{ else }} aria-hidden="true"{{ end }}
+  {{- if .stretch }} preserveAspectRatio="none"{{ end }}>
+  <g fill="{{ .j }}"{{ if .parts }} data-part="j"{{ end }}>
+    {{- range $j }}<rect x="{{ index . 0 }}" y="{{ index . 1 }}" width="{{ index . 2 }}" height="{{ index . 3 }}"/>{{ end -}}
+  </g>
+  <g fill="{{ .g }}"{{ if .parts }} data-part="g"{{ end }}>
+    {{- range $g }}<rect x="{{ index . 0 }}" y="{{ index . 1 }}" width="{{ index . 2 }}" height="{{ index . 3 }}"/>{{ end -}}
+  </g>
+</svg>

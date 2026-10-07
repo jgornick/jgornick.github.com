@@ -1,0 +1,370 @@
+{{- /*
+  CUSTOM LAYOUT (not part of hugo-narrow upstream). Renders the identity system
+  page, content/identity/_index.md, which selects it with `layout: identity`.
+
+  No colour value is written here. The site palette comes from the live
+  --color-* tokens in assets/css/custom/custom.css, and the logo colours from
+  data/identity.yaml.
+
+  To show a specific face whatever mode the page is in, an element carries
+  data-theme="<scheme>" (light face) or data-theme="<scheme>" class="dark"
+  (dark face). The scheme's own selectors in custom.css then set its tokens on
+  that element, so a "dark ground" is the real dark background, not a copy.
+
+  Styles: assets/css/identity.css. Behaviour (copy buttons, live values and
+  contrast ratios, the colour experimenter): assets/js/identity.js. Both are
+  loaded only on this page, from layouts/_partials/layout/head/custom-head.html.
+*/ -}}
+{{ define "main" }}
+{{- $id := hugo.Data.identity -}}
+{{- $b := $id.brand -}}
+{{- $scheme := site.Params.colorScheme | default "default" -}}
+{{- $schemeName := $scheme -}}
+{{- with index site.Params.themes $scheme }}{{ $schemeName = .name }}{{ end -}}
+{{- $tile := site.Params.favicon.svg | default "/favicon.svg" | relURL -}}
+{{- $master := dict "j" $b.waterBlue.value "g" $b.nightSkyBlue.value -}}
+{{- $white := dict "j" $b.white.value "g" $b.white.value -}}
+{{- $black := dict "j" $b.solidBlack.value "g" $b.solidBlack.value -}}
+{{- $names := dict "light" dict "dark" dict -}}
+{{- with index $id.names $scheme }}{{ $names = merge $names . }}{{ end -}}
+
+<div class="id-page">
+  {{- /* Reference elements for each face. identity.js reads their tokens. */}}
+  <div hidden data-face-probe="light" data-theme="{{ $scheme }}"></div>
+  <div hidden data-face-probe="dark" data-theme="{{ $scheme }}" class="dark"></div>
+  <template id="id-tile-source">{{ readFile "static/favicon.svg" | strings.TrimSpace | safeHTML }}</template>
+  <p class="id-sr-only" aria-live="polite" data-copy-status></p>
+
+  <header class="id-hero">
+    <img class="id-hero-tile" src="{{ $tile }}" alt="" width="64" height="64" />
+    <div>
+      <h1 class="id-title">{{ .Title }}</h1>
+      <p class="id-kicker">Version {{ $id.version }} · Minnesota State Flag</p>
+    </div>
+  </header>
+  <div class="id-intro">{{ .Content }}</div>
+
+  <!-- 01: Logo -->
+  <section class="id-section" aria-labelledby="id-logo">
+    <div class="id-section-head">
+      <h2 id="id-logo"><span class="id-num">01.</span> The Binary Pair</h2>
+      <span class="id-chip">10×10 grid</span>
+    </div>
+    <p class="id-lede">
+      The logo is the same in light and dark mode. What changes is the ground it sits on, so
+      each variant is shown on the ground it was made for.
+    </p>
+
+    <div class="id-grid id-grid-4">
+      <figure class="id-card id-logo-card" data-copy-scope>
+        <div class="id-specimen id-ground id-dots dark" data-theme="{{ $scheme }}" data-copy-source>
+          {{ partial "identity/logo.html" (merge $master (dict "label" "Master colour logo on a dark ground")) }}
+        </div>
+        <figcaption>
+          <h3>Master Color</h3>
+          <p>Dark grounds only.</p>
+          <button type="button" class="id-btn" data-copy-svg data-copy-label="the Master Color SVG" hidden data-js-only>Copy SVG</button>
+        </figcaption>
+      </figure>
+
+      <figure class="id-card id-logo-card" data-copy-scope>
+        <div class="id-specimen id-ground id-dots dark" data-theme="{{ $scheme }}" data-copy-source>
+          {{ partial "identity/logo.html" (merge $white (dict "label" "Solid white logo on a dark ground")) }}
+        </div>
+        <figcaption>
+          <h3>Solid White</h3>
+          <p>Single colour, dark grounds.</p>
+          <button type="button" class="id-btn" data-copy-svg data-copy-label="the Solid White SVG" hidden data-js-only>Copy SVG</button>
+        </figcaption>
+      </figure>
+
+      <figure class="id-card id-logo-card" data-copy-scope>
+        <div class="id-specimen id-ground id-dots" data-theme="{{ $scheme }}" data-copy-source>
+          {{ partial "identity/logo.html" (merge $black (dict "label" "Solid black logo on a light ground")) }}
+        </div>
+        <figcaption>
+          <h3>Solid Black</h3>
+          <p>Light grounds and print.</p>
+          <button type="button" class="id-btn" data-copy-svg data-copy-label="the Solid Black SVG" hidden data-js-only>Copy SVG</button>
+        </figcaption>
+      </figure>
+
+      <figure class="id-card id-logo-card">
+        <div class="id-specimen id-split">
+          <div class="id-ground" data-theme="{{ $scheme }}"></div>
+          <div class="id-ground dark" data-theme="{{ $scheme }}"></div>
+          <img src="{{ $tile }}" alt="App tile logo spanning a light and a dark ground" width="112" height="112" />
+        </div>
+        <figcaption>
+          <h3>App Tile</h3>
+          <p>Any ground. It carries its own, so the site header uses it in both modes.</p>
+          <button type="button" class="id-btn" data-copy-template="id-tile-source" data-copy-label="the App Tile SVG" hidden data-js-only>Copy SVG</button>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 01B: Favicon -->
+  <section class="id-section" aria-labelledby="id-favicon">
+    <div class="id-section-head">
+      <h2 id="id-favicon"><span class="id-num">01B.</span> Favicon Sizes</h2>
+      <span class="id-chip">16 · 32 · 64</span>
+    </div>
+
+    <div class="id-card id-pad">
+      <div class="id-card-head">
+        <div>
+          <h3>One SVG, both tab bars</h3>
+          <p class="id-muted">The favicon is the App Tile. Browsers draw tab bars light or dark, and the tile reads on either.</p>
+        </div>
+        <button type="button" class="id-btn" data-copy-text="{{ printf `<link rel="icon" type="image/svg+xml" href="%s">` $tile }}" data-copy-label="the favicon HTML" hidden data-js-only>Copy HTML</button>
+      </div>
+      <div class="id-grid id-grid-2">
+        {{- range slice "light" "dark" }}
+          <div class="id-ground id-tabbar{{ if eq . "dark" }} dark{{ end }}" data-theme="{{ $scheme }}">
+            <span class="id-tabbar-label">{{ . | title }} tab bar</span>
+            {{- range slice 64 32 16 }}
+              <span class="id-size"><img src="{{ $tile }}" alt="" width="{{ . }}" height="{{ . }}" />{{ . }}</span>
+            {{- end }}
+          </div>
+        {{- end }}
+      </div>
+    </div>
+  </section>
+
+  <!-- 02: Colour -->
+  <section class="id-section" aria-labelledby="id-palette">
+    <div class="id-section-head">
+      <h2 id="id-palette"><span class="id-num id-num-2">02.</span> Color Palette</h2>
+    </div>
+    <p class="id-lede">
+      Two layers. The <strong>brand colours</strong> belong to the logo and never change. The
+      <strong>site palette</strong> is {{ $schemeName }}, the scheme this site ships, and it has a
+      light face and a dark face. Its values are read live from the site's stylesheet, so they
+      always match what the site paints. Contrast ratios are against each face's page
+      background. Click any swatch to copy its value.
+    </p>
+
+    <h3 class="id-subhead">Brand colours <small>· logo only, both modes</small></h3>
+    <div class="id-grid id-grid-4">
+      {{- range $id.brandOrder }}
+        {{- with index $b . }}
+          <button type="button" class="id-swatch" data-copy-text="{{ .value }}" data-copy-label="{{ .name }}">
+            <span class="id-swatch-chip" style="--swatch: {{ .value | safeCSS }}"></span>
+            <span class="id-swatch-name">{{ .name }}</span>
+            <code>{{ .value }}</code>
+            <span class="id-meta">{{ .role }}</span>
+            <span class="id-meta id-mono" data-brand-contrast="{{ .value }}"></span>
+            <span class="id-copy-hint" aria-hidden="true" data-feedback>Copy</span>
+          </button>
+        {{- end }}
+      {{- end }}
+    </div>
+
+    <h3 class="id-subhead">Site palette <small>· {{ $schemeName }}</small></h3>
+    <div class="id-grid id-grid-2">
+      {{- range $face := slice "light" "dark" }}
+        {{- $faceNames := index $names $face | default dict }}
+        <figure class="id-face{{ if eq $face "dark" }} dark{{ end }}" data-theme="{{ $scheme }}" data-palette-face="{{ $face }}">
+          <figcaption>
+            <span>{{ $face | title }} face</span>
+            <code>prefers-color-scheme: {{ $face }}</code>
+          </figcaption>
+          <div class="id-specimen-card">
+            <p><strong>Body copy on a card</strong></p>
+            <p>With a <a href="#id-palette">{{ index $faceNames "primary" | default "link" }}</a> link, as the site draws it.</p>
+            <p class="id-muted id-small">Muted metadata · 4 min read</p>
+          </div>
+          <ul class="id-rows">
+            {{- range $id.palette }}
+              {{- $name := index $faceNames .token }}
+              <li>
+                <button type="button" class="id-row" data-token="--color-{{ .token }}" data-copy-label="{{ .role }}" title="--color-{{ .token }}">
+                  <span class="id-row-chip" style="background-color: var(--color-{{ .token }})"></span>
+                  <span class="id-row-text">
+                    <span class="id-row-name">{{ .role }}{{ with $name }} · {{ . }}{{ end }}</span>
+                    <code data-value>--color-{{ .token }}</code>
+                  </span>
+                  <span class="id-row-ratio" data-ratio{{ with .ratio }} data-ratio-label="{{ . }}"{{ end }} data-feedback>{{ .ratio }}</span>
+                </button>
+              </li>
+            {{- end }}
+          </ul>
+        </figure>
+      {{- end }}
+    </div>
+
+    <div class="id-card id-pad id-experimenter" data-experimenter hidden data-js-only>
+      <h3><span aria-hidden="true">⚗️</span> Color Experimenter</h3>
+      <p class="id-muted">
+        Try Minnesota State Flag colour combinations on either face's background. Each half of
+        the logo needs 3:1 against its ground to hold up as a graphic.
+      </p>
+      <div class="id-exp">
+        <div class="id-exp-controls">
+          {{- range slice (dict "key" "g" "label" "Primary Color (G)" "default" "nightSkyBlue") (dict "key" "j" "label" "Secondary Color (J)" "default" "waterBlue") }}
+            {{- $default := (index $b .default).value }}
+            <div class="id-field">
+              <label for="id-exp-{{ .key }}">{{ .label }}</label>
+              <select id="id-exp-{{ .key }}" data-exp="{{ .key }}">
+                {{- range $id.brandOrder }}
+                  {{- with index $b . }}
+                    <option value="{{ .value }}"{{ if eq .value $default }} selected{{ end }}>{{ .name }} - {{ .value }}</option>
+                  {{- end }}
+                {{- end }}
+                {{- range $id.experimenter }}
+                  <option value="{{ .value }}">{{ .name }} - {{ .value }}</option>
+                {{- end }}
+              </select>
+            </div>
+          {{- end }}
+          <div class="id-field">
+            <label for="id-exp-ground">Background</label>
+            <select id="id-exp-ground" data-exp="ground">
+              <option value="dark">Dark face</option>
+              <option value="light">Light face</option>
+            </select>
+          </div>
+          <button type="button" class="id-btn id-btn-wide" data-exp-reset>Reset to Default</button>
+        </div>
+        <div>
+          <p class="id-field-label">Live Preview</p>
+          <div class="id-exp-preview id-ground id-dots" data-theme="{{ $scheme }}" data-exp-preview>
+            {{ partial "identity/logo.html" (merge $master (dict "label" "Logo preview" "parts" true)) }}
+          </div>
+          <p class="id-muted id-mono id-small" aria-live="polite" data-exp-readout></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02B: Typography -->
+  <section class="id-section" aria-labelledby="id-type">
+    <div class="id-section-head">
+      <h2 id="id-type"><span class="id-num id-num-muted">02B.</span> Typography</h2>
+    </div>
+    <p class="id-lede">
+      These are the identity's typefaces. The site itself currently sets text in your system's
+      UI and monospace fonts.
+    </p>
+    <div class="id-grid id-grid-2">
+      <div class="id-card id-type">
+        <p class="id-type-label">Headings &amp; UI</p>
+        <p class="id-type-name id-font-inter">Inter</p>
+        <p class="id-type-sample id-font-inter">The quick brown fox jumps over the lazy dog.</p>
+        <p class="id-type-weights"><span>400 Regular</span> <strong>700 Bold</strong></p>
+      </div>
+      <div class="id-card id-type">
+        <p class="id-type-label">Code &amp; Data</p>
+        <p class="id-type-name id-font-mono">JetBrains Mono</p>
+        <p class="id-type-sample id-font-mono">const identity = "Nerd";</p>
+        <p class="id-type-weights"><span>400 Regular</span> <strong>700 Bold</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03: Usage -->
+  <section class="id-section" aria-labelledby="id-usage">
+    <div class="id-section-head">
+      <h2 id="id-usage"><span class="id-num id-num-3">03.</span> Usage Guidelines</h2>
+    </div>
+
+    <div class="id-grid id-grid-2">
+      <div class="id-rule id-rule-do">
+        <h3><span class="id-rule-icon" aria-hidden="true">✓</span> Do</h3>
+        <div class="id-rule-preview id-ground id-dots dark" data-theme="{{ $scheme }}">
+          {{ partial "identity/logo.html" $master }}
+        </div>
+        <p>Maintain the precise 10×10 pixel grid alignment. Never distort or stretch the logo.</p>
+      </div>
+
+      <div class="id-rule id-rule-dont">
+        <h3><span class="id-rule-icon" aria-hidden="true">✗</span> Don't</h3>
+        <div class="id-rule-preview id-ground dark id-faded" data-theme="{{ $scheme }}">
+          {{ partial "identity/logo.html" (merge $master (dict "stretch" true)) }}
+        </div>
+        <p>Don't stretch, squash, or alter the aspect ratio. The logo must always be square.</p>
+      </div>
+
+      <div class="id-rule id-rule-do">
+        <h3><span class="id-rule-icon" aria-hidden="true">✓</span> Do</h3>
+        <div class="id-rule-pair">
+          <div class="id-ground dark" data-theme="{{ $scheme }}">{{ partial "identity/logo.html" $master }}</div>
+          <div class="id-ground" data-theme="{{ $scheme }}">{{ partial "identity/logo.html" $black }}</div>
+        </div>
+        <p>
+          Match the logo to its ground: Master Color on dark, Solid Black on light. If you don't
+          know which ground you'll get, as with the site header, use the App Tile.
+        </p>
+      </div>
+
+      <div class="id-rule id-rule-dont">
+        <h3><span class="id-rule-icon" aria-hidden="true">✗</span> Don't</h3>
+        <div class="id-rule-preview id-ground" data-theme="{{ $scheme }}">
+          {{ partial "identity/logo.html" $master }}
+        </div>
+        <p>
+          Don't put the Master Color logo straight onto a light ground. {{ $b.waterBlue.name }} is
+          <span data-contrast="{{ $b.waterBlue.value }}" data-face="light">below 3:1</span> against the
+          light background and {{ $b.nightSkyBlue.name }}
+          <span data-contrast="{{ $b.nightSkyBlue.value }}" data-face="light">barely 3:1</span>, so the J
+          nearly disappears. A graphic needs 3:1 (WCAG 1.4.11).
+        </p>
+      </div>
+
+      <div class="id-rule id-rule-do">
+        <h3><span class="id-rule-icon" aria-hidden="true">✓</span> Do</h3>
+        <div class="id-rule-preview id-rule-roomy id-ground dark" data-theme="{{ $scheme }}">
+          {{ partial "identity/logo.html" $master }}
+        </div>
+        <p>Provide ample clear space around the logo—minimum 20% of logo width on all sides.</p>
+      </div>
+
+      <div class="id-rule id-rule-dont">
+        <h3><span class="id-rule-icon" aria-hidden="true">✗</span> Don't</h3>
+        <div class="id-rule-preview id-ground dark id-faded" data-theme="{{ $scheme }}">
+          {{ partial "identity/logo.html" (dict "j" "#ff0000" "g" "#00ff00") }}
+        </div>
+        <p>Don't use custom colors. Stick to the defined palette or use white/black variants only.</p>
+      </div>
+    </div>
+
+    <div class="id-card id-pad id-ref">
+      <h3>Quick Reference</h3>
+      <div class="id-grid id-grid-2">
+        <div>
+          <h4><span aria-hidden="true">✓</span> Minimum Size</h4>
+          <p>Never smaller than 32×32 pixels in digital or 0.5 inches in print.</p>
+        </div>
+        <div>
+          <h4><span aria-hidden="true">✓</span> File Formats</h4>
+          <p>Use SVG for web/digital. PNG for compatibility. Never use JPG.</p>
+        </div>
+        <div>
+          <h4><span aria-hidden="true">✓</span> Light &amp; Dark</h4>
+          <p>
+            The site follows <code>prefers-color-scheme</code>, and the header has a Light / Dark /
+            System override. Each face has its own background, text, link and border colours,
+            built to the same contrast targets. The logo doesn't change between faces; only its
+            ground does.
+          </p>
+        </div>
+        <div>
+          <h4><span aria-hidden="true">✓</span> Accessibility</h4>
+          <p>
+            Body text at least 7:1 on both faces. Links at least 4.5:1 and at least 15° of hue
+            away from the background: {{ index $names.light "primary" | default "the light link" }} is
+            <span data-contrast="--color-primary" data-face="light">at least 4.5:1</span> on light,
+            {{ index $names.dark "primary" | default "the dark link" }} is
+            <span data-contrast="--color-primary" data-face="dark">at least 4.5:1</span> on dark.
+            Borders and focus rings need 3:1 (WCAG 1.4.11). {{ $b.nightSkyBlue.name }} is
+            <span data-contrast="{{ $b.nightSkyBlue.value }}" data-face="light">below 4.5:1</span> on
+            light and <span data-contrast="{{ $b.nightSkyBlue.value }}" data-face="dark">below 4.5:1</span>
+            on dark, so it's a logo colour only.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{{ end }}
