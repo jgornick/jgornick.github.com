@@ -2,9 +2,11 @@
 // checks them against findings.schema.json. Claude's findings are held to the
 // schema by the API; Gemini's aren't, so this is where they're checked.
 //
-//   node .github/post-review/extract-findings.js gemini-output.json > findings.json
+//   node .github/post-review/extract-findings.js gemini-output.json [gemini-stderr.log] > findings.json
 //
-// Exits 1 with the reason on stderr when there are no usable findings.
+// Exits 1 with the reason on stderr when there are no usable findings. When
+// the CLI fails outright (a used-up quota, say), it leaves stdout empty and
+// writes its JSON error to stderr, so the reason comes from there.
 
 'use strict';
 
@@ -13,11 +15,13 @@ const path = require('node:path');
 
 const SCHEMA = JSON.parse(fs.readFileSync(path.join(__dirname, 'findings.schema.json'), 'utf8'));
 
-function extract(cliOutput) {
+function extract(cliOutput, cliStderr = '') {
   let run;
   try {
     run = JSON.parse(cliOutput);
   } catch {
+    const errors = [...cliStderr.matchAll(/"error"\s*:\s*\{[^{}]*?"message"\s*:\s*"((?:[^"\\]|\\.)*)"/g)];
+    if (errors.length) throw new Error(JSON.parse(`"${errors[errors.length - 1][1]}"`));
     throw new Error('the Gemini CLI output isn’t JSON');
   }
   if (run.error) throw new Error(`Gemini CLI reported an error: ${run.error.message || JSON.stringify(run.error)}`);
@@ -70,7 +74,9 @@ module.exports = { extract, validate };
 
 if (require.main === module) {
   try {
-    process.stdout.write(JSON.stringify(extract(fs.readFileSync(process.argv[2], 'utf8'))));
+    const stderrFile = process.argv[3];
+    const stderr = stderrFile && fs.existsSync(stderrFile) ? fs.readFileSync(stderrFile, 'utf8') : '';
+    process.stdout.write(JSON.stringify(extract(fs.readFileSync(process.argv[2], 'utf8'), stderr)));
   } catch (e) {
     process.stderr.write(`${e.message}\n`);
     process.exit(1);
