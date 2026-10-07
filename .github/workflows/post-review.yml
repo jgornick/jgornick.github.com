@@ -451,7 +451,11 @@ jobs:
             const { MARKER, render } = require('./.github/post-review/render.js');
             const { owner, repo } = context.repo;
             const env = process.env;
-            const reviewer = (name, prefix, model, secret) => ({
+            // One line per reviewer below. Adding one (say, Ollama or OpenAI)
+            // means a review job like review-gemini, its env above, and a line
+            // here with its own marker.
+            const reviewer = (marker, name, prefix, model, secret) => ({
+              marker,
               name,
               model,
               secret,
@@ -469,8 +473,8 @@ jobs:
               posts: JSON.parse(env.POSTS),
               links: { result: env.LINKS_RESULT, exitCode: env.LINKS_EXIT, report: env.LINKS_REPORT, frontmatter: env.FRONTMATTER },
               reviewers: [
-                reviewer('Claude', 'CLAUDE', env.CLAUDE_MODEL, '`CLAUDE_CODE_OAUTH_TOKEN` or `ANTHROPIC_API_KEY`'),
-                reviewer('Gemini', 'GEMINI', env.GEMINI_MODEL, '`GEMINI_API_KEY`'),
+                reviewer('🟣', 'Claude', 'CLAUDE', env.CLAUDE_MODEL, '`CLAUDE_CODE_OAUTH_TOKEN` or `ANTHROPIC_API_KEY`'),
+                reviewer('🔵', 'Gemini', 'GEMINI', env.GEMINI_MODEL, '`GEMINI_API_KEY`'),
               ],
             });
             await core.summary.addRaw(body).write();
