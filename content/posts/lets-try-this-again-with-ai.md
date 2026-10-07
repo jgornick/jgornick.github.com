@@ -64,7 +64,7 @@ The other two are still a plan: AI agents reviewing each post before I merge, th
 
 And yes, this update went through a [pull request](https://github.com/jgornick/jgornick.github.com/pull/7) too.
 
-## Another update: October 6, 2026
+## Another update: October 7, 2026
 
 The other two guardrails are real now, too. That was quicker than I expected.
 
