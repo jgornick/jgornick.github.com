@@ -1,7 +1,8 @@
 # Reviews blog posts in a pull request before Joe merges it: links with
-# lychee, facts and voice with Claude. The result is one PR comment that each
-# run edits in place. Advisory: a finding never fails a job, and nothing here
-# blocks a merge.
+# lychee, facts and voice with Claude and Gemini. Two reviewers from different
+# AI companies, because Claude helps draft the posts and would share its own
+# blind spots. The result is one PR comment that each run edits in place.
+# Advisory: a finding never fails a job, and nothing here blocks a merge.
 #
 # Runs when a PR that touches content/posts/ is opened (unless it's a draft),
 # reopened, or marked ready for review. Not on every push. To review again
@@ -14,18 +15,20 @@
 #
 # Claude runs on Joe's Claude plan: the CLAUDE_CODE_OAUTH_TOKEN secret, made
 # with `claude setup-token`. ANTHROPIC_API_KEY is the fallback, used only when
-# that secret isn't set.
+# that secret isn't set. Gemini runs on a free Gemini API key (GEMINI_API_KEY,
+# from Google AI Studio), which only reaches Flash models. A reviewer whose
+# secret isn't set is skipped, and the comment says so.
 #
-# Only the review job sees the Claude credential, and its GitHub token is
-# read-only. Only the report job can comment, and it never sees the key.
-# Claude returns its findings as JSON (.github/post-review/findings.schema.json)
-# and .github/post-review/render.js turns them into the comment.
+# Each reviewer job sees only its own credential, and its GitHub token is
+# read-only. Only the report job can comment, and it never sees a key. Both
+# reviewers return findings as JSON (.github/post-review/findings.schema.json),
+# and .github/post-review/render.js merges them into the comment.
 #
 # Before making this a required status check: required checks attach to a
 # PR's newest commit, and this workflow is path-filtered and skips plain
 # pushes, so the check would sit at "Expected" on most commits and block the
 # merge. It would first need a job that runs on every push and only calls
-# Claude when posts changed.
+# the reviewers when posts changed.
 
 name: Post review
 
@@ -41,6 +44,12 @@ on:
         type: number
 
 permissions: {}
+
+env:
+  CLAUDE_MODEL: claude-opus-5-5
+  # A free Gemini API key only reaches Flash models.
+  GEMINI_MODEL: gemini-3.8-flash
+  GEMINI_CLI_VERSION: 0.63.0
 
 concurrency:
   group: post-review-${{ github.event.pull_request.number || inputs.pr }}
@@ -66,6 +75,7 @@ jobs:
       base_ref: ${{ steps.pr.outputs.base_ref }}
       fork: ${{ steps.pr.outputs.fork }}
       has_claude: ${{ steps.pr.outputs.has_claude }}
+      has_gemini: ${{ steps.pr.outputs.has_gemini }}
       posts: ${{ steps.posts.outputs.posts }}
       has_posts: ${{ steps.posts.outputs.has_posts }}
     steps:
@@ -74,15 +84,18 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           NUMBER: ${{ github.event.pull_request.number || inputs.pr }}
-          # Only whether one is set. Pull requests from forks never get either.
+          # Only whether each is set. Pull requests from forks never get them.
           HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' || secrets.ANTHROPIC_API_KEY != '' }}
+          HAS_GEMINI: ${{ secrets.GEMINI_API_KEY != '' }}
         run: |
           [[ "$NUMBER" =~ ^[0-9]+$ ]] || { echo "::error::Not a pull request number: $NUMBER"; exit 1; }
-          gh pr view "$NUMBER" --repo "$GITHUB_REPOSITORY" \
-            --json number,headRefOid,baseRefName,isCrossRepository \
-            --jq '"number=\(.number)", "head_sha=\(.headRefOid)", "base_ref=\(.baseRefName)", "fork=\(.isCrossRepository)"' \
-            >> "$GITHUB_OUTPUT"
-          echo "has_claude=$HAS_CLAUDE" >> "$GITHUB_OUTPUT"
+          {
+            gh pr view "$NUMBER" --repo "$GITHUB_REPOSITORY" \
+              --json number,headRefOid,baseRefName,isCrossRepository \
+              --jq '"number=\(.number)", "head_sha=\(.headRefOid)", "base_ref=\(.baseRefName)", "fork=\(.isCrossRepository)"'
+            echo "has_claude=$HAS_CLAUDE"
+            echo "has_gemini=$HAS_GEMINI"
+          } >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v7
         with:
@@ -102,8 +115,8 @@ jobs:
             split("\n") | map(select(length > 0) | split("\t")
               | { status: (if .[0] == "A" then "new" else "edited" end), path: .[1] })' <<<"$changed")
 
-          # Only plain file names get through. They reach the Claude prompt, and
-          # lychee-action evals its arguments.
+          # Only plain file names get through. They reach the reviewers'
+          # prompts, and lychee-action evals its arguments.
           safe='^content/posts/[A-Za-z0-9._/-]+\.md$'
           odd=$(jq -r --arg re "$safe" '.[] | select(.path | test($re) | not) | .path' <<<"$posts")
           if [ -n "$odd" ]; then
@@ -193,8 +206,8 @@ jobs:
             echo "$delim"
           } >> "$GITHUB_OUTPUT"
 
-  review:
-    name: Review facts and voice
+  review-claude:
+    name: Review with Claude
     needs: changes
     if: needs.changes.outputs.has_posts == 'true' && needs.changes.outputs.has_claude == 'true'
     runs-on: ubuntu-26.04
@@ -226,14 +239,7 @@ jobs:
           POSTS: ${{ needs.changes.outputs.posts }}
           BASE_REF: ${{ needs.changes.outputs.base_ref }}
         run: |
-          jq -r '.[] | "- `\(.path)` (\(.status))"' <<<"$POSTS" > .post-review/files.md
-
-          mapfile -t edited < <(jq -r '.[] | select(.status == "edited") | .path' <<<"$POSTS")
-          if [ ${#edited[@]} -gt 0 ]; then
-            git diff -M -U5 "origin/${BASE_REF}...HEAD" -- "${edited[@]}" > .post-review/changes.diff
-          else
-            echo "Every post in this pull request is new." > .post-review/changes.diff
-          fi
+          bash .github/post-review/prepare.sh
 
           # claude_args wraps the schema in single quotes.
           schema=$(jq -c . .github/post-review/findings.schema.json)
@@ -266,7 +272,7 @@ jobs:
           # action writes into .git/config and from the process environment,
           # which holds the Claude credential.
           claude_args: >-
-            --model claude-opus-5-5
+            --model ${{ env.CLAUDE_MODEL }}
             --max-turns 60
             --allowedTools Read,Glob,Grep,WebSearch,WebFetch
             --disallowedTools Bash,Edit,MultiEdit,Write,NotebookEdit
@@ -274,10 +280,138 @@ jobs:
           settings: |
             {"permissions": {"deny": ["Read(./.git/**)", "Read(//proc/**)"]}}
 
+  review-gemini:
+    name: Review with Gemini
+    needs: changes
+    if: needs.changes.outputs.has_posts == 'true' && needs.changes.outputs.has_gemini == 'true'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    outputs:
+      findings: ${{ steps.findings.outputs.findings }}
+      error: ${{ steps.findings.outputs.error }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.changes.outputs.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check out the voice guide
+        uses: actions/checkout@v7
+        with:
+          repository: jgornick/skills
+          path: .post-review/skills
+          sparse-checkout: my-writing-style
+          persist-credentials: false
+
+      - name: Prepare the review
+        env:
+          POSTS: ${{ needs.changes.outputs.posts }}
+          BASE_REF: ${{ needs.changes.outputs.base_ref }}
+        run: bash .github/post-review/prepare.sh
+
+      # Gemini CLI won't run headless in a folder it doesn't trust, and once it
+      # trusts one it loads that folder's hooks, MCP servers and settings. So
+      # it gets a folder of its own holding only Markdown (the posts, the
+      # review inputs and the voice guide), where nothing a pull request adds
+      # can configure it. Gemini has no structured output setting, so the
+      # prompt carries the schema and asks for bare JSON.
+      - name: Stage a clean folder for Gemini
+        run: |
+          dir="$RUNNER_TEMP/review"
+          mkdir -p "$dir"
+          find content/posts .post-review -type f -name '*.md' -not -name 'GEMINI.md' -print0 |
+            xargs -0 cp --parents -t "$dir"
+          cp .post-review/changes.diff "$dir/.post-review/"
+          echo "REVIEW_DIR=$dir" >> "$GITHUB_ENV"
+
+          {
+            cat .github/post-review/prompt.md
+            echo
+            echo "Structured output here means your final reply: one JSON object and nothing else, with no code fence and no text around it, matching this JSON Schema:"
+            echo
+            jq -c . .github/post-review/findings.schema.json
+          } > "$RUNNER_TEMP/gemini-prompt.md"
+
+      # Settings and policy live in the home folder, which the pull request
+      # can't touch. The policy denies the shell and file writes, and allows
+      # web search and fetch, which would otherwise ask for approval and so be
+      # refused in headless mode. On a free key only Gemini 2.5 Flash can use
+      # Google Search, so the web-search alias is pointed at it.
+      - name: Configure Gemini CLI
+        run: |
+          mkdir -p ~/.gemini/policies
+          cat > ~/.gemini/settings.json <<'EOF'
+          {
+            "general": { "enableAutoUpdate": false },
+            "privacy": { "usageStatisticsEnabled": false },
+            "model": { "maxSessionTurns": 60 },
+            "modelConfigs": {
+              "customAliases": {
+                "web-search": {
+                  "extends": "gemini-2.5-flash-base",
+                  "modelConfig": { "generateContentConfig": { "tools": [{ "googleSearch": {} }] } }
+                }
+              }
+            }
+          }
+          EOF
+          cat > ~/.gemini/policies/post-review.toml <<'EOF'
+          [[rule]]
+          toolName = ["run_shell_command", "write_file", "replace"]
+          decision = "deny"
+          priority = 900
+
+          [[rule]]
+          toolName = ["google_web_search", "web_fetch"]
+          decision = "allow"
+          priority = 800
+          EOF
+
+      - name: Review with Gemini
+        id: gemini
+        continue-on-error: true
+        # An open Gemini CLI bug can leave web search hanging.
+        timeout-minutes: 15
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          cd "$REVIEW_DIR"
+          set +e
+          npx --yes "@google/gemini-cli@${GEMINI_CLI_VERSION}" \
+            --skip-trust --model "$GEMINI_MODEL" --output-format json \
+            --prompt "$(cat "$RUNNER_TEMP/gemini-prompt.md")" > "$RUNNER_TEMP/gemini-output.json"
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit "$code"
+
+      - name: Check Gemini's findings
+        id: findings
+        if: always()
+        env:
+          EXIT_CODE: ${{ steps.gemini.outputs.exit_code }}
+        run: |
+          delim="EOF_$(openssl rand -hex 8)"
+          if findings=$(node .github/post-review/extract-findings.js "$RUNNER_TEMP/gemini-output.json" 2> "$RUNNER_TEMP/extract-error.txt"); then
+            { echo "findings<<$delim"; echo "$findings"; echo "$delim"; } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # One line, so text from the model can't start a workflow command.
+          if [ "$EXIT_CODE" = 53 ]; then
+            error="it ran out of turns before finishing"
+          else
+            error=$(tr -s '\n' ' ' < "$RUNNER_TEMP/extract-error.txt" | head -c 300)
+          fi
+          echo "::error::Gemini returned no usable findings: $error"
+          { echo "error<<$delim"; echo "$error"; echo "$delim"; } >> "$GITHUB_OUTPUT"
+          exit 1
+
   report:
     name: Comment on the pull request
-    needs: [changes, links, review]
-    # Runs when links or review fail too, so the comment says what broke.
+    needs: [changes, links, review-claude, review-gemini]
+    # Runs when links or a review fail too, so the comment says what broke.
     # Not after a cancel, though: a newer run is already on its way.
     if: ${{ !cancelled() && needs.changes.outputs.has_posts == 'true' }}
     runs-on: ubuntu-26.04
@@ -299,9 +433,13 @@ jobs:
           HEAD_SHA: ${{ needs.changes.outputs.head_sha }}
           POSTS: ${{ needs.changes.outputs.posts }}
           FORK: ${{ needs.changes.outputs.fork }}
-          REVIEW_SKIPPED: ${{ needs.changes.outputs.fork == 'true' && 'fork' || needs.changes.outputs.has_claude != 'true' && 'no-credentials' || '' }}
-          REVIEW_RESULT: ${{ needs.review.result }}
-          FINDINGS: ${{ needs.review.outputs.findings }}
+          CLAUDE_ENABLED: ${{ needs.changes.outputs.has_claude }}
+          CLAUDE_RESULT: ${{ needs.review-claude.result }}
+          CLAUDE_FINDINGS: ${{ needs.review-claude.outputs.findings }}
+          GEMINI_ENABLED: ${{ needs.changes.outputs.has_gemini }}
+          GEMINI_RESULT: ${{ needs.review-gemini.result }}
+          GEMINI_FINDINGS: ${{ needs.review-gemini.outputs.findings }}
+          GEMINI_ERROR: ${{ needs.review-gemini.outputs.error }}
           LINKS_RESULT: ${{ needs.links.result }}
           LINKS_EXIT: ${{ needs.links.outputs.exit_code }}
           LINKS_REPORT: ${{ needs.links.outputs.report }}
@@ -311,6 +449,15 @@ jobs:
             const { MARKER, render } = require('./.github/post-review/render.js');
             const { owner, repo } = context.repo;
             const env = process.env;
+            const reviewer = (name, prefix, model, secret) => ({
+              name,
+              model,
+              secret,
+              skipped: env.FORK === 'true' ? 'fork' : env[`${prefix}_ENABLED`] !== 'true' ? 'no-credentials' : '',
+              result: env[`${prefix}_RESULT`],
+              findings: env[`${prefix}_FINDINGS`],
+              error: env[`${prefix}_ERROR`],
+            });
 
             const body = render({
               repo: `${owner}/${repo}`,
@@ -319,7 +466,10 @@ jobs:
               runUrl: `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`,
               posts: JSON.parse(env.POSTS),
               links: { result: env.LINKS_RESULT, exitCode: env.LINKS_EXIT, report: env.LINKS_REPORT, frontmatter: env.FRONTMATTER },
-              review: { result: env.REVIEW_RESULT, skipped: env.REVIEW_SKIPPED, findings: env.FINDINGS },
+              reviewers: [
+                reviewer('Claude', 'CLAUDE', env.CLAUDE_MODEL, '`CLAUDE_CODE_OAUTH_TOKEN` or `ANTHROPIC_API_KEY`'),
+                reviewer('Gemini', 'GEMINI', env.GEMINI_MODEL, '`GEMINI_API_KEY`'),
+              ],
             });
             await core.summary.addRaw(body).write();
 

@@ -1,5 +1,5 @@
 // Renders the post-review pull request comment from the results of the links
-// and review jobs in .github/workflows/post-review.yml.
+// job and the reviewer jobs in .github/workflows/post-review.yml.
 //
 // No GitHub API calls in here, so it also runs locally on a saved input:
 //   node .github/post-review/render.js < input.json
@@ -11,16 +11,12 @@ const MARKER = '<!-- post-review -->';
 // GitHub rejects comment bodies over 65,536 characters.
 const MAX_BODY = 60000;
 
-const SKIP_REASONS = {
-  fork: 'Pull requests from forks can’t use the repository’s secrets, so facts and voice weren’t reviewed.',
-  'no-credentials': 'Neither `CLAUDE_CODE_OAUTH_TOKEN` nor `ANTHROPIC_API_KEY` is set, so facts and voice weren’t reviewed.',
-};
-
 function render(input, { linkReport = true } = {}) {
-  const { repo, pr, headSha, runUrl, posts = [], links = {}, review = {} } = input;
+  const { repo, pr, headSha, runUrl, posts = [], links = {}, reviewers = [] } = input;
   const short = headSha.slice(0, 7);
   const blob = (file, line) =>
     `https://github.com/${repo}/blob/${headSha}/${file}${line ? `#L${line}` : ''}`;
+  const reviews = reviewers.map((r) => ({ ...r, ...outcome(r, runUrl) }));
 
   const body = [
     MARKER,
@@ -30,7 +26,9 @@ function render(input, { linkReport = true } = {}) {
     '',
     posts.map((p) => `- [\`${p.path}\`](${blob(p.path)}) (${p.status})`).join('\n'),
     '',
-    ...reviewSections(review, runUrl, blob),
+    reviews.map((r) => `- **${r.name}** (${r.model}) ${r.status}`).join('\n'),
+    '',
+    ...findingSections(reviews, blob),
     ...linkSection(links, runUrl, linkReport),
     '---',
     `<sub>Pushed since \`${short}\`? Mark the PR as a draft and then ready for review again, or run \`gh workflow run post-review.yml -f pr=${pr}\`.</sub>`,
@@ -42,46 +40,51 @@ function render(input, { linkReport = true } = {}) {
   return `${body.slice(0, MAX_BODY)}\n\n…cut off; the full review is in the [workflow run](${runUrl}).\n`;
 }
 
-function reviewSections(review, runUrl, blob) {
-  if (SKIP_REASONS[review.skipped]) return [`**Facts and voice:** ${SKIP_REASONS[review.skipped]}`, ''];
-  if (review.result !== 'success') {
-    return [`**Facts and voice:** the Claude review didn’t finish (${review.result || 'unknown'}). See the [workflow run](${runUrl}).`, ''];
-  }
+// How one reviewer's job went: its parsed findings when there are any, and a
+// status line for the reviewer list at the top of the comment.
+function outcome(reviewer, runUrl) {
+  const see = `See the [workflow run](${runUrl}).`;
+  const why = reviewer.error ? `: ${reviewer.error}` : '';
+  if (reviewer.skipped === 'fork') return { status: 'skipped: pull requests from forks can’t use the repository’s secrets.' };
+  if (reviewer.skipped === 'no-credentials') return { status: `skipped: no ${reviewer.secret} secret is set.` };
+  if (reviewer.result !== 'success') return { status: `didn’t finish (${reviewer.result || 'unknown'})${why}. ${see}` };
 
   let findings;
   try {
-    findings = JSON.parse(review.findings);
+    findings = JSON.parse(reviewer.findings);
   } catch {
-    return [`**Facts and voice:** the Claude review finished without returning findings. See the [workflow run](${runUrl}).`, ''];
+    return { status: `finished without returning findings${why}. ${see}` };
   }
+  const parts = [`checked ${findings.claims_checked ?? 'an unknown number of'} claims.`];
+  if (!findings.voice_guide_read) parts.push('It didn’t have the voice guide, so it didn’t check voice.');
+  if (findings.summary) parts.push(findings.summary.trim());
+  return { findings, status: parts.join(' ') };
+}
 
-  const facts = findings.facts || [];
-  const voice = findings.voice || [];
+// One list per kind of finding, from every reviewer that returned findings,
+// sorted by file and line so that two reviewers flagging the same passage end
+// up next to each other.
+function findingSections(reviews, blob) {
+  const done = reviews.filter((r) => r.findings);
+  if (!done.length) return [];
+
   const out = [];
+  for (const [kind, title] of [['facts', 'Facts and links'], ['voice', 'Voice']]) {
+    const items = done
+      .filter((r) => kind !== 'voice' || r.findings.voice_guide_read)
+      .flatMap((r) => (r.findings[kind] || []).map((f) => ({ ...f, by: r.name })))
+      .sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
 
-  if (findings.summary) out.push(findings.summary.trim(), '');
-
-  out.push('### Facts and links', '');
-  out.push(`Checked ${findings.claims_checked ?? 'an unknown number of'} claims; ${facts.length ? `${facts.length} to look at.` : 'nothing to flag.'}`, '');
-  facts.forEach((f, i) => {
-    out.push(heading(i, f, blob, `${f.confidence} confidence`));
-    out.push(...details(f));
-    const sources = (f.sources || []).map((url, n) => link(url, n + 1));
-    if (sources.length) out.push(indent(`Sources: ${sources.join(' · ')}`), '');
-  });
-
-  out.push('### Voice', '');
-  if (!findings.voice_guide_read) {
-    out.push('Not checked: the voice guide wasn’t available to the reviewer.', '');
-  } else if (!voice.length) {
-    out.push('Nothing to flag.', '');
-  } else {
-    voice.forEach((v, i) => {
-      out.push(heading(i, v, blob));
-      out.push(...details(v));
+    out.push(`### ${title}`, '');
+    if (!items.length) out.push('Nothing to flag.', '');
+    items.forEach((f, i) => {
+      const extra = [f.by, f.confidence && `${f.confidence} confidence`].filter(Boolean).join(', ');
+      out.push(heading(i, f, blob, extra));
+      out.push(...details(f));
+      const sources = (f.sources || []).map((url, n) => link(url, n + 1));
+      if (sources.length) out.push(indent(`Sources: ${sources.join(' · ')}`), '');
     });
   }
-
   return out;
 }
 
