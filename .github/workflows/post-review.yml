@@ -47,8 +47,9 @@ permissions: {}
 
 env:
   CLAUDE_MODEL: claude-opus-5-5
-  # A free Gemini API key only reaches Flash models.
-  GEMINI_MODEL: gemini-3.8-flash
+  # A free Gemini API key only reaches Flash models. This is the stable one:
+  # the newest (3.8) answered "high demand" errors for most of a test run.
+  GEMINI_MODEL: gemini-3.5-flash
   GEMINI_CLI_VERSION: 0.63.0
 
 concurrency:
@@ -339,7 +340,8 @@ jobs:
       # can't touch. The policy denies the shell and file writes, and allows
       # web search and fetch, which would otherwise ask for approval and so be
       # refused in headless mode. On a free key only Gemini 2.5 Flash can use
-      # Google Search, so the web-search alias is pointed at it.
+      # Google Search, so the web-search alias is pointed at it, and web fetch
+      # moves there too from the preview model it uses by default.
       - name: Configure Gemini CLI
         run: |
           mkdir -p ~/.gemini/policies
@@ -353,6 +355,10 @@ jobs:
                 "web-search": {
                   "extends": "gemini-2.5-flash-base",
                   "modelConfig": { "generateContentConfig": { "tools": [{ "googleSearch": {} }] } }
+                },
+                "web-fetch": {
+                  "extends": "gemini-2.5-flash-base",
+                  "modelConfig": { "generateContentConfig": { "tools": [{ "urlContext": {} }] } }
                 }
               }
             }
@@ -373,8 +379,10 @@ jobs:
       - name: Review with Gemini
         id: gemini
         continue-on-error: true
-        # An open Gemini CLI bug can leave web search hanging.
-        timeout-minutes: 15
+        # A healthy run takes a few minutes. An overloaded free tier means
+        # long retries, and an open Gemini CLI bug can leave web search
+        # hanging, so cap it: the comment waits for every reviewer.
+        timeout-minutes: 10
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
@@ -399,10 +407,14 @@ jobs:
             exit 0
           fi
           # One line, so text from the model can't start a workflow command.
-          if [ "$EXIT_CODE" = 53 ]; then
+          # No exit code means the step was killed before it could record one,
+          # which is what its timeout does.
+          if [ -z "$EXIT_CODE" ]; then
+            error="it didn't finish within 10 minutes"
+          elif [ "$EXIT_CODE" = 53 ]; then
             error="it ran out of turns before finishing"
           else
-            error=$(tr -s '\n' ' ' < "$RUNNER_TEMP/extract-error.txt" | head -c 300)
+            error=$(tr -s '\n' ' ' < "$RUNNER_TEMP/extract-error.txt" | head -c 300 | sed 's/ *$//')
           fi
           echo "::error::Gemini returned no usable findings: $error"
           { echo "error<<$delim"; echo "$error"; echo "$delim"; } >> "$GITHUB_OUTPUT"
