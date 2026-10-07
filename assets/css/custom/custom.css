@@ -695,6 +695,23 @@ header :where(a, button):focus-visible,
     visibility 0s;
 }
 
+/* --- 404 numeral contrast (WCAG 1.4.3) -------------------------------------
+
+   The theme draws the big "404" as text-primary at opacity-20, a watermark
+   above the real "Page Not Found" heading. Composited, that is 1.32:1 on the
+   light face and 1.54:1 on the dark one. At 128px bold it is large text, so
+   the bar is 3:1. aria-hidden does not help: the text is still on screen, and
+   axe still fails it.
+
+   Swap the transparency for --color-subtle, the scheme's low-emphasis token.
+   Every scheme keeps it at or above 3:1 on its page background (Boundary
+   Waters: 3.54:1 light, 3.91:1 dark), so it still reads as a watermark. The
+   class pair appears nowhere else in the theme. */
+.text-9xl.opacity-20 {
+  color: var(--color-subtle);
+  opacity: 1;
+}
+
 /* --- Reduced motion (WCAG 2.3.3) -------------------------------------------
    The theme animates card hovers, translates and fades throughout. Honour the
    OS setting rather than overriding it per-component. */

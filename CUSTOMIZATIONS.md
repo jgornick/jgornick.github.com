@@ -193,6 +193,21 @@ the tab order, so its input and buttons stayed focusable while invisible. axe fl
 delayed transition so the 300ms fade still plays. Verified: 3 focusable descendants,
 0 reachable when closed; Ctrl+K still opens and focuses the input.
 
+**404 numeral (WCAG 1.4.3).** The theme's 404 page draws a big "404" as
+`text-primary` at `opacity-20`, above the real "Page Not Found" `<h1>`. Composited,
+that is **1.32:1** light and **1.54:1** dark. At 128px bold it is large text, so the bar
+is 3:1. It was never caught because 404.html is not in the sitemap, so neither audit
+script visited it (they do now). Fixed in CSS by swapping the transparency for
+`--color-subtle` at full opacity. That token is the scheme's low-emphasis colour, and
+every scheme keeps it ≥ 3:1 on its background. Measured on all 8 scheme × mode
+combinations: 3.54–4.14:1 and zero axe violations on the page.
+
+Two alternatives were measured and rejected:
+- `aria-hidden="true"` does nothing for contrast. The text is still on screen, and axe
+  still fails it at 1.32:1.
+- Keeping the teal and fading it less (`color-mix` toward the background) only passes
+  on the light face at ≥ 70% primary, which is barely faded at all.
+
 **Reduced motion (WCAG 2.3.3).** Added a `prefers-reduced-motion` block.
 
 **Relationship to `identity.html`.** The identity system pinned Night Sky Dark
@@ -398,6 +413,18 @@ node scripts/a11y-hover-audit.js http://localhost:1313
 
 The URL you pass the scripts is authoritative — they force every audited page onto it.
 
+Both scripts also audit `/404.html` on every run (`EXTRA_PATHS`), after the sitemap
+pages and regardless of `AXE_MAX_PAGES`. Hugo renders the 404 page outside the page
+tree, so it is never in `sitemap.xml`. Following the sitemap alone missed a real
+contrast failure on it for months.
+
+`a11y-audit.sh` runs `@axe-core/cli`, which drives the installed Google Chrome through
+ChromeDriver. When the two drift apart after a Chrome update, every page fails with
+`session not created: This version of ChromeDriver only supports Chrome version N`.
+That is a tooling error, not an audit result; update Chrome, or pass the CLI a matching
+`--chromedriver-path`. `a11y-hover-audit.js` uses Playwright's bundled Chromium and is
+unaffected.
+
 Output goes to `a11y-reports/` and `a11y-hover-reports/`, both **gitignored** — they are
 build artifacts. They used to be committed, which meant a stale February snapshot sat in
 the repo describing a palette that no longer existed.
@@ -435,3 +462,9 @@ rendered pixels:
   such helper against axe's own `bgColor` or a screenshot pixel before trusting it.
 - **palette coverage**: scanning pages only tests the colours those pages happen to use.
   The failing comment colour was found by enumerating every `--chroma-*` variable.
+- **page coverage**: scanning the sitemap only tests the pages the sitemap lists. The 404
+  page's 1.32:1 numeral shipped unnoticed because nothing ever visited it.
+- **transitions**: the hover audit samples 50ms after hovering, mid-transition. A
+  crossfade that moves text and background in opposite directions (dark-on-light to
+  light-on-dark) passes through near-equal colours on the way. That is a real, if brief,
+  low-contrast frame, so swap such colours instantly rather than crossfading them.

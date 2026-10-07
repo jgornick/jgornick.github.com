@@ -10,6 +10,10 @@ const outDir = process.env.AXE_OUT_DIR || "a11y-hover-reports";
 const maxPages = parseInt(process.env.AXE_MAX_PAGES || "0", 10);
 const maxHover = parseInt(process.env.AXE_HOVER_MAX || "8", 10);
 
+// Pages the sitemap never lists, audited on every run regardless of
+// AXE_MAX_PAGES. Hugo renders 404.html outside the page tree.
+const EXTRA_PATHS = ["/404.html"];
+
 async function fetchSitemapUrls() {
   const sitemapUrl = `${baseUrl}/sitemap.xml`;
   const res = await fetch(sitemapUrl);
@@ -59,7 +63,10 @@ async function run() {
     fs.mkdirSync(outDir, { recursive: true });
   }
 
-  const urls = await fetchSitemapUrls();
+  const urls = [
+    ...(await fetchSitemapUrls()),
+    ...EXTRA_PATHS.map((p) => new URL(p, baseUrl).href),
+  ];
   const browser = await chromium.launch();
   const page = await browser.newPage();
 

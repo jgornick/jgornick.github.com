@@ -6,6 +6,10 @@ TAGS="${AXE_TAGS:-wcag2a,wcag2aa}"
 OUT_DIR="${AXE_OUT_DIR:-a11y-reports}"
 MAX_PAGES="${AXE_MAX_PAGES:-0}"
 
+# Pages the sitemap never lists, audited on every run regardless of
+# AXE_MAX_PAGES. Hugo renders 404.html outside the page tree.
+EXTRA_PATHS=(/404.html)
+
 mkdir -p "$OUT_DIR"
 
 URLS=()
@@ -58,6 +62,10 @@ if [[ "${#URLS[@]}" -eq 0 ]]; then
   echo "No URLs found in sitemap: $BASE_URL/sitemap.xml" >&2
   exit 1
 fi
+
+for path in "${EXTRA_PATHS[@]}"; do
+  URLS+=("${BASE_URL%/}$path")
+done
 
 fail=0
 for url in "${URLS[@]}"; do
